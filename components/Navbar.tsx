@@ -18,7 +18,7 @@ export default function Navbar() {
     <header className={`navbar ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
-        AEJ
+        ADEJOKE
       </Link>
 
       {/* Nav Links - Desktop */}
