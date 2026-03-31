@@ -2,26 +2,210 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #06060c;
+  --surface: #0e0e1c;
+  --orange: #ff5f1f;
+  --purple: #9b59f5;
+  --cyan: #00d4ff;
+  --white: #f0ede6;
+  --muted: #6b6b80;
+  --border: rgba(255, 255, 255, 0.07);
+
+  --font-bebas: var(--font-bebas);
+  --font-dm-mono: var(--font-dm-mono);
+  --font-syne: var(--font-syne);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Global Reset ───────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-syne), "Syne", sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  /* Hide default cursor per Prompt 10 */
+  cursor: none;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* ─── Noise Texture Overlay ──────────────────────────────────── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+}
+
+/* ─── Scroll Reveal Logic (Prompt 10) ────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ─── Keyframe Animations ────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  33% {
+    transform: translateY(-22px) scale(1.02);
+  }
+  66% {
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@keyframes gradShift {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ─── Animation Utility Classes ───────────────────────────────── */
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+.animate-grad-shift {
+  animation: gradShift 5s ease infinite;
+}
+
+.animate-blink {
+  animation: blink 1.2s step-end infinite;
+}
+
+/* ─── Gradient Text Utility ──────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--orange),
+    var(--purple),
+    var(--cyan)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Responsive Styles ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  body {
+    cursor: default !important; /* Show cursor on mobile */
+  }
+
+  /* Reset section padding - narrower on extremely small screens */
+  section {
+    padding: 5rem 1.8rem 5rem 2.8rem !important;
+  }
+
+  /* Collapse all grids to 1-column */
+  .grid,
+  [style*="display: grid"],
+  [class*="grid-cols"] {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 4rem 1.2rem 4rem 2.2rem !important;
+  }
+  
+  .chain-bar {
+    width: 2px !important;
+    opacity: 0.4 !important;
+  }
+}
+
+/* ─── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: rgba(255, 95, 31, 0.35);
+  color: var(--white);
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--orange), var(--purple));
+  border-radius: 2px;
 }
