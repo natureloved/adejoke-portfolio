@@ -48,7 +48,7 @@ export default function CustomCursor() {
       }
     };
 
-    const onMouseLeave = (e: MouseEvent) => {
+    const onMouseLeave = () => {
       setIsHovering(false);
     };
 

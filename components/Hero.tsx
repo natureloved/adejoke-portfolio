@@ -121,7 +121,7 @@ export default function Hero() {
         .hero-name {
           font-family: var(--font-bebas), "Bebas Neue", cursive;
           font-size: clamp(3.5rem, 12vw, 11rem);
-          line-height: 0.72;
+          line-height: 0.82;
           display: flex;
           flex-direction: column;
         }
@@ -129,6 +129,7 @@ export default function Hero() {
         .name-line {
           display: block;
           position: relative;
+          padding: 0.05em 0;
         }
 
         .line-1 {
