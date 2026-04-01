@@ -19,15 +19,16 @@ export default function Hero() {
       <div className="hero-content">
         {/* Eyebrow */}
         <p className="hero-eyebrow reveal">
-          ⬡ Full-Stack Developer · VIBE CODER
+          ⬡ Full-Stack Developer · Multi-Chain Builder
         </p>
 
         {/* Cinematic Kinetic Name */}
-        <div className="name-container">
-          <h1 className="hero-name shutter-reveal">
-            <span className="name-line line-1">Akinola</span>
+        <div className="name-container reveal">
+          <h1 className="hero-name kinetic-shutter">
+            <span className="name-line line-1 accent-text">Akinola</span>
             <span className="name-line line-2 plasma-text">Adejoke</span>
           </h1>
+          <div className="name-ghost">Adejoke</div>
         </div>
 
         {/* Chain Tags */}
@@ -114,43 +115,67 @@ export default function Hero() {
 
         /* Kinetic Typography */
         .name-container {
-          perspective: 1000px;
-          margin-bottom: 3.5rem;
+          position: relative;
+          perspective: 1500px;
+          margin-bottom: 4rem;
         }
 
         .hero-name {
           font-family: var(--font-bebas), "Bebas Neue", cursive;
-          font-size: clamp(3.5rem, 12vw, 11rem);
-          line-height: 0.82;
+          font-size: clamp(4rem, 15vw, 13rem);
+          line-height: 0.8;
           display: flex;
           flex-direction: column;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+        }
+
+        .name-ghost {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%) translateZ(-100px);
+          font-family: var(--font-bebas), "Bebas Neue", cursive;
+          font-size: clamp(6rem, 18vw, 16rem);
+          color: rgba(255, 255, 255, 0.03);
+          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+          pointer-events: none;
+          z-index: -1;
+          filter: blur(4px);
         }
 
         .name-line {
           display: block;
           position: relative;
-          padding: 0.05em 0;
+          padding: 0.02em 0;
+          z-index: 2;
         }
 
         .line-1 {
           color: var(--white);
+          text-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .accent-text {
+          background: linear-gradient(to right, var(--white) 0%, #fff 40%, var(--orange) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
 
         /* Plasma Text Effect */
         .plasma-text {
           background: linear-gradient(
-            -45deg,
-            var(--orange),
-            var(--purple),
-            var(--cyan),
-            var(--orange)
+            to right,
+            var(--orange) 0%,
+            var(--purple) 50%,
+            var(--cyan) 100%
           );
-          background-size: 400% 400%;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: plasma-flow 8s ease infinite;
-          letter-spacing: -0.01em;
+          letter-spacing: -0.03em;
+          filter: drop-shadow(0 0 30px rgba(255, 95, 31, 0.2));
         }
 
         @keyframes plasma-flow {
@@ -159,22 +184,24 @@ export default function Hero() {
           100% { background-position: 0% 50%; }
         }
 
-        /* Shutter Reveal Animation */
-        .shutter-reveal .line-1 {
-          animation: shutter-in-bottom 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+        /* Kinetic Liquid Reveal Animation */
+        .kinetic-shutter .name-line {
+          animation: kinetic-in 1.4s cubic-bezier(1, 0, 0, 1) both;
         }
-        .shutter-reveal .line-2 {
-          animation: shutter-in-bottom 1.4s cubic-bezier(0.23, 1, 0.32, 1) 0.2s both;
+        .kinetic-shutter .line-2 {
+          animation-delay: 0.15s;
         }
 
-        @keyframes shutter-in-bottom {
+        @keyframes kinetic-in {
           0% {
-            transform: translateY(100%) rotateX(-30deg);
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            transform: translateY(120px) skewY(10deg);
             opacity: 0;
-            filter: blur(10px);
+            filter: blur(20px);
           }
           100% {
-            transform: translateY(0) rotateX(0);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+            transform: translateY(0) skewY(0);
             opacity: 1;
             filter: blur(0);
           }
@@ -260,7 +287,7 @@ export default function Hero() {
         .scroll-line { width: 40px; height: 1px; background: var(--border); }
         .scroll-text {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.65rem;
+          font-size: 0.8rem;
           color: var(--muted);
           text-transform: lowercase;
         }

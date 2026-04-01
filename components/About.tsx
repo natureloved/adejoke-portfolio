@@ -41,7 +41,7 @@ export default function About() {
   return (
     <section id="about" className="about">
       <div className="section-label reveal">01 — About</div>
-      <h2 className="section-title reveal">About Me</h2>
+      <h2 className="section-title reveal">Who I Am</h2>
 
       <div className="about-grid">
         {/* Left — Text */}
@@ -70,7 +70,7 @@ export default function About() {
         <div className="stats-grid">
           <StatCard number="3" label="Blockchain Languages" />
           <StatCard number="6+" label="Programs & Fellowships" />
-          <StatCard number="2" label="Live DeFi Projects" />
+          <StatCard number="4" label="Live DeFi Projects" />
           <StatCard number="∞" label="Problems Left to Solve" />
         </div>
       </div>

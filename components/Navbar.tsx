@@ -43,11 +43,12 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <div className={`nav-overlay ${isOpen ? "visible" : ""}`}>
         <nav className="mobile-nav">
-          {navLinks.map((link) => (
+          {navLinks.map((link, idx) => (
             <a 
               key={link.label} 
               href={link.href} 
               className="mobile-link"
+              style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
               onClick={() => setIsOpen(false)}
             >
               {link.label}
@@ -172,20 +173,32 @@ export default function Navbar() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 1.5rem;
+          gap: 1.2rem;
         }
 
         .mobile-link {
           font-family: var(--font-bebas), "Bebas Neue", cursive;
-          font-size: 2.2rem;
+          font-size: 1.6rem;
           color: var(--white);
           text-decoration: none;
           transition: transform 0.3s ease, color 0.3s ease;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          opacity: 0;
+          transform: translateY(10px);
+          animation: mobileFadeIn 0.5s ease forwards;
+        }
+
+        @keyframes mobileFadeIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .mobile-link:hover {
           color: var(--orange);
-          transform: scale(1.1);
+          transform: translateX(10px);
         }
 
         @media (max-width: 900px) {

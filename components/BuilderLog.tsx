@@ -4,8 +4,8 @@ const entries = [
   {
     date: "Apr 2025",
     project: "Staxiq",
-    description: "Fixing wallet connection state bug — working on @stacks/connect v8 callback flow",
-    status: "In progress"
+    description: "Wallet connection logic finalized — optimized @stacks/connect v8 callback flow for production.",
+    status: "Shipped"
   },
   {
     date: "Mar 2025",
