@@ -56,6 +56,10 @@ export default function RootLayout({
       lang="en"
       className={`${bebasNeue.variable} ${dmMono.variable} ${syne.variable}`}
     >
+      <head>
+        {/* Critical CSS for Scroll Reveal to prevent FOUC */}
+        <style dangerouslySetInnerHTML={{ __html: ".reveal { opacity: 0; }" }} />
+      </head>
       <body>
         <CustomCursor />
         <ScrollReveal />

@@ -1,3 +1,5 @@
+"use client";
+
 import LagosVibe from "./LagosVibe";
 
 export default function Footer() {
