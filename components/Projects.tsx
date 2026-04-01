@@ -32,7 +32,7 @@ const projects = [
   {
     id: "ton-pilot",
     name: "TonPilot",
-    badge: "Automation · Bot",
+    badge: "HACKATHON - TON",
     badgeType: "cyan" as const,
     description:
       "An agentic wallet automation tool for the TON ecosystem. TonPilot streamlines on-chain interactions through an intelligent Telegram bot interface, focusing on security and ease of use.",
@@ -45,7 +45,7 @@ const projects = [
   {
     id: "mogul",
     name: "Mogul",
-    badge: "AI Dashboard",
+    badge: "HACKATHON - BAGS",
     badgeType: "orange" as const,
     description:
       "An AI-driven dashboard for token intelligence. Mogul provides deep insights into crypto markets, social sentiment, and whale movements to give traders a strategic edge.",

@@ -17,7 +17,7 @@ const allItems = [...tickerItems, ...tickerItems];
 
 export default function Ticker() {
   return (
-    <div className="ticker-wrapper">
+    <div className="ticker-wrapper reveal">
       <div className="ticker-track">
         {allItems.map((item, index) => (
           <span key={index} className="ticker-item">

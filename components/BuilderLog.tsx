@@ -2,19 +2,19 @@
 
 const entries = [
   {
-    date: "Apr 2025",
+    date: "Apr 2026",
     project: "Staxiq",
     description: "Wallet connection logic finalized — optimized @stacks/connect v8 callback flow for production.",
     status: "Shipped"
   },
   {
-    date: "Mar 2025",
+    date: "Mar 2026",
     project: "Mogul",
     description: "Submitted to Bags Hackathon. Privy fast-refresh bug patched and shipped.",
     status: "Shipped"
   },
   {
-    date: "Mar 2025",
+    date: "Mar 2026",
     project: "TonPilot",
     description: "Submitted to TON AI Agent Hackathon. Live at @TonAutoPilotBot on Telegram.",
     status: "Shipped"

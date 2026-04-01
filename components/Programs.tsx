@@ -30,6 +30,12 @@ const programs: Program[] = [
       "Intensive Ethereum developer residency run by the Rome-based Web3 community.",
   },
   {
+    name: "Farcastic Agentic Bootcamp",
+    status: "active",
+    description:
+      "World-class bootcamp on how to build mini-apps and autonomous agents that operate natively on Farcaster feed",
+  },
+  {
     name: "DeFi Bootcamp",
     status: "active",
     description:
@@ -124,7 +130,11 @@ function ProgramCard({ program }: { program: Program }) {
         .dot-active {
           background: #00ff00;
           box-shadow: 0 0 8px #00ff00;
-          animation: blink 1.2s step-end infinite;
+          animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.9); }
         }
         .dot-done {
           background: #ff5f1f;
@@ -145,8 +155,12 @@ function ProgramCard({ program }: { program: Program }) {
         .program-name {
           font-family: var(--font-syne), "Syne", sans-serif;
           font-weight: 700;
-          font-size: 1.05rem;
-          color: var(--white);
+          font-size: 1.15rem;
+          background: linear-gradient(90deg, var(--white), var(--cyan));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 0.2rem;
         }
         .program-desc {
           font-size: 0.82rem;

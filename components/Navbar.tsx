@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className={`navbar ${isOpen ? "is-open" : ""}`}>
+    <header className={`navbar reveal ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
         ADEJOKE
