@@ -152,53 +152,61 @@ export default function Navbar() {
 
         .nav-overlay {
           position: fixed;
-          inset: 0;
+          top: 5rem;
+          right: 2rem;
+          width: 220px;
           background: rgba(6, 6, 12, 0.98);
           z-index: 1000;
           display: flex;
-          align-items: center;
-          justify-content: center;
+          flex-direction: column;
+          padding: 2.2rem;
+          border-radius: 12px;
+          border: 1px solid var(--border);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.4s ease;
-          backdrop-filter: blur(10px);
+          transform: translateY(-10px) scale(0.95);
+          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         .nav-overlay.visible {
           opacity: 1;
           pointer-events: all;
+          transform: translateY(0) scale(1);
         }
 
         .mobile-nav {
           display: flex;
           flex-direction: column;
-          align-items: center;
-          gap: 1.2rem;
+          align-items: flex-end;
+          gap: 1.4rem;
         }
 
         .mobile-link {
-          font-family: var(--font-bebas), "Bebas Neue", cursive;
-          font-size: 1.6rem;
-          color: var(--white);
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.85rem;
+          color: var(--muted);
           text-decoration: none;
-          transition: transform 0.3s ease, color 0.3s ease;
-          letter-spacing: 0.12em;
+          transition: color 0.3s ease, transform 0.3s ease;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           opacity: 0;
-          transform: translateY(10px);
-          animation: mobileFadeIn 0.5s ease forwards;
+          transform: translateX(10px);
+          animation: mobileFadeIn 0.4s ease forwards;
         }
 
         @keyframes mobileFadeIn {
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(0);
           }
         }
 
         .mobile-link:hover {
-          color: var(--orange);
-          transform: translateX(10px);
+          color: var(--white);
+          transform: translateX(-5px);
         }
 
         @media (max-width: 900px) {
