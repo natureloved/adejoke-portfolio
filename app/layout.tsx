@@ -58,7 +58,7 @@ export default function RootLayout({
     >
       <head>
         {/* Critical CSS for Scroll Reveal to prevent FOUC */}
-        <style dangerouslySetInnerHTML={{ __html: ".reveal { opacity: 0 !important; }" }} />
+        <style dangerouslySetInnerHTML={{ __html: ".reveal { opacity: 0; }" }} />
       </head>
       <body>
         <CustomCursor />
