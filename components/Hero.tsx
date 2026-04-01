@@ -3,7 +3,7 @@
 import Typewriter from "./Typewriter";
 
 export default function Hero() {
-  const bioText = "Born curious. Built different. I speak Solidity, Cairo, and Clarity fluently — which basically means I argue with three different blockchains for a living. I build at the intersection of African ingenuity and decentralized finance, because the future of money shouldn't have gatekeepers.";
+  const bioText = "Somewhere between curiosity and obsession, I became a Full-Stack developer and Vibecoder. I build DeFi tools on Bitcoin L2, Ethereum, StarkNet, Ton and Solana not because someone told me to, but because I looked at the problems people face navigating Web3 and thought someone should fix this. Might as well be me.";
 
   return (
     <section id="hero" className="hero">
@@ -19,7 +19,7 @@ export default function Hero() {
       <div className="hero-content">
         {/* Eyebrow */}
         <p className="hero-eyebrow reveal">
-          ⬡ Full-Stack Developer · Multi-Chain Builder
+          ⬡ Full-Stack Developer · VIBE CODER
         </p>
 
         {/* Cinematic Kinetic Name */}

@@ -41,26 +41,28 @@ export default function About() {
   return (
     <section id="about" className="about">
       <div className="section-label reveal">01 — About</div>
-      <h2 className="section-title reveal">Who I Am</h2>
+      <h2 className="section-title reveal">About Me</h2>
 
       <div className="about-grid">
         {/* Left — Text */}
         <div className="about-text">
           <p className="about-para reveal">
-            I&apos;m <strong>Akinola Adejoke Elizabeth</strong> — a full-stack developer
-            building at the frontier of Bitcoin finance. I work across the entire stack,
-            from writing smart contracts in <strong>Clarity</strong>, <strong>Solidity</strong>,
-            and <strong>Cairo</strong> to crafting polished frontends with Next.js and React.
+            I&apos;m <strong>Akinola Adejoke</strong>. Curiosity took me down
+            the building hole and I never came back.
           </p>
           <p className="about-para reveal">
-            My flagship project, <strong>Staxiq</strong>, is a Bitcoin DeFi aggregator —
-            think Zerion, but for Bitcoin&apos;s L2 ecosystem. I&apos;m also deeply invested
-            in the African Web3 community, having completed and joined multiple fellowships
-            focused on bringing more African builders to the decentralized web.
+            I build full-stack DeFi products — smart contracts, frontends, and
+            everything in between. Bitcoin L2 is where I&apos;m most obsessed
+            right now, because the infrastructure is still being written and the
+            problems are still worth solving.
           </p>
           <p className="about-para reveal">
-            I believe the tools of financial freedom should be open, accessible, and
-            beautifully built. That&apos;s what I&apos;m here to create.
+            I believe the tools of financial freedom should be open, accessible,
+            and beautifully built.
+          </p>
+          <p className="about-para reveal">
+            Every line of code is proof that we&apos;re here, we&apos;re
+            shipping, and we&apos;re not waiting for permission.
           </p>
         </div>
 
