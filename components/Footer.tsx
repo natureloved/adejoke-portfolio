@@ -1,8 +1,9 @@
-"use client";
+import LagosVibe from "./LagosVibe";
 
 export default function Footer() {
   return (
     <footer className="footer">
+      <LagosVibe />
       <div className="footer-content">
         <p className="footer-text">
           Akinola Adejoke · Full-Stack Developer · <span className="highlight-orange">2026</span>

@@ -172,12 +172,12 @@ export default function Navbar() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 2rem;
+          gap: 1.5rem;
         }
 
         .mobile-link {
           font-family: var(--font-bebas), "Bebas Neue", cursive;
-          font-size: 3rem;
+          font-size: 2.2rem;
           color: var(--white);
           text-decoration: none;
           transition: transform 0.3s ease, color 0.3s ease;

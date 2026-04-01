@@ -7,6 +7,7 @@ import Programs from "@/components/Programs";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ChainBar from "@/components/ChainBar";
+import BuilderLog from "@/components/BuilderLog";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Projects />
       <Skills />
       <Programs />
+      <BuilderLog />
       <Contact />
       <Footer />
     </main>
