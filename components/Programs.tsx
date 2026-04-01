@@ -122,23 +122,23 @@ function ProgramCard({ program }: { program: Program }) {
           gap: 0.5rem;
         }
         .status-dot {
-          width: 6px;
-          height: 6px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
           flex-shrink: 0;
         }
         .dot-active {
           background: #00ff00;
-          box-shadow: 0 0 8px #00ff00;
-          animation: blink 1.5s ease-in-out infinite;
+          box-shadow: 0 0 12px #00ff00;
+          animation: blink-vivid 1s step-end infinite;
         }
-        @keyframes blink {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.9); }
+        @keyframes blink-vivid {
+          0%, 100% { opacity: 1; transform: scale(1.1); }
+          50% { opacity: 0; transform: scale(0.9); }
         }
         .dot-done {
           background: #ff5f1f;
-          box-shadow: 0 0 4px #ff5f1f;
+          box-shadow: 0 0 6px #ff5f1f;
         }
         .status-text {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
@@ -154,13 +154,16 @@ function ProgramCard({ program }: { program: Program }) {
         }
         .program-name {
           font-family: var(--font-syne), "Syne", sans-serif;
-          font-weight: 700;
-          font-size: 1.15rem;
-          background: linear-gradient(90deg, var(--white), var(--cyan));
+          font-weight: 800;
+          font-size: 1.25rem;
+          background: linear-gradient(90deg, var(--cyan) 0%, var(--white) 50%, var(--orange) 100%);
+          background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           margin-bottom: 0.2rem;
+          filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
+          animation: gradShift 5s ease infinite;
         }
         .program-desc {
           font-size: 0.82rem;
