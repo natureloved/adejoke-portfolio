@@ -24,7 +24,7 @@ export default function Skills() {
       </h2>
 
       <div className="skills-grid reveal">
-        {skillsData.map((skill, index) => (
+        {skillsData.map((skill) => (
           <div 
             key={skill.id} 
             className="skill-card"
