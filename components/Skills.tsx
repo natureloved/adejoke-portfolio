@@ -75,18 +75,18 @@ export default function Skills() {
 
         .skills-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 1.2rem;
           max-width: 1200px;
         }
 
         .skill-card {
           position: relative;
-          height: 140px;
+          height: 110px;
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 4px;
-          padding: 1.8rem;
+          padding: 1.2rem;
           overflow: hidden;
           transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
           display: flex;
