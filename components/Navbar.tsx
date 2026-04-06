@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className={`navbar reveal ${isOpen ? "is-open" : ""}`}>
+    <header className={`navbar ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
         ADEJOKE
@@ -32,16 +32,17 @@ export default function Navbar() {
 
       {/* Hamburger - Mobile Only */}
       <button 
-        className="nav-toggle" 
+        className={`nav-toggle ${isOpen ? "active" : ""}`} 
         onClick={() => setIsOpen(!isOpen)} 
         aria-label="Toggle menu"
       >
         <span className="bar"></span>
         <span className="bar"></span>
+        <span className="bar"></span>
       </button>
 
       {/* Mobile Menu Overlay */}
-      <div className={`nav-overlay ${isOpen ? "menu-active" : ""}`}>
+      <div className={`nav-overlay ${isOpen ? "is-open" : ""}`}>
         <nav className="mobile-nav">
           {navLinks.map((link, idx) => (
             <a 
@@ -144,37 +145,37 @@ export default function Navbar() {
 
         .bar {
           display: block;
-          width: 25px;
-          height: 1px;
+          width: 24px;
+          height: 2px;
           background: var(--white);
-          transition: 0.3s ease;
+          transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 2px;
         }
 
         .nav-overlay {
           position: fixed;
-          top: 5rem;
-          right: 2rem;
-          width: 220px;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
           background: rgba(6, 6, 12, 0.98);
-          z-index: 1000;
+          z-index: 999;
           display: flex;
           flex-direction: column;
-          padding: 2.2rem;
-          border-radius: 12px;
-          border: 1px solid var(--border);
+          justify-content: center;
+          align-items: center;
           opacity: 0;
           pointer-events: none;
-          transform: translateY(-10px) scale(0.95);
-          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+          visibility: hidden;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
         }
 
-        .nav-overlay.menu-active {
+        .nav-overlay.is-open {
           opacity: 1;
           pointer-events: all;
-          transform: translateY(0) scale(1);
+          visibility: visible;
         }
 
         .mobile-nav {
@@ -186,20 +187,19 @@ export default function Navbar() {
 
         .mobile-link {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.85rem;
+          font-size: 1.5rem;
           color: var(--muted);
           text-decoration: none;
-          transition: color 0.3s ease, transform 0.3s ease;
+          transition: all 0.3s ease;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           opacity: 0;
-          transform: translateX(10px);
-          transition: opacity 0.4s ease, transform 0.4s ease;
+          transform: translateY(20px);
         }
 
-        .menu-active .mobile-link {
+        .is-open .mobile-link {
           opacity: 1;
-          transform: translateX(0);
+          transform: translateY(0);
         }
 
         .mobile-link:hover {
@@ -220,11 +220,14 @@ export default function Navbar() {
             display: flex;
           }
 
-          .navbar.is-open .bar:nth-child(1) {
-            transform: translateY(3.5px) rotate(45deg);
+          .nav-toggle.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
           }
-          .navbar.is-open .bar:nth-child(2) {
-            transform: translateY(-3.5px) rotate(-45deg);
+          .nav-toggle.active .bar:nth-child(2) {
+            opacity: 0;
+          }
+          .nav-toggle.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
           }
         }
       `}</style>
