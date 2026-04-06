@@ -169,16 +169,16 @@ export default function Navbar() {
 
         .nav-overlay {
           position: fixed;
-          top: 4.5rem;
+          top: 3.8rem;
           right: 1.5rem;
-          width: 200px;
-          background: rgba(12, 12, 24, 0.98);
+          width: 210px;
+          background: rgba(10, 10, 20, 0.98);
           z-index: 1000;
           display: flex;
           flex-direction: column;
-          padding: 1.5rem;
+          padding: 1.8rem;
           border-radius: 12px;
-          border: 1px solid var(--border);
+          border: 1px solid rgba(255, 255, 255, 0.15);
           opacity: 0;
           pointer-events: none;
           visibility: hidden;
@@ -186,7 +186,7 @@ export default function Navbar() {
           transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
           backdrop-filter: blur(25px);
           -webkit-backdrop-filter: blur(25px);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .nav-overlay.is-open {
@@ -200,13 +200,13 @@ export default function Navbar() {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: 1.4rem;
+          gap: 1.2rem;
         }
 
         .mobile-link {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.9rem;
-          color: var(--muted);
+          font-size: 1rem;
+          color: var(--white);
           text-decoration: none;
           transition: all 0.25s ease;
           letter-spacing: 0.1em;
