@@ -169,24 +169,24 @@ export default function Navbar() {
 
         .nav-overlay {
           position: fixed;
-          top: 6rem;
-          right: 2rem;
-          width: 240px;
-          background: rgba(6, 6, 12, 0.98);
+          top: 4.5rem;
+          right: 1.5rem;
+          width: 200px;
+          background: rgba(12, 12, 24, 0.98);
           z-index: 1000;
           display: flex;
           flex-direction: column;
-          padding: 2rem;
-          border-radius: 16px;
+          padding: 1.5rem;
+          border-radius: 12px;
           border: 1px solid var(--border);
           opacity: 0;
           pointer-events: none;
           visibility: hidden;
-          transform: translateY(-20px) scale(0.95);
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+          transform: translateY(-10px) scale(0.98);
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+          backdrop-filter: blur(25px);
+          -webkit-backdrop-filter: blur(25px);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
 
         .nav-overlay.is-open {
@@ -205,11 +205,11 @@ export default function Navbar() {
 
         .mobile-link {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.82rem;
+          font-size: 0.9rem;
           color: var(--muted);
           text-decoration: none;
-          transition: all 0.3s ease;
-          letter-spacing: 0.15em;
+          transition: all 0.25s ease;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           opacity: 0;
           transform: translateX(10px);
