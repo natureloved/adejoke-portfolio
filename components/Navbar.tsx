@@ -41,14 +41,14 @@ export default function Navbar() {
       </button>
 
       {/* Mobile Menu Overlay */}
-      <div className={`nav-overlay ${isOpen ? "visible" : ""}`}>
+      <div className={`nav-overlay ${isOpen ? "menu-active" : ""}`}>
         <nav className="mobile-nav">
           {navLinks.map((link, idx) => (
             <a 
               key={link.label} 
               href={link.href} 
               className="mobile-link"
-              style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
+              style={{ transitionDelay: `${0.1 + idx * 0.1}s` }}
               onClick={() => setIsOpen(false)}
             >
               {link.label}
@@ -171,7 +171,7 @@ export default function Navbar() {
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .nav-overlay.visible {
+        .nav-overlay.menu-active {
           opacity: 1;
           pointer-events: all;
           transform: translateY(0) scale(1);
@@ -194,14 +194,12 @@ export default function Navbar() {
           text-transform: uppercase;
           opacity: 0;
           transform: translateX(10px);
-          animation: mobileFadeIn 0.4s ease forwards;
+          transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
-        @keyframes mobileFadeIn {
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+        .menu-active .mobile-link {
+          opacity: 1;
+          transform: translateX(0);
         }
 
         .mobile-link:hover {
