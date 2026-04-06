@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className={`navbar ${isOpen ? "is-open" : ""}`}>
+    <header className={`navbar reveal ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
         ADEJOKE
@@ -154,28 +154,31 @@ export default function Navbar() {
 
         .nav-overlay {
           position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100vh;
+          top: 6rem;
+          right: 2rem;
+          width: 240px;
           background: rgba(6, 6, 12, 0.98);
-          z-index: 999;
+          z-index: 1000;
           display: flex;
           flex-direction: column;
-          justify-content: center;
-          align-items: center;
+          padding: 2rem;
+          border-radius: 16px;
+          border: 1px solid var(--border);
           opacity: 0;
           pointer-events: none;
           visibility: hidden;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: translateY(-20px) scale(0.95);
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
         .nav-overlay.is-open {
           opacity: 1;
           pointer-events: all;
           visibility: visible;
+          transform: translateY(0) scale(1);
         }
 
         .mobile-nav {
@@ -187,19 +190,19 @@ export default function Navbar() {
 
         .mobile-link {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 1.5rem;
+          font-size: 0.82rem;
           color: var(--muted);
           text-decoration: none;
           transition: all 0.3s ease;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateX(10px);
         }
 
         .is-open .mobile-link {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateX(0);
         }
 
         .mobile-link:hover {
