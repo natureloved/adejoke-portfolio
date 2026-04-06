@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const navLinks = [
@@ -13,9 +13,14 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
-    <header className={`navbar reveal ${isOpen ? "is-open" : ""}`}>
+    <header className={`navbar ${isMounted ? "is-visible" : "is-hidden"} ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
         ADEJOKE
@@ -141,6 +146,16 @@ export default function Navbar() {
           cursor: pointer;
           z-index: 1001;
           padding: 10px;
+        }
+
+        .navbar.is-hidden {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .navbar.is-visible {
+          opacity: 1;
+          pointer-events: all;
         }
 
         .bar {
