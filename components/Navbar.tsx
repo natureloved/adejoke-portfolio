@@ -13,14 +13,9 @@ const navLinks = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
-    <header className={`navbar ${isMounted ? "is-visible" : "is-hidden"} ${isOpen ? "is-open" : ""}`}>
+    <header className={`navbar ${isOpen ? "is-open" : ""}`}>
       {/* Logo */}
       <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
         ADEJOKE
@@ -136,7 +131,6 @@ export default function Navbar() {
           width: 100%;
         }
 
-        /* Mobile Styles */
         .nav-toggle {
           display: none;
           flex-direction: column;
@@ -144,18 +138,8 @@ export default function Navbar() {
           background: none;
           border: none;
           cursor: pointer;
-          z-index: 1001;
+          z-index: 2001; /* Must be above overlay */
           padding: 10px;
-        }
-
-        .navbar.is-hidden {
-          opacity: 0;
-          pointer-events: none;
-        }
-
-        .navbar.is-visible {
-          opacity: 1;
-          pointer-events: all;
         }
 
         .bar {
@@ -169,19 +153,18 @@ export default function Navbar() {
 
         .nav-overlay {
           position: fixed;
-          top: 3.8rem;
+          top: 4.5rem;
           right: 1.5rem;
-          width: 210px;
-          background: rgba(10, 10, 20, 0.98);
-          z-index: 1000;
+          width: 220px;
+          background: rgba(12, 12, 24, 0.98);
+          z-index: 2000;
           display: flex;
           flex-direction: column;
-          padding: 1.8rem;
+          padding: 1.5rem;
           border-radius: 12px;
           border: 1px solid rgba(255, 255, 255, 0.15);
           opacity: 0;
           pointer-events: none;
-          visibility: hidden;
           transform: translateY(-10px) scale(0.98);
           transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
           backdrop-filter: blur(25px);
@@ -192,7 +175,6 @@ export default function Navbar() {
         .nav-overlay.is-open {
           opacity: 1;
           pointer-events: all;
-          visibility: visible;
           transform: translateY(0) scale(1);
         }
 
