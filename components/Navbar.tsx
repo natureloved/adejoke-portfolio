@@ -134,7 +134,7 @@ export default function Navbar() {
         .nav-toggle {
           display: none;
           flex-direction: column;
-          gap: 6px;
+          gap: 5px;
           background: none;
           border: none;
           cursor: pointer;
@@ -144,7 +144,7 @@ export default function Navbar() {
 
         .bar {
           display: block;
-          width: 24px;
+          width: 20px;
           height: 2px;
           background: var(--white);
           transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -221,13 +221,13 @@ export default function Navbar() {
           }
 
           .nav-toggle.active .bar:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
+            transform: translateY(7px) rotate(45deg);
           }
           .nav-toggle.active .bar:nth-child(2) {
             opacity: 0;
           }
           .nav-toggle.active .bar:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
+            transform: translateY(-7px) rotate(-45deg);
           }
         }
       `}</style>
