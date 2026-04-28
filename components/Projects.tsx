@@ -6,12 +6,12 @@ const projects = [
   {
     id: "hashpilot",
     name: "HashPilot",
-    badge: "Strategy Suite",
+    badge: "HACKATHON - HASHATHON",
     badgeType: "purple" as const,
     description:
-      "An AI-powered strategy suite and chat interface offering deep analytical insights, Archetype profiling, and strategic market intelligence.",
+      "A production-grade, retro-futuristic \"Mining Intelligence Terminal\" built exclusively for the Club HashCash ecosystem on Avalanche. It combines real-time blockchain data with advanced AI modeling to provide miners with tactical decision support.",
     tags: ["AI", "Next.js", "Anthropic", "Strategy"],
-    href: "#",
+    href: "https://hashpilot-taupe.vercel.app/",
     linkColor: "var(--purple)",
     accentGradient: "linear-gradient(90deg, var(--purple), var(--cyan))",
     hoverBorder: "var(--purple)",
@@ -19,12 +19,12 @@ const projects = [
   {
     id: "stashflow",
     name: "StashFlow",
-    badge: "DeFi Platform",
+    badge: "HACKATHON - DEFI MULLET",
     badgeType: "cyan" as const,
     description:
-      "A comprehensive DeFi platform featuring LI.FI integration for seamless cross-chain vault deposits, withdrawals, and advanced portfolio monitoring.",
+      "Goal-based DeFi savings powered by LI.FI Earn. A goal based defi savings platform powered by LI.FI EARN that allows users to easily manage their savings goals, deposit into yield-generating vaults, and monitor their portfolio seamlessly.",
     tags: ["DeFi", "LI.FI", "Next.js", "Web3"],
-    href: "#",
+    href: "https://stashflow-two.vercel.app/",
     linkColor: "var(--cyan)",
     accentGradient: "linear-gradient(90deg, var(--cyan), var(--orange))",
     hoverBorder: "var(--cyan)",
@@ -159,7 +159,7 @@ export default function Projects() {
         }
         .projects-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
           max-width: 1100px;
         }
