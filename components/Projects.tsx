@@ -4,6 +4,32 @@ import TiltCard from "./TiltCard";
 
 const projects = [
   {
+    id: "hashpilot",
+    name: "HashPilot",
+    badge: "Strategy Suite",
+    badgeType: "purple" as const,
+    description:
+      "An AI-powered strategy suite and chat interface offering deep analytical insights, Archetype profiling, and strategic market intelligence.",
+    tags: ["AI", "Next.js", "Anthropic", "Strategy"],
+    href: "#",
+    linkColor: "var(--purple)",
+    accentGradient: "linear-gradient(90deg, var(--purple), var(--cyan))",
+    hoverBorder: "var(--purple)",
+  },
+  {
+    id: "stashflow",
+    name: "StashFlow",
+    badge: "DeFi Platform",
+    badgeType: "cyan" as const,
+    description:
+      "A comprehensive DeFi platform featuring LI.FI integration for seamless cross-chain vault deposits, withdrawals, and advanced portfolio monitoring.",
+    tags: ["DeFi", "LI.FI", "Next.js", "Web3"],
+    href: "#",
+    linkColor: "var(--cyan)",
+    accentGradient: "linear-gradient(90deg, var(--cyan), var(--orange))",
+    hoverBorder: "var(--cyan)",
+  },
+  {
     id: "staxiq",
     name: "Staxiq",
     badge: "Flagship Project",
