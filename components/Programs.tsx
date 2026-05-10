@@ -23,15 +23,20 @@ const programs: Program[] = [
       "Africa's community for women building in the Bitcoin and Web3 ecosystem.",
   },
   {
-    name: "Urbe Campus",
+    name: "Claude Certified Architect",
     status: "active",
+    description: "Official Anthropic certification prep course. Master Claude AI, build production systems, and get certified.",
+  },
+  {
+    name: "Urbe Campus",
+    status: "completed",
     href: "https://x.com/urbeeth",
     description:
       "Intensive Ethereum developer residency run by the Rome-based Web3 community.",
   },
   {
     name: "Farcastic Agentic Bootcamp",
-    status: "active",
+    status: "completed",
     description:
       "World-class bootcamp on how to build mini-apps and autonomous agents that operate natively on Farcaster feed",
   },

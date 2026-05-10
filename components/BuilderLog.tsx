@@ -2,15 +2,15 @@
 
 const entries = [
   {
-    date: "Apr 2026",
-    project: "Staxiq",
-    description: "Wallet connection logic finalized — optimized @stacks/connect v8 callback flow for production.",
+    date: "May 2026",
+    project: "Voz",
+    description: "Shipped voice-first cross-chain remittance in 48 hours for Dev3pack. Integrated Claude for intent parsing and LI.FI for EVM-to-Solana settlement.",
     status: "Shipped"
   },
   {
-    date: "Mar 2026",
-    project: "Mogul",
-    description: "Submitted to Bags Hackathon. Privy fast-refresh bug patched and shipped.",
+    date: "Apr 2026",
+    project: "Staxiq",
+    description: "Wallet connection logic finalized — optimized @stacks/connect v8 callback flow for production.",
     status: "Shipped"
   },
   {

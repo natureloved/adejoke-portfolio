@@ -4,6 +4,19 @@ import TiltCard from "./TiltCard";
 
 const projects = [
   {
+    id: "voz",
+    name: "Voz",
+    badge: "HACKATHON - DEV3PACK",
+    badgeType: "orange" as const,
+    description:
+      "A voice-first cross-border remittance app. Senders speak their payment intent in natural language, which is parsed by Claude and settled instantly via LI.FI across chains directly into the recipient's Solana wallet.",
+    tags: ["Voice AI", "LI.FI", "Claude", "Solana", "Next.js"],
+    href: "https://voz-three.vercel.app/",
+    linkColor: "var(--orange)",
+    accentGradient: "linear-gradient(90deg, var(--orange), var(--purple))",
+    hoverBorder: "var(--orange)",
+  },
+  {
     id: "hashpilot",
     name: "HashPilot",
     badge: "HACKATHON - HASHATHON",
@@ -67,19 +80,6 @@ const projects = [
     linkColor: "var(--cyan)",
     accentGradient: "linear-gradient(90deg, var(--cyan), var(--orange))",
     hoverBorder: "var(--cyan)",
-  },
-  {
-    id: "mogul",
-    name: "Mogul",
-    badge: "HACKATHON - BAGS",
-    badgeType: "orange" as const,
-    description:
-      "An AI-driven dashboard for token intelligence. Mogul provides deep insights into crypto markets, social sentiment, and whale movements to give traders a strategic edge.",
-    tags: ["Solana", "AI", "Next.js", "Analytics"],
-    href: "https://mogul-sable.vercel.app/",
-    linkColor: "var(--orange)",
-    accentGradient: "linear-gradient(90deg, var(--orange), var(--purple))",
-    hoverBorder: "var(--orange)",
   },
 ];
 
