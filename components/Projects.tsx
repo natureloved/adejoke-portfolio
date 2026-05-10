@@ -124,7 +124,7 @@ function VozThumbnail() {
           ))}
         </div>
         <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(240,237,230,0.4)', letterSpacing: '0.04em' }}>
-          "send $50 usdc to sarah via li.fi"
+          &ldquo;send $50 usdc to sarah via li.fi&rdquo;
         </div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#27c93f' }} />

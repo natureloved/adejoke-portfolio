@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 // Sign up at formspree.io → create a form → paste your form ID here
-const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_URL = "https://formspree.io/f/xojrppdv";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
