@@ -69,7 +69,7 @@ export default function About() {
         {/* Right — Stats */}
         <div className="stats-grid">
           <StatCard number="3" label="Blockchain Languages" />
-          <StatCard number="8" label="Programs & Fellowships" />
+          <StatCard number="9" label="Programs & Fellowships" />
           <StatCard number="6" label="Live DeFi Projects" />
           <StatCard number="∞" label="Problems Left to Solve" />
         </div>

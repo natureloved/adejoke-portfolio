@@ -9,6 +9,11 @@ type Program = {
 
 const programs: Program[] = [
   {
+    name: "Bitcoin Diploma Course",
+    status: "active",
+    description: "Comprehensive deep-dive into the Bitcoin protocol, studying architecture, consensus mechanics, and the global economic landscape.",
+  },
+  {
     name: "Dev3Pack",
     status: "active",
     href: "https://x.com/dev3pack",
