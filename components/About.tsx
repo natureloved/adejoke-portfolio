@@ -172,7 +172,7 @@ export default function About() {
               the building hole and I never came back.
             </p>
             <p className="about-para reveal">
-              I build full-stack DeFi products — smart contracts, frontends, and
+              I build full-stack DeFi products, smart contracts, frontends, and
               everything in between. Bitcoin L2 is where I&apos;m most obsessed
               right now, because the infrastructure is still being written and the
               problems are still worth solving.

@@ -309,40 +309,36 @@ export default function Projects() {
                 } as React.CSSProperties
               }
             >
-              {/* Top accent bar (sits above thumbnail) */}
+              {/* Top accent bar */}
               <div className="accent-bar" />
 
               {/* Thumbnail mockup */}
               <ProjectThumbnail id={project.id} />
 
-              {/* Badge */}
-              <span className={`badge badge-${project.badgeType}`}>{project.badge}</span>
+              {/* All padded content in one wrapper */}
+              <div className="card-body">
+                <span className={`badge badge-${project.badgeType}`}>{project.badge}</span>
+                <h3 className="project-name">{project.name}</h3>
+                <p className="project-desc">{project.description}</p>
 
-              {/* Name */}
-              <h3 className="project-name">{project.name}</h3>
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tag-pill">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
 
-              {/* Description */}
-              <p className="project-desc">{project.description}</p>
-
-              {/* Tags */}
-              <div className="project-tags">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="tag-pill">
-                    {tag}
-                  </span>
-                ))}
+                <a
+                  href={project.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-link"
+                  style={{ color: project.linkColor }}
+                >
+                  View Website <span className="link-arrow">→</span>
+                </a>
               </div>
-
-              {/* Link */}
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-link"
-                style={{ color: project.linkColor }}
-              >
-                View Website <span className="link-arrow">→</span>
-              </a>
             </div>
           </TiltCard>
         ))}
@@ -372,7 +368,7 @@ export default function Projects() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
-          max-width: 1100px;
+          max-width: 1400px;
         }
         .project-card {
           background: var(--surface);
@@ -383,13 +379,11 @@ export default function Projects() {
           transition: border-color 0.3s ease;
           display: flex;
           flex-direction: column;
-          gap: 1.2rem;
           height: 100%;
         }
         .project-card:hover {
           border-color: var(--hover-border);
         }
-        /* Thumbnail lives flush at the top, padding starts below it */
         :global(.thumbnail-wrap) {
           height: 168px;
           background: #04040a;
@@ -397,13 +391,13 @@ export default function Projects() {
           flex-shrink: 0;
           border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        /* Card content after thumbnail gets padding */
-        .project-card > :not(.accent-bar):not(:global(.thumbnail-wrap)) {
-          padding-left: 2rem;
-          padding-right: 2rem;
+        .card-body {
+          padding: 1.6rem 2rem 2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+          flex: 1;
         }
-        .project-card > .badge { padding-top: 1.5rem; }
-        .project-card > .project-link { padding-bottom: 2rem; }
         .accent-bar {
           position: absolute;
           top: 0;
