@@ -1,21 +1,37 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 const skillsData = [
-  { id: "Clarity", category: "smart-contract", level: "Expert", color: "var(--orange)" },
-  { id: "Solidity", category: "smart-contract", level: "Expert", color: "var(--orange)" },
-  { id: "Cairo", category: "smart-contract", level: "Advanced", color: "var(--orange)" },
-  { id: "Next.js", category: "frontend", level: "Expert", color: "var(--purple)" },
-  { id: "React", category: "frontend", level: "Expert", color: "var(--purple)" },
-  { id: "TypeScript", category: "frontend", level: "Advanced", color: "var(--purple)" },
-  { id: "Stacks", category: "blockchain", level: "Expert", color: "var(--cyan)" },
-  { id: "StarkNet", category: "blockchain", level: "Advanced", color: "var(--cyan)" },
-  { id: "EVM", category: "blockchain", level: "Expert", color: "var(--cyan)" },
-  { id: "Tailwind", category: "frontend", level: "Expert", color: "var(--purple)" },
-  { id: "Node.js", category: "tools", level: "Advanced", color: "var(--cyan)" },
-  { id: "Git/Github", category: "tools", level: "Expert", color: "var(--cyan)" },
+  { id: "Clarity",    category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92 },
+  { id: "Solidity",   category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92 },
+  { id: "Cairo",      category: "smart-contract", level: "Advanced", color: "var(--orange)", pct: 75 },
+  { id: "Next.js",    category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95 },
+  { id: "React",      category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95 },
+  { id: "TypeScript", category: "frontend",       level: "Advanced", color: "var(--purple)", pct: 78 },
+  { id: "Stacks",     category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 90 },
+  { id: "StarkNet",   category: "blockchain",     level: "Advanced", color: "var(--cyan)",   pct: 72 },
+  { id: "EVM",        category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 88 },
+  { id: "Tailwind",   category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 93 },
+  { id: "Node.js",    category: "tools",          level: "Advanced", color: "var(--cyan)",   pct: 76 },
+  { id: "Git/Github", category: "tools",          level: "Expert",   color: "var(--cyan)",   pct: 95 },
 ];
 
 export default function Skills() {
+  const [animated, setAnimated] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setAnimated(true); },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="skills" className="skills-section">
       <div className="section-label reveal">03 — Skills</div>
@@ -23,16 +39,16 @@ export default function Skills() {
         My <span className="gradient-text">Stack</span>
       </h2>
 
-      <div className="skills-grid reveal">
-        {skillsData.map((skill) => (
-          <div 
-            key={skill.id} 
+      <div className="skills-grid reveal" ref={gridRef}>
+        {skillsData.map((skill, idx) => (
+          <div
+            key={skill.id}
             className="skill-card"
             style={{ "--accent": skill.color } as React.CSSProperties}
           >
             <div className="card-glass" />
             <div className="card-scanline" />
-            
+
             <div className="skill-content">
               <div className="skill-id">{skill.id}</div>
               <div className="skill-meta">
@@ -41,7 +57,31 @@ export default function Skills() {
               </div>
             </div>
 
-            {/* Corner Deco */}
+            {/* Animated proficiency bar */}
+            <div className="bar-track">
+              <div
+                className="bar-fill"
+                style={{
+                  width: animated ? `${skill.pct}%` : "0%",
+                  background: skill.color,
+                  transition: `width 1.1s cubic-bezier(0.22, 1, 0.36, 1) ${idx * 55}ms`,
+                }}
+              />
+            </div>
+
+            {/* Percentage label — appears with the bar */}
+            <div
+              className="bar-pct"
+              style={{
+                opacity: animated ? 1 : 0,
+                transition: `opacity 0.4s ease ${idx * 55 + 600}ms`,
+                color: skill.color,
+              }}
+            >
+              {skill.pct}%
+            </div>
+
+            {/* Corner decorations */}
             <div className="corner corner-tl" />
             <div className="corner corner-br" />
           </div>
@@ -82,11 +122,10 @@ export default function Skills() {
 
         .skill-card {
           position: relative;
-          height: 110px;
           background: rgba(255, 255, 255, 0.02);
           border: 1px solid rgba(255, 255, 255, 0.05);
           border-radius: 4px;
-          padding: 1.2rem;
+          padding: 1.2rem 1.2rem 2rem;
           overflow: hidden;
           transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
           display: flex;
@@ -97,11 +136,7 @@ export default function Skills() {
         .card-glass {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.05) 0%,
-            transparent 100%
-          );
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
           opacity: 0;
           transition: opacity 0.4s ease;
         }
@@ -112,12 +147,7 @@ export default function Skills() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(
-            to bottom,
-            transparent,
-            rgba(255, 255, 255, 0.05),
-            transparent
-          );
+          background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05), transparent);
           transition: transform 0.6s ease;
           pointer-events: none;
         }
@@ -130,9 +160,7 @@ export default function Skills() {
         }
 
         .skill-card:hover .card-glass { opacity: 1; }
-        .skill-card:hover .card-scanline {
-          transform: translateY(200%);
-        }
+        .skill-card:hover .card-scanline { transform: translateY(200%); }
 
         .skill-content {
           position: relative;
@@ -148,14 +176,13 @@ export default function Skills() {
           transition: color 0.3s ease;
         }
 
-        .skill-card:hover .skill-id {
-          color: var(--accent);
-        }
+        .skill-card:hover .skill-id { color: var(--accent); }
 
         .skill-meta {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          margin-bottom: 0.9rem;
         }
 
         .skill-cat {
@@ -176,7 +203,32 @@ export default function Skills() {
           opacity: 0.8;
         }
 
-        /* Decoration Corners */
+        /* ── Proficiency bar ── */
+        .bar-track {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .bar-fill {
+          height: 100%;
+          border-radius: 1px;
+        }
+
+        .bar-pct {
+          position: absolute;
+          bottom: 6px;
+          right: 10px;
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.58rem;
+          letter-spacing: 0.04em;
+          z-index: 2;
+        }
+
+        /* Corner decorations */
         .corner {
           position: absolute;
           width: 8px;
@@ -187,17 +239,11 @@ export default function Skills() {
         }
         .corner-tl { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
         .corner-br { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
-
         .skill-card:hover .corner { opacity: 1; }
 
         @media (max-width: 900px) {
-          .skills-section {
-            padding: 6rem 3rem;
-          }
-          .skills-grid {
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1rem;
-          }
+          .skills-section { padding: 6rem 3rem; }
+          .skills-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
           .skill-id { font-size: 1.8rem; }
         }
 

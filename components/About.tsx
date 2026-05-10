@@ -37,6 +37,124 @@ function StatCard({ number, label }: { number: string; label: string }) {
   );
 }
 
+function Avatar() {
+  return (
+    <div className="avatar-card reveal">
+      {/* Gradient-bordered circle */}
+      <div className="avatar-ring">
+        <div className="avatar-inner">
+          <span className="avatar-initials">AE</span>
+          {/* Decorative hex symbol */}
+          <span className="avatar-hex">⬡</span>
+        </div>
+      </div>
+
+      {/* Name + role */}
+      <div className="avatar-meta">
+        <div className="avatar-name">Akinola Adejoke</div>
+        <div className="avatar-role">Full Stack × Multi-Chain</div>
+        <div className="avatar-loc">
+          <span className="loc-dot" />
+          Lagos, Nigeria
+        </div>
+      </div>
+
+      <style jsx>{`
+        .avatar-card {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+        }
+
+        .avatar-ring {
+          width: 90px;
+          height: 90px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--orange), var(--purple), var(--cyan));
+          padding: 2.5px;
+          flex-shrink: 0;
+        }
+
+        .avatar-inner {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          background: var(--surface);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .avatar-initials {
+          font-family: var(--font-bebas), "Bebas Neue", cursive;
+          font-size: 2.2rem;
+          color: var(--white);
+          line-height: 1;
+          letter-spacing: 0.05em;
+          position: relative;
+          z-index: 1;
+        }
+
+        .avatar-hex {
+          position: absolute;
+          bottom: -6px;
+          right: -2px;
+          font-size: 2.8rem;
+          color: var(--orange);
+          opacity: 0.12;
+          line-height: 1;
+        }
+
+        .avatar-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .avatar-name {
+          font-family: var(--font-syne), "Syne", sans-serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: var(--white);
+          line-height: 1;
+        }
+
+        .avatar-role {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.67rem;
+          color: var(--orange);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .avatar-loc {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.63rem;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+        }
+
+        .loc-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--cyan);
+          flex-shrink: 0;
+          box-shadow: 0 0 5px var(--cyan);
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function About() {
   return (
     <section id="about" className="about">
@@ -44,26 +162,30 @@ export default function About() {
       <h2 className="section-title reveal">Who I Am</h2>
 
       <div className="about-grid">
-        {/* Left — Text */}
-        <div className="about-text">
-          <p className="about-para reveal">
-            I&apos;m <strong>Akinola Adejoke</strong>. Curiosity took me down
-            the building hole and I never came back.
-          </p>
-          <p className="about-para reveal">
-            I build full-stack DeFi products — smart contracts, frontends, and
-            everything in between. Bitcoin L2 is where I&apos;m most obsessed
-            right now, because the infrastructure is still being written and the
-            problems are still worth solving.
-          </p>
-          <p className="about-para reveal">
-            I believe the tools of financial freedom should be open, accessible,
-            and beautifully built.
-          </p>
-          <p className="about-para reveal">
-            Every line of code is proof that we&apos;re here, we&apos;re
-            shipping, and we&apos;re not waiting for permission.
-          </p>
+        {/* Left — Avatar + Text */}
+        <div className="about-left">
+          <Avatar />
+
+          <div className="about-text">
+            <p className="about-para reveal">
+              I&apos;m <strong>Akinola Adejoke</strong>. Curiosity took me down
+              the building hole and I never came back.
+            </p>
+            <p className="about-para reveal">
+              I build full-stack DeFi products — smart contracts, frontends, and
+              everything in between. Bitcoin L2 is where I&apos;m most obsessed
+              right now, because the infrastructure is still being written and the
+              problems are still worth solving.
+            </p>
+            <p className="about-para reveal">
+              I believe the tools of financial freedom should be open, accessible,
+              and beautifully built.
+            </p>
+            <p className="about-para reveal">
+              Every line of code is proof that we&apos;re here, we&apos;re
+              shipping, and we&apos;re not waiting for permission.
+            </p>
+          </div>
         </div>
 
         {/* Right — Stats */}
@@ -105,6 +227,12 @@ export default function About() {
           gap: 5rem;
           max-width: 1100px;
           align-items: start;
+        }
+
+        .about-left {
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
         }
 
         .about-text {

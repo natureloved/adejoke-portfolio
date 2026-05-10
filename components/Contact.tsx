@@ -1,5 +1,12 @@
 "use client";
 
+import { useState } from "react";
+
+// Sign up at formspree.io → create a form → paste your form ID here
+const FORMSPREE_URL = "https://formspree.io/f/YOUR_FORM_ID";
+
+type FormStatus = "idle" | "loading" | "success" | "error";
+
 const socials = [
   {
     name: "Twitter / X",
@@ -40,22 +47,134 @@ const socials = [
 ];
 
 export default function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<FormStatus>("idle");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
     <section id="contact" className="contact">
-      <div className="contact-container reveal">
+      <div className="contact-container">
         <div className="section-label reveal">05 — Contact</div>
-        
+
         <h2 className="section-title reveal creative-font">
           Let&apos;s Build <br />
           Something
         </h2>
-        
+
         <p className="subtext reveal">
-          Open to collaborations, grants, and interesting problems. If you&apos;re
-          building in Web3 let&apos;s talk.
+          Open to collaborations, grants, and interesting problems. If
+          you&apos;re building in Web3, let&apos;s talk.
         </p>
 
-        {/* Unified Social Link Row */}
+        {/* Contact Form */}
+        <div className="form-wrap reveal">
+          {status === "success" ? (
+            <div className="success-box">
+              <div className="success-icon">✓</div>
+              <p className="success-text">Message received. I&apos;ll get back to you soon.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="contact-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="name" className="form-label">Name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                    required
+                    disabled={status === "loading"}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    required
+                    disabled={status === "loading"}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="message" className="form-label">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="Tell me about what you're building..."
+                  rows={5}
+                  required
+                  disabled={status === "loading"}
+                  className="form-input form-textarea"
+                />
+              </div>
+
+              {status === "error" && (
+                <p className="error-text">
+                  Something went wrong. Try emailing me at akinolaa769@gmail.com
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className="submit-btn"
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? (
+                  <>
+                    <span className="spinner" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message <span className="btn-arrow">→</span>
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div className="divider reveal">
+          <span className="divider-line" />
+          <span className="divider-label">or reach me directly</span>
+          <span className="divider-line" />
+        </div>
+
+        {/* Social Links */}
         <div className="social-row reveal">
           {socials.map((social) => (
             <a
@@ -82,7 +201,7 @@ export default function Contact() {
         }
 
         .contact-container {
-          max-width: 700px;
+          max-width: 680px;
           width: 100%;
           margin: 0 auto;
         }
@@ -111,11 +230,189 @@ export default function Contact() {
           font-size: 1rem;
           color: var(--muted);
           line-height: 1.75;
-          margin-bottom: 4rem;
-          max-width: 500px;
+          margin-bottom: 3.5rem;
+          max-width: 460px;
           margin-inline: auto;
         }
 
+        /* ─── Form ───────────────────────────────────── */
+        .form-wrap {
+          text-align: left;
+          margin-bottom: 3rem;
+        }
+
+        .contact-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.45rem;
+        }
+
+        .form-label {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: var(--muted);
+        }
+
+        :global(.form-input) {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border);
+          border-radius: 4px;
+          padding: 0.8rem 1rem;
+          color: var(--white);
+          font-family: var(--font-syne), "Syne", sans-serif;
+          font-size: 0.92rem;
+          outline: none;
+          transition: border-color 0.25s ease, background 0.25s ease;
+          width: 100%;
+        }
+
+        :global(.form-input:focus) {
+          border-color: var(--orange);
+          background: rgba(255, 95, 31, 0.04);
+        }
+
+        :global(.form-input::placeholder) {
+          color: rgba(107, 107, 128, 0.6);
+        }
+
+        :global(.form-input:disabled) {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        :global(.form-textarea) {
+          resize: vertical;
+          min-height: 130px;
+        }
+
+        .error-text {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.72rem;
+          color: #ff5564;
+          letter-spacing: 0.04em;
+        }
+
+        .submit-btn {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          background: var(--orange);
+          color: #06060c;
+          border: none;
+          border-radius: 4px;
+          padding: 0.95rem 2rem;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          width: 100%;
+          font-weight: 600;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+          opacity: 0.88;
+          transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .btn-arrow {
+          transition: transform 0.2s ease;
+        }
+
+        .submit-btn:hover .btn-arrow {
+          transform: translateX(3px);
+        }
+
+        .spinner {
+          width: 12px;
+          height: 12px;
+          border: 2px solid rgba(6, 6, 12, 0.3);
+          border-top-color: #06060c;
+          border-radius: 50%;
+          animation: spin 0.7s linear infinite;
+          flex-shrink: 0;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+
+        /* ─── Success ─────────────────────────────────── */
+        .success-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          padding: 3rem 2rem;
+          border: 1px solid rgba(39, 201, 63, 0.25);
+          border-radius: 6px;
+          background: rgba(39, 201, 63, 0.05);
+        }
+
+        .success-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          background: rgba(39, 201, 63, 0.15);
+          border: 1px solid rgba(39, 201, 63, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.4rem;
+          color: #27c93f;
+        }
+
+        .success-text {
+          font-size: 0.95rem;
+          color: var(--muted);
+          line-height: 1.6;
+        }
+
+        /* ─── Divider ─────────────────────────────────── */
+        .divider {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 2.5rem;
+        }
+
+        .divider-line {
+          flex: 1;
+          height: 1px;
+          background: var(--border);
+        }
+
+        .divider-label {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: var(--muted);
+          white-space: nowrap;
+        }
+
+        /* ─── Social row ──────────────────────────────── */
         .social-row {
           display: flex;
           justify-content: center;
@@ -149,10 +446,8 @@ export default function Contact() {
         }
 
         @media (max-width: 600px) {
-          .social-btn {
-            width: 100%;
-            justify-content: center;
-          }
+          .form-row { grid-template-columns: 1fr; }
+          .social-btn { width: 100%; justify-content: center; }
         }
       `}</style>
     </section>

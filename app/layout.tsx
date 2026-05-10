@@ -27,6 +27,8 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
+  // Update metadataBase with your deployed URL before going live
+  metadataBase: new URL('https://adejoke-portfolio.vercel.app'),
   title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
   description:
     "Portfolio of Akinola Adejoke Elizabeth — a Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity. Building at the intersection of African ingenuity and decentralized finance.",
@@ -44,6 +46,21 @@ export const metadata: Metadata = {
     "Web3",
   ],
   authors: [{ name: "Akinola Adejoke Elizabeth" }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Adejoke Elizabeth — Portfolio',
+    title: 'Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer',
+    description:
+      'Full Stack Developer and Multi-Chain Builder. Solidity · Cairo · Clarity · Next.js · DeFi.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer',
+    description:
+      'Full Stack Developer & Multi-Chain Builder. Solidity, Cairo, Clarity, Next.js.',
+    creator: '@adejoke_btc',
+  },
 };
 
 export default function RootLayout({
