@@ -1,56 +1,107 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-
-const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Programs", href: "#programs" },
-  { label: "Contact", href: "#contact" },
-];
+import { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  const closeMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const menu = menuRef.current;
+    if (!menu) return;
+    const focusable = menu.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (focusable.length === 0) return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeMenu();
+        toggleRef.current?.focus();
+      }
+    };
+    menu.addEventListener("keydown", handleTab);
+    document.addEventListener("keydown", handleKey);
+    first?.focus();
+    return () => {
+      menu.removeEventListener("keydown", handleTab);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [isOpen]);
 
   return (
     <header className={`navbar ${isOpen ? "is-open" : ""}`}>
-      {/* Logo */}
-      <Link href="#hero" className="navbar-logo" onClick={() => setIsOpen(false)}>
+      <a href="#hero" className="navbar-logo" aria-label="Home" onClick={closeMenu}>
         ADEJOKE
-      </Link>
+      </a>
 
-      {/* Nav Links - Desktop */}
       <nav className="navbar-links" aria-label="Main navigation">
-        {navLinks.map((link) => (
+        {[
+          { label: "About", href: "#about" },
+          { label: "Projects", href: "#projects" },
+          { label: "Skills", href: "#skills" },
+          { label: "Programs", href: "#programs" },
+          { label: "Contact", href: "#contact" },
+        ].map((link) => (
           <a key={link.label} href={link.href} className="navbar-link">
             {link.label}
           </a>
         ))}
       </nav>
 
-      {/* Hamburger - Mobile Only */}
-      <button 
-        className={`nav-toggle ${isOpen ? "active" : ""}`} 
-        onClick={() => setIsOpen(!isOpen)} 
+      <button
+        ref={toggleRef}
+        className={`nav-toggle ${isOpen ? "active" : ""}`}
+        onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Toggle menu"
+        aria-expanded={isOpen}
+        aria-controls="mobile-nav"
       >
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
+        <span className="bar" />
+        <span className="bar" />
+        <span className="bar" />
       </button>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`nav-overlay ${isOpen ? "is-open" : ""}`}>
-        <nav className="mobile-nav">
-          {navLinks.map((link, idx) => (
-            <a 
-              key={link.label} 
-              href={link.href} 
+      <div
+        id="mobile-nav"
+        ref={menuRef}
+        className={`nav-overlay ${isOpen ? "is-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation"
+      >
+        <nav className="mobile-nav" role="menu">
+          {[
+            { label: "About", href: "#about" },
+            { label: "Projects", href: "#projects" },
+            { label: "Skills", href: "#skills" },
+            { label: "Programs", href: "#programs" },
+            { label: "Contact", href: "#contact" },
+          ].map((link, idx) => (
+            <a
+              key={link.label}
+              href={link.href}
               className="mobile-link"
               style={{ transitionDelay: `${0.1 + idx * 0.1}s` }}
-              onClick={() => setIsOpen(false)}
+              onClick={closeMenu}
+              role="menuitem"
             >
               {link.label}
             </a>
@@ -81,12 +132,7 @@ export default function Navbar() {
           font-size: 1.5rem;
           letter-spacing: 0.06em;
           text-decoration: none;
-          background: linear-gradient(
-            90deg,
-            var(--orange),
-            var(--purple),
-            var(--cyan)
-          );
+          background: linear-gradient(90deg, var(--orange), var(--purple), var(--cyan));
           background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
@@ -138,7 +184,7 @@ export default function Navbar() {
           background: none;
           border: none;
           cursor: pointer;
-          z-index: 2001; /* Must be above overlay */
+          z-index: 2001;
           padding: 10px;
         }
 

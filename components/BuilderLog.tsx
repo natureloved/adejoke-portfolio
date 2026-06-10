@@ -76,14 +76,32 @@ export default function BuilderLog() {
   const [liveEntries, setLiveEntries] = useState<LiveEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    fetch("https://api.github.com/users/natureloved/events/public?per_page=10")
-      .then((r) => r.json())
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+
+    fetch("https://api.github.com/users/natureloved/events/public?per_page=10", {
+      signal: controller.signal,
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error(`GitHub responded with status ${r.status}`);
+        return r.json();
+      })
       .then((data: GitHubEvent[]) => {
         setLiveEntries(parseGitHubEvents(data));
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        console.error("BuilderLog fetch failed:", err);
+        setError("Unable to fetch recent activity");
+        setLoading(false);
+      });
+
+    return () => controller.abort();
   }, []);
 
   const getStatusColor = (status: string) => {
@@ -126,6 +144,8 @@ export default function BuilderLog() {
                 </div>
               ))}
             </div>
+          ) : error ? (
+            <div className="activity-empty">{error}</div>
           ) : liveEntries.length > 0 ? (
             <div className="activity-list">
               {liveEntries.map((e, i) => (
@@ -137,7 +157,7 @@ export default function BuilderLog() {
               ))}
             </div>
           ) : (
-            <div className="activity-empty">Unable to fetch recent activity</div>
+            <div className="activity-empty">No recent activity found</div>
           )}
         </div>
 

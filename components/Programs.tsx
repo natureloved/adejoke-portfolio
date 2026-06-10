@@ -1,5 +1,7 @@
 "use client";
 
+import type { CSSProperties } from "react";
+
 type Program = {
   name: string;
   status: "active" | "completed";
@@ -84,7 +86,7 @@ function ProgramCard({ program }: { program: Program }) {
     </>
   );
 
-  const cardStyle = { "--hover-border": hoverBorder } as React.CSSProperties;
+  const cardStyle = { "--hover-border": hoverBorder } as CSSProperties;
 
   return (
     <div className="program-card-wrapper reveal">

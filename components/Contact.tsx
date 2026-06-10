@@ -2,17 +2,31 @@
 
 import { useState } from "react";
 
-// Sign up at formspree.io → create a form → paste your form ID here
-const FORMSPREE_URL = "https://formspree.io/f/xojrppdv";
+const FORMSPREE_URL =
+  process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "https://formspree.io/f/xojrppdv";
 
 type FormStatus = "idle" | "loading" | "success" | "error";
+
+type FormState = {
+  name: string;
+  email: string;
+  message: string;
+  _gotcha: string;
+};
+
+const INITIAL_STATE: FormState = {
+  name: "",
+  email: "",
+  message: "",
+  _gotcha: "",
+};
 
 const socials = [
   {
     name: "Twitter / X",
     href: "https://x.com/adejoke_btc",
     icon: (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
     ),
@@ -21,7 +35,7 @@ const socials = [
     name: "GitHub",
     href: "https://github.com/natureloved",
     icon: (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
       </svg>
     ),
@@ -30,7 +44,7 @@ const socials = [
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
     icon: (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.989v-10.131c0-7.88-8.922-7.593-11.02-3.708v-2.161z" />
       </svg>
     ),
@@ -39,7 +53,7 @@ const socials = [
     name: "Email",
     href: "mailto:akinolaa769@gmail.com",
     icon: (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
       </svg>
     ),
@@ -47,7 +61,7 @@ const socials = [
 ];
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState<FormState>(INITIAL_STATE);
   const [status, setStatus] = useState<FormStatus>("idle");
 
   const handleChange = (
@@ -56,8 +70,9 @@ export default function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (form._gotcha) return;
     setStatus("loading");
     try {
       const res = await fetch(FORMSPREE_URL, {
@@ -70,6 +85,8 @@ export default function Contact() {
       setStatus("error");
     }
   };
+
+  const resetForm = () => setForm(INITIAL_STATE);
 
   return (
     <section id="contact" className="contact">
@@ -86,15 +103,33 @@ export default function Contact() {
           you&apos;re building in Web3, let&apos;s talk.
         </p>
 
-        {/* Contact Form */}
         <div className="form-wrap reveal">
           {status === "success" ? (
             <div className="success-box">
-              <div className="success-icon">✓</div>
+              <div className="success-icon" aria-hidden="true">✓</div>
               <p className="success-text">Message received. I&apos;ll get back to you soon.</p>
+              <button type="button" className="submit-btn" onClick={resetForm}>
+                Send another message
+              </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="contact-form">
+            <form onSubmit={handleSubmit} className="contact-form" noValidate>
+              <div
+                className="form-group honeypot"
+                style={{ display: "none" }}
+                aria-hidden="true"
+              >
+                <label htmlFor="gotcha">Do not fill</label>
+                <input
+                  id="gotcha"
+                  name="_gotcha"
+                  value={form._gotcha}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="name" className="form-label">Name</label>
@@ -106,6 +141,9 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder="Your name"
                     required
+                    minLength={1}
+                    maxLength={500}
+                    autoComplete="name"
                     disabled={status === "loading"}
                     className="form-input"
                   />
@@ -120,6 +158,7 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder="your@email.com"
                     required
+                    autoComplete="email"
                     disabled={status === "loading"}
                     className="form-input"
                   />
@@ -136,14 +175,16 @@ export default function Contact() {
                   placeholder="Tell me about what you're building..."
                   rows={5}
                   required
+                  minLength={20}
+                  maxLength={10000}
                   disabled={status === "loading"}
                   className="form-input form-textarea"
                 />
               </div>
 
               {status === "error" && (
-                <p className="error-text">
-                  Something went wrong. Try emailing me at akinolaa769@gmail.com
+                <p className="error-text" role="alert" aria-live="assertive">
+                  Submission failed. Please try again or email me directly.
                 </p>
               )}
 
@@ -151,15 +192,16 @@ export default function Contact() {
                 type="submit"
                 className="submit-btn"
                 disabled={status === "loading"}
+                aria-busy={status === "loading" || undefined}
               >
                 {status === "loading" ? (
                   <>
-                    <span className="spinner" />
+                    <span className="spinner" aria-hidden="true" />
                     Sending...
                   </>
                 ) : (
                   <>
-                    Send Message <span className="btn-arrow">→</span>
+                    Send Message <span className="btn-arrow" aria-hidden="true">→</span>
                   </>
                 )}
               </button>
@@ -167,14 +209,12 @@ export default function Contact() {
           )}
         </div>
 
-        {/* Divider */}
         <div className="divider reveal">
           <span className="divider-line" />
           <span className="divider-label">or reach me directly</span>
           <span className="divider-line" />
         </div>
 
-        {/* Social Links */}
         <div className="social-row reveal">
           {socials.map((social) => (
             <a
@@ -185,7 +225,7 @@ export default function Contact() {
               className="social-btn"
             >
               {social.icon}
-              {social.name}
+              <span>{social.name}</span>
             </a>
           ))}
         </div>
@@ -235,7 +275,6 @@ export default function Contact() {
           margin-inline: auto;
         }
 
-        /* ─── Form ───────────────────────────────────── */
         .form-wrap {
           text-align: left;
           margin-bottom: 3rem;
@@ -358,7 +397,6 @@ export default function Contact() {
           to { transform: rotate(360deg); }
         }
 
-        /* ─── Success ─────────────────────────────────── */
         .success-box {
           display: flex;
           flex-direction: column;
@@ -389,7 +427,6 @@ export default function Contact() {
           line-height: 1.6;
         }
 
-        /* ─── Divider ─────────────────────────────────── */
         .divider {
           display: flex;
           align-items: center;
@@ -412,7 +449,6 @@ export default function Contact() {
           white-space: nowrap;
         }
 
-        /* ─── Social row ──────────────────────────────── */
         .social-row {
           display: flex;
           justify-content: center;
@@ -443,6 +479,15 @@ export default function Contact() {
           border-color: var(--orange);
           color: #06060c;
           transform: translateY(-2px);
+        }
+
+        .honeypot {
+          position: absolute;
+          left: -9999px;
+          top: auto;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
         }
 
         @media (max-width: 600px) {

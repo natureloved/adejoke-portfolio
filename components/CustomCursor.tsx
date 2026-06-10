@@ -5,15 +5,19 @@ import { useEffect, useRef, useState } from "react";
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  
   const mousePos = useRef({ x: 0, y: 0 });
   const ringPos = useRef({ x: 0, y: 0 });
   const requestRef = useRef<number>();
-  
+  const idleTimerRef = useRef<number>();
+
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const isTouchDevice =
+      typeof window !== "undefined" &&
+      ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+    if (isTouchDevice) return;
     const onMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
       if (!isVisible) setIsVisible(true);
@@ -22,6 +26,13 @@ export default function CustomCursor() {
         cursorRef.current.style.left = `${e.clientX}px`;
         cursorRef.current.style.top = `${e.clientY}px`;
       }
+
+      if (idleTimerRef.current) {
+        window.clearTimeout(idleTimerRef.current);
+      }
+      idleTimerRef.current = window.setTimeout(() => {
+        setIsHovering(false);
+      }, 2000);
     };
 
     const animateRing = () => {
@@ -32,7 +43,7 @@ export default function CustomCursor() {
         ringRef.current.style.left = `${ringPos.current.x}px`;
         ringRef.current.style.top = `${ringPos.current.y}px`;
       }
-      
+
       requestRef.current = requestAnimationFrame(animateRing);
     };
 
@@ -48,14 +59,11 @@ export default function CustomCursor() {
       }
     };
 
-    const onMouseLeave = () => {
-      setIsHovering(false);
-    };
+    const onMouseLeave = () => setIsHovering(false);
 
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseover", onMouseEnter);
     window.addEventListener("mouseout", onMouseLeave);
-    
     requestRef.current = requestAnimationFrame(animateRing);
 
     return () => {
@@ -63,6 +71,7 @@ export default function CustomCursor() {
       window.removeEventListener("mouseover", onMouseEnter);
       window.removeEventListener("mouseout", onMouseLeave);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      if (idleTimerRef.current) window.clearTimeout(idleTimerRef.current);
     };
   }, [isVisible]);
 
@@ -73,10 +82,12 @@ export default function CustomCursor() {
       <div
         ref={cursorRef}
         className={`cursor ${isHovering ? "hover" : ""}`}
+        aria-hidden="true"
       />
       <div
         ref={ringRef}
         className={`cursor-ring ${isHovering ? "hover" : ""}`}
+        aria-hidden="true"
       />
 
       <style jsx global>{`
@@ -114,7 +125,8 @@ export default function CustomCursor() {
         }
 
         @media (max-width: 900px) {
-          .cursor, .cursor-ring {
+          .cursor,
+          .cursor-ring {
             display: none !important;
           }
         }

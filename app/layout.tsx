@@ -26,19 +26,22 @@ const syne = Syne({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.vercel.app";
+
 export const metadata: Metadata = {
-  // Update metadataBase with your deployed URL before going live
-  metadataBase: new URL('https://adejoke-portfolio.vercel.app'),
-  title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
+    template: "%s | Adejoke Elizabeth",
+  },
   description:
-    "Portfolio of Akinola Adejoke Elizabeth — a Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity. Building at the intersection of African ingenuity and decentralized finance.",
+    "Portfolio of Akinola Adejoke Elizabeth — Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity.",
   keywords: [
     "Adejoke Elizabeth",
     "Full Stack Developer",
     "Blockchain Developer",
     "Solidity",
     "Cairo",
-    "Clarity",
     "StarkNet",
     "Stacks",
     "EVM",
@@ -46,20 +49,22 @@ export const metadata: Metadata = {
     "Web3",
   ],
   authors: [{ name: "Akinola Adejoke Elizabeth" }],
+  alternates: { canonical: "/" },
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    siteName: 'Adejoke Elizabeth — Portfolio',
-    title: 'Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer',
+    type: "website",
+    locale: "en_US",
+    siteName: "Adejoke Elizabeth — Portfolio",
+    title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
     description:
-      'Full Stack Developer and Multi-Chain Builder. Solidity · Cairo · Clarity · Next.js · DeFi.',
+      "Full Stack Developer and Multi-Chain Builder. Solidity · Cairo · Clarity · Next.js · DeFi.",
+    url: siteUrl,
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer',
+    card: "summary_large_image",
+    title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
     description:
-      'Full Stack Developer & Multi-Chain Builder. Solidity, Cairo, Clarity, Next.js.',
-    creator: '@adejoke_btc',
+      "Full Stack Developer & Multi-Chain Builder. Solidity, Cairo, Clarity, Next.js.",
+    creator: "@adejoke_btc",
   },
 };
 
@@ -74,14 +79,35 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${dmMono.variable} ${syne.variable}`}
     >
       <head>
-        {/* Critical CSS for Scroll Reveal to prevent FOUC */}
-        <style dangerouslySetInnerHTML={{ __html: ".reveal { opacity: 0; }" }} />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#06060c" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Akinola Adejoke Elizabeth",
+              url: siteUrl,
+              sameAs: [
+                "https://x.com/adejoke_btc",
+                "https://github.com/natureloved",
+                "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
+              ],
+              jobTitle: "Full Stack & Multi-Chain Developer",
+            }),
+          }}
+        />
       </head>
       <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <CustomCursor />
         <ScrollReveal />
         <Navbar />
-        {children}
+        <main id="main">{children}</main>
       </body>
     </html>
   );
