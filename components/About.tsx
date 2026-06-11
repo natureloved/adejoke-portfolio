@@ -195,6 +195,32 @@ export default function About() {
           <StatCard number="6" label="Live DeFi Projects" />
           <StatCard number="∞" label="Problems Left to Solve" />
         </div>
+
+        {/* Stack Snapshot */}
+        <div className="stack-snapshot reveal">
+          <div className="snapshot-header">
+            <span className="snapshot-icon">⚡</span>
+            <span className="snapshot-title">Current Stack</span>
+          </div>
+          <div className="snapshot-grid">
+            <div className="snapshot-item">
+              <span className="snapshot-label">Editor</span>
+              <span className="snapshot-value">VS Code</span>
+            </div>
+            <div className="snapshot-item">
+              <span className="snapshot-label">Terminal</span>
+              <span className="snapshot-value">Warp</span>
+            </div>
+            <div className="snapshot-item">
+              <span className="snapshot-label">OS</span>
+              <span className="snapshot-value">Windows 11</span>
+            </div>
+            <div className="snapshot-item">
+              <span className="snapshot-label">Theme</span>
+              <span className="snapshot-value">Dracula + Custom</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <style jsx>{`
@@ -259,13 +285,105 @@ export default function About() {
           gap: 1.5rem;
         }
 
+        .stack-snapshot {
+          margin-top: 3rem;
+          padding: 1.8rem;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          border-radius: 6px;
+          max-width: 1100px;
+        }
+
+        .snapshot-header {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          margin-bottom: 1.2rem;
+        }
+
+        .snapshot-icon {
+          font-size: 1.1rem;
+        }
+
+        .snapshot-title {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: var(--orange);
+        }
+
+        .snapshot-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1rem;
+        }
+
+        @media (max-width: 900px) {
+          .snapshot-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+          .snapshot-grid { grid-template-columns: 1fr; }
+          .stack-snapshot { padding: 1.2rem; }
+        }
+
+        .snapshot-item {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .snapshot-label {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.62rem;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+        }
+
+        .snapshot-value {
+          font-family: var(--font-syne), "Syne", sans-serif;
+          font-size: 0.85rem;
+          color: var(--white);
+          font-weight: 600;
+        }
+
         @media (max-width: 900px) {
           .about {
-            padding: 5rem 2rem 5rem 3rem;
+            padding: 5rem 1.5rem 5rem 2rem;
           }
           .about-grid {
             grid-template-columns: 1fr;
-            gap: 3rem;
+            gap: 2.5rem;
+          }
+          .avatar-card {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+          .avatar-meta {
+            align-items: center;
+          }
+          .about-para {
+            font-size: 0.95rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .about {
+            padding: 4rem 1rem 4rem 1.2rem;
+          }
+          .stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+          }
+          .stat-number {
+            font-size: 2.2rem;
+          }
+          .avatar-ring {
+            width: 70px;
+            height: 70px;
           }
         }
       `}</style>

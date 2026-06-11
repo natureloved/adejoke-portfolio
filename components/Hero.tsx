@@ -98,6 +98,7 @@ export default function Hero() {
 
         .orb-1 { width: 650px; height: 650px; background: rgba(255, 95, 31, 0.1); filter: blur(100px); top: -80px; right: -120px; animation: float 12s ease-in-out infinite; }
         .orb-2 { width: 420px; height: 420px; background: rgba(155, 89, 245, 0.08); filter: blur(100px); bottom: 0; left: 50%; transform: translateX(-50%); animation: float 15s ease-in-out infinite; }
+        .orb-3 { width: 280px; height: 280px; background: rgba(0, 212, 255, 0.08); filter: blur(80px); top: 40%; left: -60px; animation: float 18s ease-in-out infinite; }
         
         .hero-content {
           position: relative;
@@ -293,9 +294,24 @@ export default function Hero() {
         }
 
         @media (max-width: 900px) {
-          .hero { padding: 8rem 2rem 5rem 3rem; }
-          .hero-name { font-size: 4.5rem; line-height: 0.8; }
-          .name-container { margin-bottom: 2.5rem; }
+          .hero { padding: 7.5rem 1.5rem 5rem 2rem; }
+          .hero-name { font-size: clamp(3rem, 11vw, 5rem); line-height: 0.85; }
+          .name-container { margin-bottom: 2rem; }
+          .orb-1, .orb-2 { filter: blur(70px); }
+          .orb-3 { display: none; }
+          .hero-tags { gap: 0.5rem; margin-bottom: 1.5rem; }
+          .chain-tag { font-size: 0.65rem; padding: 0.25rem 0.6rem; }
+          .hero-ctas { flex-direction: column; gap: 0.8rem; }
+          .btn { width: 100%; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+          .hero { padding: 7rem 1rem 4rem 1.4rem; }
+          .hero-name { font-size: 2.8rem; }
+          .orb-1, .orb-2 { width: 260px !important; height: 260px !important; filter: blur(60px); }
+          .orb-1 { top: -40px; right: -60px; }
+          .orb-2 { bottom: -20px; left: 30%; }
+          .scroll-hint { display: none; }
         }
       `}</style>
     </section>

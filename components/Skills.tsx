@@ -3,18 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 
 const skillsData = [
-  { id: "Clarity",    category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92 },
-  { id: "Solidity",   category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92 },
-  { id: "Cairo",      category: "smart-contract", level: "Advanced", color: "var(--orange)", pct: 75 },
-  { id: "Next.js",    category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95 },
-  { id: "React",      category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95 },
-  { id: "TypeScript", category: "frontend",       level: "Advanced", color: "var(--purple)", pct: 78 },
-  { id: "Stacks",     category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 90 },
-  { id: "StarkNet",   category: "blockchain",     level: "Advanced", color: "var(--cyan)",   pct: 72 },
-  { id: "EVM",        category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 88 },
-  { id: "Tailwind",   category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 93 },
-  { id: "Node.js",    category: "tools",          level: "Advanced", color: "var(--cyan)",   pct: 76 },
-  { id: "Git/Github", category: "tools",          level: "Expert",   color: "var(--cyan)",   pct: 95 },
+  { id: "Clarity",    category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92, logo: "CL" },
+  { id: "Solidity",   category: "smart-contract", level: "Expert",   color: "var(--orange)", pct: 92, logo: "ETH" },
+  { id: "Cairo",      category: "smart-contract", level: "Advanced", color: "var(--orange)", pct: 75, logo: "CR" },
+  { id: "Next.js",    category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95, logo: "NX" },
+  { id: "React",      category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 95, logo: "RE" },
+  { id: "TypeScript", category: "frontend",       level: "Advanced", color: "var(--purple)", pct: 78, logo: "TS" },
+  { id: "Stacks",     category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 90, logo: "STX" },
+  { id: "StarkNet",   category: "blockchain",     level: "Advanced", color: "var(--cyan)",   pct: 72, logo: "SN" },
+  { id: "EVM",        category: "blockchain",     level: "Expert",   color: "var(--cyan)",   pct: 88, logo: "EVM" },
+  { id: "Tailwind",   category: "frontend",       level: "Expert",   color: "var(--purple)", pct: 93, logo: "TW" },
+  { id: "Node.js",    category: "tools",          level: "Advanced", color: "var(--cyan)",   pct: 76, logo: "NO" },
+  { id: "Git/Github", category: "tools",          level: "Expert",   color: "var(--cyan)",   pct: 95, logo: "GH" },
 ];
 
 export default function Skills() {
@@ -55,6 +55,7 @@ export default function Skills() {
                 <span className="skill-cat">{skill.category}</span>
                 <span className="skill-level">{skill.level}</span>
               </div>
+              <div className="skill-logo">{skill.logo}</div>
             </div>
 
             {/* Animated proficiency bar */}
@@ -203,6 +204,16 @@ export default function Skills() {
           opacity: 0.8;
         }
 
+        .skill-logo {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.62rem;
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          opacity: 0.7;
+          margin-top: 0.25rem;
+        }
+
         /* ── Proficiency bar ── */
         .bar-track {
           position: absolute;
@@ -242,14 +253,18 @@ export default function Skills() {
         .skill-card:hover .corner { opacity: 1; }
 
         @media (max-width: 900px) {
-          .skills-section { padding: 6rem 3rem; }
-          .skills-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
-          .skill-id { font-size: 1.8rem; }
+          .skills-section { padding: 5rem 1.5rem 5rem 2rem; }
+          .skills-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.8rem; }
+          .skill-id { font-size: 1.6rem; }
+          .skill-card { padding: 0.9rem 0.9rem 1.6rem; }
+          .bar-pct { right: 6px; bottom: 4px; font-size: 0.52rem; }
         }
 
         @media (max-width: 480px) {
-          .skills-section { padding: 4rem 1.5rem; }
-          .section-title { font-size: 3rem; }
+          .skills-section { padding: 4rem 1rem 4rem 1.2rem; }
+          .section-title { font-size: 2.6rem; margin-bottom: 3rem; }
+          .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+          .skill-id { font-size: 1.4rem; }
         }
       `}</style>
     </section>

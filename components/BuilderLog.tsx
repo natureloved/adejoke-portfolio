@@ -75,7 +75,6 @@ function parseGitHubEvents(events: GitHubEvent[]): LiveEntry[] {
 export default function BuilderLog() {
   const [liveEntries, setLiveEntries] = useState<LiveEntry[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -113,20 +112,26 @@ export default function BuilderLog() {
     }
   };
 
-  return (
-    <section id="builder-log" className="builder-log section-container">
-      <div className="log-container reveal">
-        {/* Header */}
-        <div className="log-header">
-          <div className="header-left">
-            <span className="icon">⬡</span>
-            <span className="title">Builder Log</span>
+    return (
+      <section id="builder-log" className="builder-log section-container">
+        <div className="log-container reveal">
+          <div className="log-header">
+            <div className="header-left">
+              <span className="icon">⬡</span>
+              <span className="title">Builder Log</span>
+            </div>
+            <div className="header-right">
+              <a
+                href="https://github.com/natureloved"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gh-link"
+              >
+                <span className="dot pulse-cyan" />
+                <span className="live-label">View Contributions</span>
+              </a>
+            </div>
           </div>
-          <div className="header-right">
-            <span className="dot pulse-cyan animate-blink" />
-            <span className="live-label">Live Updates</span>
-          </div>
-        </div>
 
         {/* ── Live GitHub Activity ── */}
         <div className="activity-section">
@@ -227,6 +232,19 @@ export default function BuilderLog() {
           font-size: 10px;
           color: var(--muted);
           text-transform: uppercase;
+        }
+
+        .gh-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: var(--cyan);
+          text-decoration: none;
+          transition: color 0.2s ease;
+        }
+
+        .gh-link:hover {
+          color: var(--white);
         }
 
         .pulse-cyan {
@@ -400,12 +418,25 @@ export default function BuilderLog() {
           font-family: var(--font-syne), "Syne", sans-serif;
         }
 
-        @media (max-width: 768px) {
-          .builder-log { padding: 4rem 2rem 4rem 3rem; }
-          .activity-row { grid-template-columns: 60px 1fr; }
+        @media (max-width: 900px) {
+          .builder-log { padding: 4rem 1.2rem 4rem 1.6rem; }
+          .activity-row { grid-template-columns: 50px 1fr; gap: 0.6rem; padding: 0.6rem 1rem; }
           .activity-text { display: none; }
-          .log-entry { flex-direction: column; gap: 0.8rem; }
+          .activity-date { font-size: 8px; }
+          .activity-repo { font-size: 8.5px; }
+          .log-entry { flex-direction: column; gap: 0.6rem; padding: 1.2rem; }
           .entry-top { justify-content: flex-start; }
+          .date-col { min-width: auto; font-size: 9px; }
+          .project-name { font-size: 11px; }
+          .description { font-size: 11px; }
+          .skeleton-row { grid-template-columns: 50px 1fr; gap: 0.6rem; padding: 0.7rem 1rem; }
+        }
+
+        @media (max-width: 480px) {
+          .builder-log { padding: 3rem 1rem 3rem 1.2rem; }
+          .log-header { padding: 0.8rem 1rem; }
+          .header-left { font-size: 10px; }
+          .header-right { font-size: 9px; }
         }
       `}</style>
     </section>

@@ -51,6 +51,7 @@ export default function Navbar() {
       <a href="#hero" className="navbar-logo" aria-label="Home" onClick={closeMenu}>
         ADEJOKE
       </a>
+      <span className="badge-open">Open to work</span>
 
       <nav className="navbar-links" aria-label="Main navigation">
         {[
@@ -177,85 +178,33 @@ export default function Navbar() {
           width: 100%;
         }
 
-        .nav-toggle {
-          display: none;
-          flex-direction: column;
-          gap: 5px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          z-index: 2001;
-          padding: 10px;
-        }
-
-        .bar {
-          display: block;
-          width: 20px;
-          height: 2px;
-          background: var(--white);
-          transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: 2px;
-        }
-
-        .nav-overlay {
-          position: fixed;
-          top: 4.5rem;
-          right: 1.5rem;
-          width: 220px;
-          background: rgba(12, 12, 24, 0.98);
-          z-index: 2000;
-          display: flex;
-          flex-direction: column;
-          padding: 1.5rem;
-          border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          opacity: 0;
-          pointer-events: none;
-          transform: translateY(-10px) scale(0.98);
-          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-          backdrop-filter: blur(25px);
-          -webkit-backdrop-filter: blur(25px);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        .nav-overlay.is-open {
-          opacity: 1;
-          pointer-events: all;
-          transform: translateY(0) scale(1);
-        }
-
-        .mobile-nav {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 1.2rem;
-        }
-
-        .mobile-link {
+        .badge-open {
           font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 1rem;
-          color: var(--white);
-          text-decoration: none;
-          transition: all 0.25s ease;
-          letter-spacing: 0.1em;
+          font-size: 0.65rem;
           text-transform: uppercase;
-          opacity: 0;
-          transform: translateX(10px);
+          letter-spacing: 0.12em;
+          color: var(--cyan);
+          border: 1px solid rgba(0, 212, 255, 0.35);
+          background: rgba(0, 212, 255, 0.08);
+          padding: 0.45rem 0.9rem;
+          border-radius: 3px;
+          display: none;
+          animation: pulse-badge 2.2s ease-in-out infinite;
+          z-index: 1001;
         }
 
-        .is-open .mobile-link {
-          opacity: 1;
-          transform: translateX(0);
+        @keyframes pulse-badge {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
         }
 
-        .mobile-link:hover {
-          color: var(--white);
-          transform: translateX(-5px);
+        @media (max-width: 1024px) {
+          .badge-open { display: block; }
         }
 
         @media (max-width: 900px) {
           .navbar {
-            padding: 1.2rem 2rem 1.2rem 3rem;
+            padding: 1rem 1.2rem 1rem 1.4rem;
           }
 
           .navbar-links {

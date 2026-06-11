@@ -231,16 +231,22 @@ export default function Programs() {
         }
         @media (max-width: 900px) {
           .programs {
-            padding: 5rem 2rem 5rem 3rem;
+            padding: 4rem 1.5rem 4rem 2rem;
           }
           .programs-grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
           }
         }
+
         @media (max-width: 600px) {
+          .programs {
+            padding: 3.5rem 1rem 3.5rem 1.2rem;
+          }
           .programs-grid {
             grid-template-columns: 1fr;
           }
+          .program-card { padding: 1.4rem; }
         }
       `}</style>
     </section>

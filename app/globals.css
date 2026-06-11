@@ -158,30 +158,23 @@ body::after {
 
 /* ─── Responsive Styles ─────────────────────────────────────── */
 @media (max-width: 900px) {
-  body {
-    cursor: default !important;
-  }
+  body { cursor: default !important; }
 
-  section {
-    padding: 5rem 1.8rem 5rem 2.8rem !important;
-  }
+  section { padding: 5rem 1.2rem 5rem 1.8rem !important; }
 
   .grid,
   [class*="grid-cols"] {
     grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
+    gap: 1.2rem !important;
   }
 }
 
 @media (max-width: 480px) {
-  section {
-    padding: 4rem 1.2rem 4rem 2.2rem !important;
-  }
-  
-  .chain-bar {
-    width: 2px !important;
-    opacity: 0.4 !important;
-  }
+  section { padding: 4rem 0.8rem 4rem 1.2rem !important; }
+
+  .chain-bar { width: 2px !important; opacity: 0.4 !important; }
+  .hero-tags { flex-direction: column; align-items: flex-start; }
+  .chain-tag { font-size: 0.65rem; }
 }
 
 /* ─── Selection ──────────────────────────────────────────────── */

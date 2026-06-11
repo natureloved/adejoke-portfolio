@@ -103,6 +103,12 @@ export default function Contact() {
           you&apos;re building in Web3, let&apos;s talk.
         </p>
 
+        <div className="contact-actions reveal">
+          <a href="/resume.pdf" className="btn-resume" target="_blank" rel="noopener noreferrer">
+            Download Resume
+          </a>
+        </div>
+
         <div className="form-wrap reveal">
           {status === "success" ? (
             <div className="success-box">
@@ -270,9 +276,66 @@ export default function Contact() {
           font-size: 1rem;
           color: var(--muted);
           line-height: 1.75;
-          margin-bottom: 3.5rem;
+          margin-bottom: 2rem;
           max-width: 460px;
           margin-inline: auto;
+        }
+
+        .contact-actions {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 2.5rem;
+        }
+
+        .btn-resume {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: var(--white);
+          text-decoration: none;
+          border: 1px solid var(--border);
+          padding: 0.85rem 2rem;
+          border-radius: 4px;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        .contact-actions {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 2.5rem;
+        }
+
+        .btn-resume {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.72rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: var(--white);
+          text-decoration: none;
+          border: 1px solid var(--border);
+          padding: 0.85rem 2rem;
+          border-radius: 4px;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        .btn-resume:hover {
+          border-color: var(--purple);
+          color: var(--purple);
+          transform: translateY(-2px);
+        }
+
+        @media (max-width: 480px) {
+          .contact-actions { width: 100%; }
+          .btn-resume { width: 100%; justify-content: center; }
         }
 
         .form-wrap {
@@ -491,8 +554,16 @@ export default function Contact() {
         }
 
         @media (max-width: 600px) {
+          .contact { padding: 5rem 1rem 5rem 1.2rem; }
           .form-row { grid-template-columns: 1fr; }
           .social-btn { width: 100%; justify-content: center; }
+          .section-title { font-size: 2.4rem; }
+          .submit-btn { font-size: 0.68rem; padding: 0.85rem 1.5rem; }
+        }
+
+        @media (max-width: 380px) {
+          .contact { padding: 4rem 0.8rem 4rem 1rem; }
+          .social-btn { padding: 0.7rem 1.2rem; font-size: 0.62rem; }
         }
       `}</style>
     </section>
