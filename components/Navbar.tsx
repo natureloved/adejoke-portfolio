@@ -14,7 +14,7 @@ export default function Navbar() {
     const menu = menuRef.current;
     if (!menu) return;
     const focusable = menu.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled])'
+      "a[href], button:not([disabled])"
     );
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -51,21 +51,6 @@ export default function Navbar() {
       <a href="#hero" className="navbar-logo" aria-label="Home" onClick={closeMenu}>
         ADEJOKE
       </a>
-      <span className="badge-open">Open to work</span>
-
-      <nav className="navbar-links" aria-label="Main navigation">
-        {[
-          { label: "About", href: "#about" },
-          { label: "Projects", href: "#projects" },
-          { label: "Skills", href: "#skills" },
-          { label: "Programs", href: "#programs" },
-          { label: "Contact", href: "#contact" },
-        ].map((link) => (
-          <a key={link.label} href={link.href} className="navbar-link">
-            {link.label}
-          </a>
-        ))}
-      </nav>
 
       <button
         ref={toggleRef}
@@ -107,6 +92,9 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <div className="mobile-badge-row">
+            <span className="badge-open">Open to work</span>
+          </div>
         </nav>
       </div>
 
@@ -120,7 +108,7 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 1.4rem 4rem 1.4rem 5rem;
+          padding: 1.2rem 2.5rem;
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
           background: rgba(6, 6, 12, 0.75);
@@ -143,39 +131,7 @@ export default function Navbar() {
         }
 
         .navbar-links {
-          display: flex;
-          align-items: center;
-          gap: 2.5rem;
-        }
-
-        .navbar-link {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.72rem;
-          text-transform: uppercase;
-          letter-spacing: 0.15em;
-          color: var(--muted);
-          text-decoration: none;
-          transition: color 0.2s ease;
-          position: relative;
-        }
-
-        .navbar-link::after {
-          content: "";
-          position: absolute;
-          bottom: -3px;
-          left: 0;
-          width: 0;
-          height: 1px;
-          background: var(--orange);
-          transition: width 0.25s ease;
-        }
-
-        .navbar-link:hover {
-          color: var(--white);
-        }
-
-        .navbar-link:hover::after {
-          width: 100%;
+          display: none;
         }
 
         .badge-open {
@@ -188,9 +144,9 @@ export default function Navbar() {
           background: rgba(0, 212, 255, 0.08);
           padding: 0.45rem 0.9rem;
           border-radius: 3px;
-          display: none;
           animation: pulse-badge 2.2s ease-in-out infinite;
           z-index: 1001;
+          display: none;
         }
 
         @keyframes pulse-badge {
@@ -198,31 +154,102 @@ export default function Navbar() {
           50% { opacity: 0.7; }
         }
 
-        @media (max-width: 1024px) {
-          .badge-open { display: block; }
+        .nav-toggle {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          z-index: 2001;
+          padding: 10px;
         }
 
-        @media (max-width: 900px) {
+        .bar {
+          display: block;
+          width: 20px;
+          height: 2px;
+          background: var(--white);
+          transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 2px;
+        }
+
+        .nav-overlay {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 280px;
+          height: 100vh;
+          background: rgba(12, 12, 24, 0.98);
+          z-index: 2000;
+          display: flex;
+          flex-direction: column;
+          padding: 6rem 2rem 2rem;
+          border-left: 1px solid rgba(255, 255, 255, 0.15);
+          opacity: 0;
+          pointer-events: none;
+          transform: translateX(20px);
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+          backdrop-filter: blur(25px);
+          -webkit-backdrop-filter: blur(25px);
+          box-shadow: -20px 0 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .nav-overlay.is-open {
+          opacity: 1;
+          pointer-events: all;
+          transform: translateX(0);
+        }
+
+        .mobile-nav {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          flex: 1;
+        }
+
+        .mobile-link {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 1rem;
+          color: var(--white);
+          text-decoration: none;
+          transition: all 0.25s ease;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .mobile-link:hover {
+          color: var(--orange);
+          transform: translateX(4px);
+        }
+
+        .mobile-badge-row {
+          margin-top: auto;
+          padding-top: 2rem;
+          border-top: 1px solid var(--border);
+        }
+
+        .mobile-badge-row .badge-open {
+          display: block;
+        }
+
+        .nav-toggle.active .bar:nth-child(1) {
+          transform: translateY(7px) rotate(45deg);
+        }
+        .nav-toggle.active .bar:nth-child(2) {
+          opacity: 0;
+        }
+        .nav-toggle.active .bar:nth-child(3) {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+
+        @media (max-width: 480px) {
           .navbar {
-            padding: 1rem 1.2rem 1rem 1.4rem;
+            padding: 1rem 1.2rem;
           }
-
-          .navbar-links {
-            display: none;
-          }
-
-          .nav-toggle {
-            display: flex;
-          }
-
-          .nav-toggle.active .bar:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-          }
-          .nav-toggle.active .bar:nth-child(2) {
-            opacity: 0;
-          }
-          .nav-toggle.active .bar:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
+          .nav-overlay {
+            width: 100vw;
+            padding: 5rem 1.5rem 2rem;
           }
         }
       `}</style>
