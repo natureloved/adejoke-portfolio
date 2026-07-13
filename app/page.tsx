@@ -8,6 +8,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ChainBar from "@/components/ChainBar";
 import BuilderLog from "@/components/BuilderLog";
+import EasterEgg from "@/components/EasterEgg";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <BuilderLog />
       <Contact />
       <Footer />
+      <EasterEgg />
     </main>
   );
 }
