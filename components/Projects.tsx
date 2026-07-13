@@ -488,14 +488,13 @@ export default function Projects() {
 
       <div className="projects-grid">
         {shown.map((project) => {
-          const isFeatured = "featured" in project && project.featured === true;
           return (
             <TiltCard
               key={project.id}
-              className={`reveal ${touched ? "visible" : ""} ${isFeatured ? "featured-cell" : ""}`}
+              className={`reveal ${touched ? "visible" : ""}`}
             >
               <div
-                className={`project-card ${isFeatured ? "featured" : ""}`}
+                className="project-card"
                 style={
                   {
                     "--accent-gradient": project.accentGradient,
@@ -642,12 +641,6 @@ export default function Projects() {
         .project-card:hover {
           border-color: var(--hover-border);
         }
-        .project-card.featured {
-          box-shadow: 0 0 50px rgba(255, 95, 31, 0.07);
-        }
-        .project-card.featured .project-name {
-          font-size: 3.2rem;
-        }
         .card-body {
           padding: 1.6rem 2rem 2rem;
           display: flex;
@@ -767,17 +760,6 @@ export default function Projects() {
           flex-shrink: 0;
           border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-        .featured-cell {
-          grid-column: span 2;
-        }
-        .featured-cell .thumbnail-wrap {
-          height: 200px;
-        }
-        @media (max-width: 760px) {
-          .featured-cell { grid-column: span 1; }
-          .featured-cell .thumbnail-wrap { height: 168px; }
-        }
-
         /* ── Thumbnail micro-animations (hover replays the scene) ── */
         @keyframes vozPulse {
           from { transform: scaleY(0.35); }
