@@ -139,10 +139,55 @@ const projects = [
     accentGradient: "linear-gradient(90deg, var(--cyan), var(--orange))",
     hoverBorder: "var(--cyan)",
   },
+  {
+    id: "proof-of-rest",
+    name: "Proof of Rest",
+    badge: "HACKATHON · MONAD",
+    badgeType: "orange" as const,
+    description:
+      "An on-chain commitment device for solo builders who overwork. Lock a MON stake to start a timed work session — finish in time and reclaim it plus a share of the reward pool, run over and forfeit a cut. Contract-enforced cooldowns, soulbound streak badges, and RestGuardian, a keyless AI agent that builds and simulates transactions without ever signing.",
+    tags: ["Monad", "Solidity", "Foundry", "wagmi", "AI Agent"],
+    href: "https://proof-of-rest.vercel.app/",
+    repo: "https://github.com/natureloved/Proof-of-Rest",
+    categories: ["Monad", "DeFi", "AI"],
+    linkColor: "var(--orange)",
+    accentGradient: "linear-gradient(90deg, var(--orange), var(--purple))",
+    hoverBorder: "var(--orange)",
+  },
+  {
+    id: "expatship",
+    name: "ExpatShip",
+    badge: "NEW · SUPABASE",
+    badgeType: "cyan" as const,
+    description:
+      "Cross-border shipping and customs, simplified. Pick an origin and destination to get an instant duty-inclusive rate quote and ETA, generate a printable customs commercial invoice, and track your parcel along a live delivery timeline — all behind an authenticated client portal.",
+    tags: ["React", "Vite", "Supabase", "Recharts", "Tailwind"],
+    href: "https://expatship.vercel.app/",
+    repo: "https://github.com/natureloved/ExpatShip",
+    categories: ["Web2"],
+    linkColor: "var(--cyan)",
+    accentGradient: "linear-gradient(90deg, var(--cyan), var(--orange))",
+    hoverBorder: "var(--cyan)",
+  },
+  {
+    id: "tasky",
+    name: "Tasky",
+    badge: "NEW · TELEGRAM",
+    badgeType: "purple" as const,
+    description:
+      "A Telegram bot that hunts down short-term earning opportunities so you don't have to. It monitors public feeds for crypto quests, bounties, airdrops, hackathons, and dev gigs, then pushes real-time alerts to subscribers based on the categories they pick — invite-gated, with pluggable scrapers.",
+    tags: ["Python", "Telegram Bot", "SQLite", "Web Scraping", "Automation"],
+    href: "https://t.me/taskynotify_bot",
+    repo: "https://github.com/natureloved/Tasky",
+    categories: ["Web2"],
+    linkColor: "var(--purple)",
+    accentGradient: "linear-gradient(90deg, var(--purple), var(--cyan))",
+    hoverBorder: "var(--purple)",
+  },
 ];
 
-const FILTERS = ["All", "AI", "Bitcoin & Stacks", "DeFi", "Solana", "TON", "Nimiq"];
-const CHAIN_COUNT = 7; // Bitcoin, Stacks, Solana, Avalanche, EVM (LI.FI), TON, Nimiq
+const FILTERS = ["All", "AI", "Bitcoin & Stacks", "DeFi", "Solana", "TON", "Nimiq", "Monad", "Web2"];
+const CHAIN_COUNT = 8; // Bitcoin, Stacks, Solana, Avalanche, EVM (LI.FI), TON, Nimiq, Monad
 
 // ─── Thumbnail components ────────────────────────────────────────
 
@@ -423,6 +468,104 @@ function ClarityQuestThumbnail() {
   );
 }
 
+function ProofOfRestThumbnail() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Chrome label="PROOF OF REST — SESSION" accent="#ff5f1f" />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '8px 14px', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: 8.5, color: '#6b6b80' }}>{'>'} FOCUS ⏾</span>
+          <span className="blink-soft" style={{ fontFamily: 'monospace', fontSize: 15, color: '#ff5f1f', fontWeight: 600, letterSpacing: '0.05em' }}>
+            41:12
+          </span>
+        </div>
+        <div style={{ height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+          <div className="fill-bar" style={{ height: '100%', width: '69%', background: 'linear-gradient(90deg, #ff5f1f, #9b59f5)', borderRadius: 2 }} />
+        </div>
+        <div className="row-stagger" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 8.5, animationDelay: '0.1s' }}>
+          <span style={{ color: '#6b6b80' }}>{'>'} STAKED</span>
+          <span style={{ color: '#00d4ff', fontWeight: 600 }}>25 MON</span>
+        </div>
+        <div className="row-stagger" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 8.5, animationDelay: '0.2s' }}>
+          <span style={{ color: '#6b6b80' }}>{'>'} STREAK</span>
+          <span style={{ color: '#27c93f', fontWeight: 600 }}>🌱 TOUCHED GRASS ×6</span>
+        </div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <div className="pulse-dot" style={{ width: 5, height: 5, borderRadius: '50%', background: '#9b59f5' }} />
+          <span style={{ fontFamily: 'monospace', fontSize: 8, color: '#9b59f5', letterSpacing: '0.1em' }}>RESTGUARDIAN · SIMULATING TX</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExpatShipThumbnail() {
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Chrome label="EXPATSHIP — QUOTE" accent="#00d4ff" />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '8px 14px', gap: 7 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontFamily: 'monospace', fontSize: 9 }}>
+          <span style={{ color: 'rgba(240,237,230,0.65)' }}>🇳🇬 LOS</span>
+          {/* dashed route line with plane */}
+          <div style={{ flex: 1, position: 'relative', height: 10 }}>
+            <div style={{ position: 'absolute', top: 4, left: 0, right: 0, borderTop: '1px dashed rgba(0,212,255,0.4)' }} />
+            <span className="row-stagger" style={{ position: 'absolute', top: -3, left: '55%', fontSize: 9, color: '#00d4ff' }}>✈</span>
+          </div>
+          <span style={{ color: 'rgba(240,237,230,0.65)' }}>🇬🇧 LON</span>
+        </div>
+        <div className="row-stagger" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 8.5, animationDelay: '0.1s' }}>
+          <span style={{ color: '#6b6b80' }}>Rate (duty incl.)</span>
+          <span style={{ color: '#27c93f', fontWeight: 600 }}>£184.50</span>
+        </div>
+        <div className="row-stagger" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace', fontSize: 8.5, animationDelay: '0.2s' }}>
+          <span style={{ color: '#6b6b80' }}>Est. delivery</span>
+          <span style={{ color: 'rgba(240,237,230,0.6)' }}>5–7 days</span>
+        </div>
+        <div className="row-stagger" style={{ display: 'flex', height: 5, borderRadius: 3, overflow: 'hidden', gap: 3, animationDelay: '0.3s' }}>
+          {[1, 1, 1, 0.25].map((o, i) => (
+            <div key={i} style={{ flex: 1, background: '#00d4ff', opacity: o, borderRadius: 2 }} />
+          ))}
+        </div>
+        <div className="row-stagger" style={{ fontFamily: 'monospace', fontSize: 7.5, color: '#ff5f1f', animationDelay: '0.4s' }}>
+          ▸ In customs · commercial invoice ready
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TaskyThumbnail() {
+  const alerts = [
+    { tag: 'BOUNTY', text: 'Solidity audit · $2,500', color: '#ff5f1f' },
+    { tag: 'AIRDROP', text: 'zkSync quest live now', color: '#00d4ff' },
+    { tag: 'HACKATHON', text: 'ETHGlobal — 3d left', color: '#9b59f5' },
+  ];
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Chrome label="TASKY — @TASKYNOTIFY_BOT" accent="#9b59f5" />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '6px 12px', gap: 5 }}>
+        {alerts.map((a, i) => (
+          <div key={a.tag} className="row-stagger" style={{ display: 'flex', alignItems: 'center', gap: 6, animationDelay: `${i * 0.13}s` }}>
+            <span style={{
+              fontFamily: 'monospace', fontSize: 7, letterSpacing: '0.08em', color: a.color,
+              border: `1px solid ${a.color}`, borderRadius: 2, padding: '1px 4px', flexShrink: 0,
+            }}>
+              {a.tag}
+            </span>
+            <span style={{ fontFamily: 'monospace', fontSize: 8.5, color: 'rgba(240,237,230,0.6)' }}>{a.text}</span>
+          </div>
+        ))}
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 2 }}>
+          <div className="pulse-dot" style={{ width: 5, height: 5, borderRadius: '50%', background: '#27c93f' }} />
+          <span className="blink-soft" style={{ fontFamily: 'monospace', fontSize: 8, color: '#27c93f', letterSpacing: '0.08em' }}>
+            SCANNING FEEDS · 3 NEW MATCHES
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProjectThumbnail({ id }: { id: string }) {
   const thumbnails: Record<string, React.ReactNode> = {
     voz: <VozThumbnail />,
@@ -434,6 +577,9 @@ function ProjectThumbnail({ id }: { id: string }) {
     tipwall: <TipWallThumbnail />,
     'deadman-vault': <DeadmanVaultThumbnail />,
     clarityquest: <ClarityQuestThumbnail />,
+    'proof-of-rest': <ProofOfRestThumbnail />,
+    expatship: <ExpatShipThumbnail />,
+    tasky: <TaskyThumbnail />,
   };
   return (
     <div className="thumbnail-wrap">
