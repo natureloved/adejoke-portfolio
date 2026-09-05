@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, DM_Mono, Syne } from "next/font/google";
 import "./globals.css";
+import { ConstellationProvider } from "@/lib/constellation-context";
+import ConstellationField from "@/components/hero/ConstellationField";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
+import Compass from "@/components/Compass";
+import ChainBar from "@/components/ChainBar";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const bebasNeue = Bebas_Neue({
@@ -35,7 +39,7 @@ export const metadata: Metadata = {
     template: "%s | Adejoke Elizabeth",
   },
   description:
-    "Portfolio of Akinola Adejoke Elizabeth — Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity.",
+    "Portfolio of Akinola Adejoke Elizabeth — Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity. A live constellation of eight chains.",
   keywords: [
     "Adejoke Elizabeth",
     "Full Stack Developer",
@@ -47,6 +51,7 @@ export const metadata: Metadata = {
     "EVM",
     "DeFi",
     "Web3",
+    "Bitcoin L2",
   ],
   authors: [{ name: "Akinola Adejoke Elizabeth" }],
   alternates: { canonical: "/" },
@@ -104,10 +109,16 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <CustomCursor />
-        <ScrollReveal />
-        <Navbar />
-        <main id="main">{children}</main>
+        <ConstellationProvider>
+          {/* The living backdrop — eight chains orbiting behind everything */}
+          <ConstellationField />
+          <ChainBar />
+          <CustomCursor />
+          <Navbar />
+          <Compass />
+          <ScrollReveal />
+          <main id="main">{children}</main>
+        </ConstellationProvider>
       </body>
     </html>
   );

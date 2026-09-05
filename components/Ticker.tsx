@@ -29,13 +29,14 @@ export default function Ticker() {
 
       <style jsx>{`
         .ticker-wrapper {
-          background: var(--surface);
+          background: rgba(6, 6, 12, 0.55);
+          backdrop-filter: blur(2px);
           border-top: 1px solid var(--border);
           border-bottom: 1px solid var(--border);
           padding: 0.9rem 0;
           overflow: hidden;
           position: relative;
-          z-index: 10;
+          z-index: 1;
         }
 
         .ticker-track {

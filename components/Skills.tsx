@@ -33,8 +33,8 @@ export default function Skills() {
   }, []);
 
   return (
-    <section id="skills" className="skills-section">
-      <div className="section-label reveal">03 — Skills</div>
+    <section id="stack" className="skills-section section">
+      <div className="section-label reveal">03 — Stack</div>
       <h2 className="section-title reveal">
         My <span className="gradient-text">Stack</span>
       </h2>
@@ -91,8 +91,6 @@ export default function Skills() {
 
       <style jsx>{`
         .skills-section {
-          background: var(--bg);
-          padding: 8rem 6rem;
           position: relative;
           overflow: hidden;
         }

@@ -53,6 +53,21 @@ export default function Navbar() {
       </a>
       <span className="badge-open">Open to work</span>
 
+      <nav className="nav-links" aria-label="Primary">
+        {[
+          { label: "Origin", href: "#origin" },
+          { label: "The Work", href: "#work" },
+          { label: "Stack", href: "#stack" },
+          { label: "Guilds", href: "#guilds" },
+          { label: "Notes", href: "#notes" },
+          { label: "Signal", href: "#signal" },
+        ].map((link) => (
+          <a key={link.href} href={link.href} className="nav-link" onClick={closeMenu}>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
       <button
         ref={toggleRef}
         className={`nav-toggle ${isOpen ? "active" : ""}`}
@@ -76,14 +91,15 @@ export default function Navbar() {
       >
         <nav className="mobile-nav" role="menu">
           {[
-            { label: "About", href: "#about" },
-            { label: "Projects", href: "#projects" },
-            { label: "Skills", href: "#skills" },
-            { label: "Programs", href: "#programs" },
-            { label: "Contact", href: "#contact" },
+            { label: "Origin", href: "#origin" },
+            { label: "The Work", href: "#work" },
+            { label: "Stack", href: "#stack" },
+            { label: "Guilds", href: "#guilds" },
+            { label: "Notes", href: "#notes" },
+            { label: "Signal", href: "#signal" },
           ].map((link, idx) => (
             <a
-              key={link.label}
+              key={link.href}
               href={link.href}
               className="mobile-link"
               style={{ transitionDelay: `${0.1 + idx * 0.1}s` }}
@@ -131,7 +147,7 @@ export default function Navbar() {
           z-index: 1001;
         }
 
-        .navbar-links {
+        .nav-links {
           display: none;
         }
 
@@ -242,6 +258,39 @@ export default function Navbar() {
         }
         .nav-toggle.active .bar:nth-child(3) {
           transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .nav-link {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.7rem;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+          color: rgba(240, 237, 230, 0.7);
+          text-decoration: none;
+          transition: color 0.25s ease;
+          position: relative;
+        }
+        .nav-link:hover { color: var(--white); }
+        .nav-link::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -6px;
+          width: 0;
+          height: 1px;
+          background: linear-gradient(90deg, var(--orange), var(--cyan));
+          transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        @media (min-width: 901px) {
+          .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+          }
+          .badge-open { display: inline-block; }
+          .nav-toggle { display: none; }
         }
 
         @media (max-width: 480px) {

@@ -189,12 +189,12 @@ function ProgramCard({ program }: { program: Program }) {
 
 export default function Programs() {
   return (
-    <section id="programs" className="programs">
-      <div className="section-label reveal">04 — Programs</div>
+    <section id="guilds" className="programs section">
+      <div className="section-label reveal">04 — Guilds</div>
       <div className="section-title reveal">
-        Fellowships &amp;
+        Guilds &amp;
         <br />
-        Recognitions
+        Fellowships
       </div>
 
       <div className="programs-grid">
@@ -205,8 +205,7 @@ export default function Programs() {
 
       <style jsx>{`
         .programs {
-          background: var(--bg);
-          padding: 7rem 4rem 7rem 6rem;
+          position: relative;
         }
         .section-label {
           font-family: var(--font-dm-mono), "DM Mono", monospace;

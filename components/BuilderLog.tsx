@@ -113,12 +113,12 @@ export default function BuilderLog() {
   };
 
     return (
-      <section id="builder-log" className="builder-log section-container">
+      <section id="notes" className="builder-log section-container section">
         <div className="log-container reveal">
           <div className="log-header">
             <div className="header-left">
               <span className="icon">⬡</span>
-              <span className="title">Builder Log</span>
+              <span className="title">Field Notes</span>
             </div>
             <div className="header-right">
               <a

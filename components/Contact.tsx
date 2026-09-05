@@ -89,13 +89,13 @@ export default function Contact() {
   const resetForm = () => setForm(INITIAL_STATE);
 
   return (
-    <section id="contact" className="contact">
+    <section id="signal" className="contact section">
       <div className="contact-container">
-        <div className="section-label reveal">05 — Contact</div>
+        <div className="section-label reveal">06 — Signal</div>
 
         <h2 className="section-title reveal creative-font">
-          Let&apos;s Build <br />
-          Something
+          Open a <br />
+          Channel
         </h2>
 
         <p className="subtext reveal">
@@ -239,11 +239,10 @@ export default function Contact() {
 
       <style jsx>{`
         .contact {
-          background: var(--surface);
-          padding: 8rem 4rem;
           display: flex;
           justify-content: center;
           text-align: center;
+          position: relative;
         }
 
         .contact-container {
