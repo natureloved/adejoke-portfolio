@@ -8,6 +8,8 @@ import CustomCursor from "@/components/CustomCursor";
 import Compass from "@/components/Compass";
 import ChainBar from "@/components/ChainBar";
 import ScrollReveal from "@/components/ScrollReveal";
+import BootSequence from "@/components/BootSequence";
+import CommandPalette from "@/components/CommandPalette";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -86,7 +88,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#06060c" />
+        <meta name="theme-color" content="#07070e" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -110,6 +112,10 @@ export default function RootLayout({
           Skip to content
         </a>
         <ConstellationProvider>
+          {/* First-paint handshake — once per session, skippable */}
+          <BootSequence />
+          {/* Cmd/Ctrl+K — jump anywhere, open any project, copy the email */}
+          <CommandPalette />
           {/* The living backdrop — eight chains orbiting behind everything */}
           <ConstellationField />
           <ChainBar />

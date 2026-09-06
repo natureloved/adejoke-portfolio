@@ -4,10 +4,27 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [modKey, setModKey] = useState("⌘K");
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   const closeMenu = () => setIsOpen(false);
+
+  // Show Ctrl on Windows/Linux. Set after mount so SSR and client agree.
+  useEffect(() => {
+    const isMac = /mac|iphone|ipad|ipod/i.test(
+      navigator.userAgent ?? navigator.platform ?? ""
+    );
+    if (!isMac) setModKey("Ctrl K");
+  }, []);
+
+  // The palette owns its own state; a synthetic shortcut opens it without
+  // threading a context or global store through the tree.
+  const openPalette = () => {
+    window.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true })
+    );
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -53,20 +70,32 @@ export default function Navbar() {
       </a>
       <span className="badge-open">Open to work</span>
 
-      <nav className="nav-links" aria-label="Primary">
-        {[
-          { label: "Origin", href: "#origin" },
-          { label: "The Work", href: "#work" },
-          { label: "Stack", href: "#stack" },
-          { label: "Guilds", href: "#guilds" },
-          { label: "Notes", href: "#notes" },
-          { label: "Signal", href: "#signal" },
-        ].map((link) => (
-          <a key={link.href} href={link.href} className="nav-link" onClick={closeMenu}>
-            {link.label}
-          </a>
-        ))}
-      </nav>
+      <div className="nav-right">
+        <nav className="nav-links" aria-label="Primary">
+          {[
+            { label: "Origin", href: "#origin" },
+            { label: "The Work", href: "#work" },
+            { label: "Stack", href: "#stack" },
+            { label: "Guilds", href: "#guilds" },
+            { label: "Notes", href: "#notes" },
+            { label: "Signal", href: "#signal" },
+          ].map((link) => (
+            <a key={link.href} href={link.href} className="nav-link" onClick={closeMenu}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <button
+          type="button"
+          className="cmd-hint"
+          onClick={openPalette}
+          aria-label="Open command palette"
+          title="Search · jump to anything"
+        >
+          <span className="cmd-hint-key">{modKey}</span>
+        </button>
+      </div>
 
       <button
         ref={toggleRef}
@@ -147,8 +176,41 @@ export default function Navbar() {
           z-index: 1001;
         }
 
+        .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 1.6rem;
+        }
+
         .nav-links {
           display: none;
+        }
+
+        .cmd-hint {
+          display: none;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid var(--border);
+          border-radius: 4px;
+          padding: 0.4rem 0.6rem;
+          cursor: pointer;
+          transition: border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .cmd-hint:hover {
+          border-color: var(--orange);
+          background: rgba(255, 176, 32, 0.08);
+        }
+
+        .cmd-hint-key {
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.6rem;
+          letter-spacing: 0.1em;
+          color: var(--muted);
+          white-space: nowrap;
+        }
+
+        .cmd-hint:hover .cmd-hint-key {
+          color: var(--orange);
         }
 
         .badge-open {
@@ -291,6 +353,7 @@ export default function Navbar() {
           }
           .badge-open { display: inline-block; }
           .nav-toggle { display: none; }
+          .cmd-hint { display: inline-flex; align-items: center; }
         }
 
         @media (max-width: 480px) {

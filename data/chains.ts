@@ -20,4 +20,4 @@ export const CHAINS: Chain[] = [
 ];
 
 export const chainColor = (id: string | null) =>
-  CHAINS.find((c) => c.id === id)?.color ?? "#ff5f1f";
+  CHAINS.find((c) => c.id === id)?.color ?? "#ffb020";

@@ -3,15 +3,20 @@
 @tailwind utilities;
 
 /* ─── Design Tokens ─────────────────────────────────────────── */
+/* "Obsidian & Amber" — a warm amber primary over near-black ink.
+   The 8 chain brand colours below are the *only* other chroma, which
+   keeps the constellation the brightest thing on the page.
+   NOTE: token NAMES (--orange/--purple/--cyan) are kept deliberately so
+   data/projects.ts and every component keep resolving without edits. */
 :root {
-  --bg: #06060c;
-  --surface: #0e0e1c;
-  --orange: #ff5f1f;
-  --purple: #9b59f5;
-  --cyan: #00d4ff;
-  --white: #f0ede6;
-  --muted: #6b6b80;
-  --border: rgba(255, 255, 255, 0.07);
+  --bg: #07070e;
+  --surface: #10101c;
+  --orange: #ffb020;   /* amber — primary accent */
+  --purple: #a78bfa;   /* soft violet */
+  --cyan: #2dd4bf;     /* teal */
+  --white: #f5f2ea;    /* warm bone */
+  --muted: #8b8ba3;
+  --border: rgba(255, 255, 255, 0.08);
   /* per-chain brand colors (used in the constellation + project tags) */
   --btc: #f7931a;
   --stx: #9b59f5;

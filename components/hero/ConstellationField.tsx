@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { CHAINS } from "@/data/chains";
+import { CHAINS, chainColor } from "@/data/chains";
 import { useConstellation } from "@/lib/constellation-context";
 
 type Particle = {
@@ -9,12 +9,31 @@ type Particle = {
   hx: number; hy: number; c: string; chain: string;
 };
 
+/* The field re-tints itself to match whichever region you're reading.
+   Hovering a chain overrides it with that chain's real brand colour. */
+const REGION_TINTS: Record<string, string> = {
+  hero: "#ffb020",
+  origin: "#a78bfa",
+  work: "#2dd4bf",
+  stack: "#a78bfa",
+  guilds: "#2dd4bf",
+  notes: "#ffb020",
+  signal: "#a78bfa",
+};
+
+function hexToRgb(hex: string): [number, number, number] {
+  const n = parseInt(hex.replace("#", ""), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
 export default function ConstellationField() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { active } = useConstellation();
+  const { active, region } = useConstellation();
   const activeRef = useRef<string | null>(active);
   activeRef.current = active;
+  const regionRef = useRef(region);
+  regionRef.current = region;
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -72,6 +91,12 @@ export default function ConstellationField() {
     function frame() {
       ctx.clearRect(0, 0, W, H);
       const act = activeRef.current;
+      // Chain hover wins over the region tint — that's the reward interaction.
+      const tint = act
+        ? chainColor(act)
+        : REGION_TINTS[regionRef.current] ?? "#a78bfa";
+      const [tr, tg, tb] = hexToRgb(tint);
+      const boost = act ? 1.9 : 1;
       const link = 72 * DPR;
       for (let i = 0; i < ps.length; i++) {
         const a = ps[i];
@@ -79,7 +104,7 @@ export default function ConstellationField() {
           const b = ps[j];
           const dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
           if (d2 < link * link) {
-            ctx.strokeStyle = `rgba(155,89,245,${0.10 * (1 - d2 / (link * link))})`;
+            ctx.strokeStyle = `rgba(${tr},${tg},${tb},${0.11 * boost * (1 - d2 / (link * link))})`;
             ctx.lineWidth = 0.5 * DPR;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }

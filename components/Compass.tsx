@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useConstellation } from "@/lib/constellation-context";
 
 const REGIONS = [
   { id: "hero", label: "Enter" },
@@ -13,13 +14,15 @@ const REGIONS = [
 ];
 
 export default function Compass() {
-  const [active, setActive] = useState("hero");
+  // Region lives in shared state so the constellation field can re-tint
+  // itself as the reader travels through the universe.
+  const { region: active, setRegion } = useConstellation();
 
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+          if (e.isIntersecting) setRegion(e.target.id);
         });
       },
       { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
@@ -29,7 +32,7 @@ export default function Compass() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [setRegion]);
 
   const progress = ((REGIONS.findIndex((r) => r.id === active) + 1) / REGIONS.length) * 100;
 

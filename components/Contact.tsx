@@ -1,6 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/** Live local time in Lagos. Renders nothing until mounted so SSR matches. */
+function LagosClock() {
+  const [time, setTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Africa/Lagos",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <span className="clock" aria-label="Current time in Lagos, Nigeria">
+      <span className="clock-dot" aria-hidden="true" />
+      LAGOS {time ?? "--:--:--"} WAT
+    </span>
+  );
+}
 
 const FORMSPREE_URL =
   process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "https://formspree.io/f/xojrppdv";
@@ -107,6 +133,7 @@ export default function Contact() {
           <a href="/resume.pdf" className="btn-resume" target="_blank" rel="noopener noreferrer">
             Download Resume
           </a>
+          <LagosClock />
         </div>
 
         <div className="form-wrap reveal">
@@ -283,29 +310,9 @@ export default function Contact() {
         .contact-actions {
           display: flex;
           justify-content: center;
-          margin-bottom: 2.5rem;
-        }
-
-        .btn-resume {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.72rem;
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
-          color: var(--white);
-          text-decoration: none;
-          border: 1px solid var(--border);
-          padding: 0.85rem 2rem;
-          border-radius: 4px;
-          display: inline-flex;
           align-items: center;
-          gap: 0.6rem;
-          transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-          background: rgba(255, 255, 255, 0.04);
-        }
-
-        .contact-actions {
-          display: flex;
-          justify-content: center;
+          gap: 1.2rem;
+          flex-wrap: wrap;
           margin-bottom: 2.5rem;
         }
 
@@ -330,6 +337,32 @@ export default function Contact() {
           border-color: var(--purple);
           color: var(--purple);
           transform: translateY(-2px);
+        }
+
+        .clock {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-size: 0.62rem;
+          text-transform: uppercase;
+          letter-spacing: 0.18em;
+          color: var(--muted);
+          font-variant-numeric: tabular-nums;
+        }
+
+        .clock-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #27c93f;
+          box-shadow: 0 0 8px #27c93f;
+          animation: clockPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes clockPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
         }
 
         @media (max-width: 480px) {
