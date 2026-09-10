@@ -111,7 +111,7 @@ export default function LagosVibe() {
         }
 
         .label {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 10px;
           color: var(--muted);
           text-transform: uppercase;
@@ -119,13 +119,13 @@ export default function LagosVibe() {
         }
 
         .time {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 13px;
           color: var(--orange);
         }
 
         .vibe-badge {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 11px;
           color: var(--cyan);
           text-transform: uppercase;

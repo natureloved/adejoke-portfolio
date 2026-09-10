@@ -12,13 +12,12 @@ type Particle = {
 /* The field re-tints itself to match whichever region you're reading.
    Hovering a chain overrides it with that chain's real brand colour. */
 const REGION_TINTS: Record<string, string> = {
-  hero: "#ffb020",
-  origin: "#a78bfa",
-  work: "#2dd4bf",
-  stack: "#a78bfa",
-  guilds: "#2dd4bf",
-  notes: "#ffb020",
-  signal: "#a78bfa",
+  hero: "#d9f99d",
+  about: "#5eead4",
+  work: "#ff8a65",
+  stack: "#d9f99d",
+  journey: "#5eead4",
+  contact: "#ff8a65",
 };
 
 function hexToRgb(hex: string): [number, number, number] {
@@ -41,7 +40,7 @@ export default function ConstellationField() {
     const ctx = canvas.getContext("2d")!;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const DPR = Math.min(window.devicePixelRatio || 1, 1.6);
-    const N = reduce ? 90 : 320;
+    const N = reduce ? 70 : 220;
     let W = 0, H = 0;
     let ps: Particle[] = [];
 
@@ -76,7 +75,7 @@ export default function ConstellationField() {
 
     function onScroll() {
       const v = Math.max(0, 1 - scrollY / (innerHeight * 0.75));
-      wrap.style.opacity = String(0.14 + 0.86 * v);
+      wrap.style.opacity = String(0.05 + 0.26 * v);
     }
 
     resize();
@@ -94,7 +93,7 @@ export default function ConstellationField() {
       // Chain hover wins over the region tint — that's the reward interaction.
       const tint = act
         ? chainColor(act)
-        : REGION_TINTS[regionRef.current] ?? "#a78bfa";
+        : REGION_TINTS[regionRef.current] ?? "#c5a7ff";
       const [tr, tg, tb] = hexToRgb(tint);
       const boost = act ? 1.9 : 1;
       const link = 72 * DPR;
@@ -149,7 +148,7 @@ export default function ConstellationField() {
     <div
       ref={wrapRef}
       aria-hidden
-      style={{ position: "fixed", inset: 0, zIndex: 0, opacity: 1, transition: "opacity .45s ease", pointerEvents: "none" }}
+      style={{ position: "fixed", inset: 0, zIndex: 0, opacity: 0.31, transition: "opacity .45s ease", pointerEvents: "none" }}
     >
       <canvas ref={canvasRef} style={{ display: "block" }} />
     </div>

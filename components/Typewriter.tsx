@@ -30,7 +30,7 @@ export default function Typewriter({ text, delay = 15, onComplete }: { text: str
           line-height: 1.85;
           color: rgba(240, 237, 230, 0.72);
           margin-bottom: 2.5rem;
-          font-family: var(--font-syne), "Syne", sans-serif;
+          font-family: var(--font-sans);
         }
         .typewriter-cursor {
           display: inline-block;

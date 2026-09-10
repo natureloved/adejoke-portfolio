@@ -3,14 +3,14 @@
 import { useEffect } from "react";
 import { useConstellation } from "@/lib/constellation-context";
 
+// Matches the section ids currently rendered by app/page.tsx.
 const REGIONS = [
-  { id: "hero", label: "Enter" },
-  { id: "origin", label: "Origin" },
-  { id: "work", label: "The Work" },
+  { id: "hero", label: "Top" },
+  { id: "about", label: "About" },
+  { id: "work", label: "Work" },
   { id: "stack", label: "Stack" },
-  { id: "guilds", label: "Guilds" },
-  { id: "notes", label: "Field Notes" },
-  { id: "signal", label: "Signal" },
+  { id: "journey", label: "Journey" },
+  { id: "contact", label: "Contact" },
 ];
 
 export default function Compass() {
@@ -66,7 +66,7 @@ export default function Compass() {
           align-items: flex-end;
         }
         .compass-label {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.58rem;
           letter-spacing: 0.24em;
           color: var(--muted);
@@ -76,7 +76,7 @@ export default function Compass() {
           display: flex;
           align-items: center;
           gap: 0.55rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.62rem;
           color: var(--muted);
           letter-spacing: 0.06em;

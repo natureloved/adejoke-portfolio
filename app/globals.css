@@ -2,164 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design Tokens ─────────────────────────────────────────── */
-/* "Obsidian & Amber" — a warm amber primary over near-black ink.
-   The 8 chain brand colours below are the *only* other chroma, which
-   keeps the constellation the brightest thing on the page.
-   NOTE: token NAMES (--orange/--purple/--cyan) are kept deliberately so
-   data/projects.ts and every component keep resolving without edits. */
 :root {
-  --bg: #07070e;
-  --surface: #10101c;
-  --orange: #ffb020;   /* amber — primary accent */
-  --purple: #a78bfa;   /* soft violet */
-  --cyan: #2dd4bf;     /* teal */
-  --white: #f5f2ea;    /* warm bone */
-  --muted: #8b8ba3;
-  --border: rgba(255, 255, 255, 0.08);
-  /* per-chain brand colors (used in the constellation + project tags) */
-  --btc: #f7931a;
-  --stx: #9b59f5;
-  --sol: #14f195;
-  --ton: #0098ea;
-  --nim: #ffcf00;
-  --avax: #e84142;
-  --evm: #627eea;
-  --monad: #ff5f1f;
+  --bg: #0b0e10;
+  --surface: #12171a;
+  --surface-raised: #182024;
+  --orange: #ff8a65;
+  --purple: #c5a7ff;
+  --cyan: #5eead4;
+  --lime: #d9f99d;
+  --white: #f4f1ea;
+  --muted: #9aa6aa;
+  --border: rgba(244, 241, 234, 0.13);
+  --border-soft: rgba(244, 241, 234, 0.08);
+  --font-sans: var(--font-geist), "Geist", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", Consolas, monospace;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+* { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--white);
-  font-family: var(--font-syne), "Syne", sans-serif;
-  overflow-x: hidden;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+
+::selection { background: rgba(94, 234, 212, 0.26); color: var(--white); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--surface-raised);
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+}
+
+.site-grid {
   position: relative;
-  min-height: 100vh;
-  cursor: none;
+  z-index: 1;
+  width: min(1180px, calc(100% - 48px));
+  margin-inline: auto;
 }
 
-/* ─── Noise Texture Overlay ──────────────────────────────────── */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0.1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 300px 300px;
-}
-
-/* ─── Scroll Reveal Logic ────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.visible {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* ─── Section base (translucent so the field shows through) ─── */
 .section {
   position: relative;
   z-index: 1;
-  background: rgba(6, 6, 12, 0.62);
-  backdrop-filter: blur(2px);
-  padding: 7rem 6vw;
+  padding: 7rem 0;
 }
 
 .section-label {
-  font-family: var(--font-dm-mono), "DM Mono", monospace;
-  font-size: 0.7rem;
-  color: var(--orange);
-  letter-spacing: 0.28em;
+  margin-bottom: 1.2rem;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
 }
+
 .section-title {
-  font-family: var(--font-bebas), "Bebas Neue", cursive;
-  font-size: clamp(2.8rem, 6vw, 5.5rem);
-  line-height: 0.95;
+  max-width: 760px;
+  margin: 0;
   color: var(--white);
-  margin-bottom: 2rem;
+  font-size: clamp(2.25rem, 5vw, 4.6rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1;
 }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-.animate-blink { animation: blink 1.2s step-end infinite; }
-
-.gradient-text {
-  background: linear-gradient(90deg, var(--orange), var(--purple), var(--cyan));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.section-intro {
+  max-width: 640px;
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
-/* ─── Scrollbar ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--orange), var(--purple));
-  border-radius: 2px;
+.reveal {
+  opacity: 1;
+  transform: none;
 }
 
-::selection {
-  background: rgba(255, 95, 31, 0.35);
-  color: var(--white);
-}
-
-@keyframes pageLoad {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-body { animation: pageLoad 0.35s ease both; }
+.visible { opacity: 1 !important; transform: translateY(0) !important; }
 
 .skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--orange);
-  color: #06060c;
-  padding: 8px 16px;
+  position: fixed;
+  top: -3rem;
+  left: 1rem;
   z-index: 10000;
+  padding: 0.7rem 1rem;
+  background: var(--lime);
+  color: #101513;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   text-decoration: none;
-  font-family: var(--font-dm-mono), "DM Mono", monospace;
-  font-size: 12px;
+  transition: top 0.2s ease;
 }
-.skip-link:focus { top: 0; }
 
-@media (max-width: 900px) {
-  body { cursor: default !important; }
-  .section { padding: 5rem 7vw; }
+.skip-link:focus { top: 1rem; }
+
+:where(a, button, input, textarea):focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+
+.text-gradient { color: var(--lime); }
+
+@media (max-width: 760px) {
+  .site-grid { width: min(100% - 32px, 620px); }
+  .section { padding: 5rem 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body { cursor: auto !important; }
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

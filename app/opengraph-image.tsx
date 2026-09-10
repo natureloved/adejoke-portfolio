@@ -9,7 +9,7 @@ export default function OGImage() {
     (
       <div
         style={{
-          background: '#06060c',
+          background: '#0b0e10',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -19,7 +19,7 @@ export default function OGImage() {
           position: 'relative',
         }}
       >
-        {/* Left accent gradient bar */}
+        {/* Left accent bar */}
         <div
           style={{
             position: 'absolute',
@@ -27,7 +27,7 @@ export default function OGImage() {
             top: 0,
             bottom: 0,
             width: 8,
-            background: 'linear-gradient(180deg, #ff5f1f 0%, #9b59f5 50%, #00d4ff 100%)',
+            background: '#d9f99d',
             display: 'flex',
           }}
         />
@@ -51,15 +51,15 @@ export default function OGImage() {
             right: 80,
             width: 56,
             height: 56,
-            background: '#0e0e1c',
-            border: '1px solid rgba(255,95,31,0.45)',
-            borderRadius: 10,
+            background: '#12171a',
+            border: '1px solid rgba(217,249,157,0.45)',
+            borderRadius: 4,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: 30,
             fontWeight: 800,
-            color: '#ff5f1f',
+            color: '#d9f99d',
             fontFamily: 'serif',
           }}
         >
@@ -71,14 +71,14 @@ export default function OGImage() {
           style={{
             fontFamily: 'monospace',
             fontSize: 13,
-            color: '#ff5f1f',
+            color: '#5eead4',
             letterSpacing: '0.25em',
             textTransform: 'uppercase',
             marginBottom: 40,
             display: 'flex',
           }}
         >
-          PORTFOLIO — 2026
+          PORTFOLIO / 2026
         </div>
 
         {/* Name */}
@@ -86,7 +86,7 @@ export default function OGImage() {
           style={{
             fontSize: 64,
             fontWeight: 800,
-            color: '#f0ede6',
+            color: '#f4f1ea',
             lineHeight: 1.05,
             marginBottom: 20,
             display: 'flex',
@@ -100,13 +100,13 @@ export default function OGImage() {
         <div
           style={{
             fontSize: 24,
-            color: '#ff5f1f',
+            color: '#d9f99d',
             marginBottom: 52,
             display: 'flex',
             fontFamily: 'sans-serif',
           }}
         >
-          Full Stack Developer &amp; Multi-Chain Builder
+          Full Stack and Multi-Chain Developer
         </div>
 
         {/* Tech tags */}
@@ -120,7 +120,7 @@ export default function OGImage() {
                 borderRadius: 4,
                 fontFamily: 'monospace',
                 fontSize: 12,
-                color: '#6b6b80',
+                color: '#9aa6aa',
                 display: 'flex',
               }}
             >
@@ -137,7 +137,7 @@ export default function OGImage() {
             right: 80,
             fontFamily: 'monospace',
             fontSize: 13,
-            color: '#6b6b80',
+            color: '#9aa6aa',
             display: 'flex',
           }}
         >

@@ -17,14 +17,14 @@ type Item = {
   run: () => void;
 };
 
+// Matches the section ids currently rendered by app/page.tsx.
 const REGIONS: { id: string; label: string; hint: string }[] = [
   { id: "hero", label: "Top", hint: "hero" },
-  { id: "origin", label: "Origin", hint: "about" },
+  { id: "about", label: "About", hint: "bio" },
   { id: "work", label: "The Work", hint: "projects" },
   { id: "stack", label: "Stack", hint: "skills" },
-  { id: "guilds", label: "Guilds & Fellowships", hint: "programs" },
-  { id: "notes", label: "Field Notes", hint: "log" },
-  { id: "signal", label: "Open a Channel", hint: "contact" },
+  { id: "journey", label: "Journey", hint: "programs" },
+  { id: "contact", label: "Contact", hint: "get in touch" },
 ];
 
 const GROUP_ORDER: Group[] = ["Jump to", "Projects", "Actions"];
@@ -363,7 +363,7 @@ export default function CommandPalette() {
           border-radius: 10px;
           overflow: hidden;
           box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7),
-            0 0 60px rgba(255, 176, 32, 0.07);
+            0 0 60px rgba(255, 138, 101, 0.07);
           animation: cmdPop 0.2s cubic-bezier(0.22, 1, 0.36, 1);
           display: flex;
           flex-direction: column;
@@ -387,7 +387,7 @@ export default function CommandPalette() {
         .cmd-caret {
           color: var(--orange);
           font-size: 0.8rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
         }
 
         .cmd-input {
@@ -396,7 +396,7 @@ export default function CommandPalette() {
           border: none;
           outline: none;
           color: var(--white);
-          font-family: var(--font-syne), "Syne", sans-serif;
+          font-family: var(--font-sans);
           font-size: 0.95rem;
         }
 
@@ -411,7 +411,7 @@ export default function CommandPalette() {
         }
 
         .cmd-group-label {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.58rem;
           text-transform: uppercase;
           letter-spacing: 0.22em;
@@ -435,7 +435,7 @@ export default function CommandPalette() {
         }
 
         .cmd-item.is-active {
-          background: rgba(255, 176, 32, 0.09);
+          background: rgba(255, 138, 101, 0.09);
           border-left-color: var(--orange);
         }
 
@@ -447,7 +447,7 @@ export default function CommandPalette() {
         }
 
         .cmd-label {
-          font-family: var(--font-syne), "Syne", sans-serif;
+          font-family: var(--font-sans);
           font-size: 0.88rem;
           font-weight: 600;
           flex: 1;
@@ -458,7 +458,7 @@ export default function CommandPalette() {
         }
 
         .cmd-hint {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.62rem;
           text-transform: uppercase;
           letter-spacing: 0.12em;
@@ -472,7 +472,7 @@ export default function CommandPalette() {
 
         .cmd-empty {
           padding: 2rem 1.15rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.75rem;
           color: var(--muted);
         }
@@ -493,7 +493,7 @@ export default function CommandPalette() {
           display: flex;
           align-items: center;
           gap: 0.4rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.6rem;
           text-transform: uppercase;
           letter-spacing: 0.14em;
@@ -501,7 +501,7 @@ export default function CommandPalette() {
         }
 
         .cmd-kbd {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.58rem;
           border: 1px solid rgba(255, 255, 255, 0.16);
           border-radius: 3px;

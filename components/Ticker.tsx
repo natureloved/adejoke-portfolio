@@ -46,7 +46,7 @@ export default function Ticker() {
         }
 
         .ticker-item {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.72rem;
           font-weight: 400;
           text-transform: uppercase;

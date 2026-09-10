@@ -110,11 +110,11 @@ export default function BootSequence() {
         }
         .boot-inner {
           width: min(420px, 86vw);
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.78rem;
           line-height: 2.1;
           color: var(--cyan);
-          text-shadow: 0 0 12px rgba(45, 212, 191, 0.28);
+          text-shadow: 0 0 12px rgba(94, 234, 212, 0.28);
         }
         .boot-line {
           animation: bootLine 0.22s ease-out;
@@ -133,7 +133,7 @@ export default function BootSequence() {
           50% { opacity: 0; }
         }
         .boot-skip {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.6rem;
           text-transform: uppercase;
           letter-spacing: 0.2em;

@@ -7,13 +7,17 @@ const config: Config = {
       colors: {
         bg: "var(--bg)",
         surface: "var(--surface)",
+        "surface-raised": "var(--surface-raised)",
         orange: "var(--orange)",
         purple: "var(--purple)",
         cyan: "var(--cyan)",
+        lime: "var(--lime)",
         white: "var(--white)",
         muted: "var(--muted)",
       },
       fontFamily: {
+        sans: ["var(--font-geist)", "Geist", "Arial", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "Geist Mono", "Consolas", "monospace"],
         bebas: ["var(--font-bebas)", "Bebas Neue", "cursive"],
         "dm-mono": ["var(--font-dm-mono)", "DM Mono", "monospace"],
         syne: ["var(--font-syne)", "Syne", "sans-serif"],

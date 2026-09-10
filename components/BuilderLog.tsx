@@ -217,7 +217,7 @@ export default function BuilderLog() {
           display: flex;
           align-items: center;
           gap: 0.8rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 11px;
           color: var(--purple);
           text-transform: uppercase;
@@ -228,7 +228,7 @@ export default function BuilderLog() {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 10px;
           color: var(--muted);
           text-transform: uppercase;
@@ -263,7 +263,7 @@ export default function BuilderLog() {
         }
 
         .rule-label {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 9px;
           color: var(--muted);
           text-transform: uppercase;
@@ -294,7 +294,7 @@ export default function BuilderLog() {
         .activity-row:hover { background: rgba(255, 255, 255, 0.01); }
 
         .activity-date {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 9px;
           color: var(--muted);
           text-transform: uppercase;
@@ -302,7 +302,7 @@ export default function BuilderLog() {
         }
 
         .activity-repo {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 9.5px;
           color: var(--cyan);
           text-transform: uppercase;
@@ -313,7 +313,7 @@ export default function BuilderLog() {
         }
 
         .activity-text {
-          font-family: var(--font-syne), "Syne", sans-serif;
+          font-family: var(--font-sans);
           font-size: 11px;
           color: rgba(240, 237, 230, 0.5);
           overflow: hidden;
@@ -323,7 +323,7 @@ export default function BuilderLog() {
 
         .activity-empty {
           padding: 1.2rem 1.4rem;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 9.5px;
           color: var(--muted);
         }
@@ -366,7 +366,7 @@ export default function BuilderLog() {
         .log-entry:hover { background: rgba(255, 255, 255, 0.01); }
 
         .date-col {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 10px;
           color: var(--muted);
           min-width: 65px;
@@ -390,7 +390,7 @@ export default function BuilderLog() {
         }
 
         .project-name {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 13px;
           color: var(--orange);
           text-transform: uppercase;
@@ -398,7 +398,7 @@ export default function BuilderLog() {
         }
 
         .status-badge {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 9px;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -415,7 +415,7 @@ export default function BuilderLog() {
           font-size: 13.5px;
           line-height: 1.6;
           color: rgba(240, 237, 230, 0.65);
-          font-family: var(--font-syne), "Syne", sans-serif;
+          font-family: var(--font-sans);
         }
 
         @media (max-width: 900px) {

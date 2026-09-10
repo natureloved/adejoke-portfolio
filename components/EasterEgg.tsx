@@ -142,7 +142,7 @@ export default function EasterEgg() {
         }
         .egg-title {
           flex: 1;
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.7rem;
           letter-spacing: 0.08em;
           color: rgba(240, 237, 230, 0.45);
@@ -163,7 +163,7 @@ export default function EasterEgg() {
           min-height: 170px;
         }
         .egg-line {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.78rem;
           line-height: 1.9;
           color: #27c93f;
@@ -171,7 +171,7 @@ export default function EasterEgg() {
           animation: eggFade 0.2s ease-out;
         }
         .egg-cursor {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
+          font-family: var(--font-mono);
           font-size: 0.78rem;
           color: #27c93f;
           animation: eggBlink 1s steps(1) infinite;

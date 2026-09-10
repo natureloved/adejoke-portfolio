@@ -1,48 +1,18 @@
 "use client";
 
-import LagosVibe from "./LagosVibe";
-
 export default function Footer() {
   return (
-    <footer className="footer">
-      <LagosVibe />
-      <div className="footer-content">
-        <p className="footer-text">
-          Akinola Adejoke · Full-Stack Developer · <span className="highlight-orange">2026</span>
-        </p>
+    <footer className="site-footer">
+      <div className="site-grid footer-inner">
+        <span>Akinola Adejoke Elizabeth</span>
+        <span>Full-stack / multi-chain / Lagos</span>
+        <span>2026</span>
       </div>
-
       <style jsx>{`
-        .footer {
-          background: var(--bg);
-          text-align: center;
-          padding: 2rem 4rem;
-          border-top: 1px solid var(--border);
-          position: relative;
-          z-index: 10;
-        }
-
-        .footer-text {
-          font-family: var(--font-dm-mono), "DM Mono", monospace;
-          font-size: 0.68rem;
-          letter-spacing: 0.12em;
-          color: var(--muted);
-          text-transform: uppercase;
-        }
-
-        .highlight-orange {
-          color: var(--orange);
-          opacity: 1;
-        }
-
-        @media (max-width: 600px) {
-          .footer {
-            padding: 2rem 1rem;
-          }
-          .footer-text {
-            line-height: 1.6;
-          }
-        }
+        .site-footer { position: relative; z-index: 1; border-top: 1px solid var(--border-soft); padding: 1.4rem 0 2rem; color: var(--muted); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .footer-inner { display: flex; justify-content: space-between; gap: 1rem; }
+        .footer-inner span:last-child { color: var(--lime); }
+        @media (max-width: 620px) { .footer-inner { display: grid; gap: 0.55rem; } }
       `}</style>
     </footer>
   );

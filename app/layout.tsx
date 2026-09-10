@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, DM_Mono, Syne } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ConstellationProvider } from "@/lib/constellation-context";
 import ConstellationField from "@/components/hero/ConstellationField";
@@ -10,25 +10,17 @@ import ChainBar from "@/components/ChainBar";
 import ScrollReveal from "@/components/ScrollReveal";
 import BootSequence from "@/components/BootSequence";
 import CommandPalette from "@/components/CommandPalette";
+import EasterEgg from "@/components/EasterEgg";
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-bebas",
+const geist = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist",
   display: "swap",
 });
 
-const dmMono = DM_Mono({
-  weight: ["300", "400", "500"],
-  subsets: ["latin"],
-  variable: "--font-dm-mono",
-  display: "swap",
-});
-
-const syne = Syne({
-  weight: ["400", "600", "700", "800"],
-  subsets: ["latin"],
-  variable: "--font-syne",
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
@@ -37,40 +29,39 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.v
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
+    default: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
     template: "%s | Adejoke Elizabeth",
   },
   description:
-    "Portfolio of Akinola Adejoke Elizabeth — Full Stack Developer and Multi-Chain Builder fluent in Solidity, Cairo, and Clarity. A live constellation of eight chains.",
+    "Portfolio of Akinola Adejoke Elizabeth, a full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
   keywords: [
     "Adejoke Elizabeth",
     "Full Stack Developer",
     "Blockchain Developer",
     "Solidity",
     "Cairo",
-    "StarkNet",
+    "Clarity",
     "Stacks",
-    "EVM",
     "DeFi",
     "Web3",
-    "Bitcoin L2",
   ],
   authors: [{ name: "Akinola Adejoke Elizabeth" }],
+  icons: { icon: "/icon.svg" },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Adejoke Elizabeth — Portfolio",
-    title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
+    siteName: "Adejoke Elizabeth | Portfolio",
+    title: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
     description:
-      "Full Stack Developer and Multi-Chain Builder. Solidity · Cairo · Clarity · Next.js · DeFi.",
+      "Full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Akinola Adejoke Elizabeth — Full Stack & Multi-Chain Developer",
+    title: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
     description:
-      "Full Stack Developer & Multi-Chain Builder. Solidity, Cairo, Clarity, Next.js.",
+      "Full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
     creator: "@adejoke_btc",
   },
 };
@@ -81,14 +72,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${bebasNeue.variable} ${dmMono.variable} ${syne.variable}`}
-    >
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#07070e" />
+        <meta name="theme-color" content="#0b0e10" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -102,7 +88,7 @@ export default function RootLayout({
                 "https://github.com/natureloved",
                 "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
               ],
-              jobTitle: "Full Stack & Multi-Chain Developer",
+              jobTitle: "Full Stack and Multi-Chain Developer",
             }),
           }}
         />
@@ -124,6 +110,8 @@ export default function RootLayout({
           <Compass />
           <ScrollReveal />
           <main id="main">{children}</main>
+          {/* Hidden "rasta" easter egg — renders nothing until triggered */}
+          <EasterEgg />
         </ConstellationProvider>
       </body>
     </html>
