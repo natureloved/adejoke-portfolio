@@ -1,121 +1,557 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { archivedProjects, featuredProjects, type Project } from "@/data/projects";
+import {
+  archivedProjects,
+  featuredProjects,
+  projects,
+  type Project,
+} from "@/data/projects";
 import { CHAINS } from "@/data/chains";
 import { useConstellation } from "@/lib/constellation-context";
+import { ProjectThumbnail } from "@/components/ProjectVisuals";
 
-function ProjectRow({ project, index }: { project: Project; index: number }) {
+/**
+ * Domain groupings. The old chain filter was a trap: every chain owns exactly
+ * one project, so eight chips each returned a single card. These overlap the
+ * way the work actually does, and every project maps to at least one.
+ */
+const DOMAINS: Record<string, string[]> = {
+  voz: ["DeFi", "AI"],
+  hashpilot: ["AI"],
+  stashflow: ["DeFi"],
+  staxiq: ["DeFi", "AI", "Bitcoin L2"],
+  "runes-rumble": ["DeFi", "Bitcoin L2"],
+  "ton-pilot": ["AI", "Tools"],
+  tipwall: ["Tools"],
+  "deadman-vault": ["DeFi", "Bitcoin L2"],
+  clarityquest: ["Bitcoin L2", "Tools"],
+  "proof-of-rest": ["DeFi", "AI"],
+  expatship: ["Tools"],
+  tasky: ["Tools", "AI"],
+};
+
+const FILTERS = ["All", "DeFi", "AI", "Bitcoin L2", "Tools"];
+
+const chainName = (id: string) =>
+  CHAINS.find((chain) => chain.id === id)?.name ?? id;
+
+const chainTint = (id: string) =>
+  CHAINS.find((chain) => chain.id === id)?.color ?? "var(--lime)";
+
+function RowLinks({ project }: { project: Project }) {
+  return (
+    <div className="row-links">
+      <a href={project.href} target="_blank" rel="noopener noreferrer">
+        View live <span aria-hidden="true">↗</span>
+      </a>
+      {project.repo ? (
+        <a href={project.repo} target="_blank" rel="noopener noreferrer">
+          Source <span aria-hidden="true">↗</span>
+        </a>
+      ) : null}
+    </div>
+  );
+}
+
+function FeaturedRow({
+  project,
+  index,
+  flip,
+}: {
+  project: Project;
+  index: number;
+  flip: boolean;
+}) {
   const { setActive } = useConstellation();
 
   return (
     <article
-      className="project-row reveal"
+      className={`project-card featured-row${flip ? " flip" : ""}`}
+      style={
+        {
+          "--row-accent": project.linkColor,
+          animationDelay: `${Math.min(index, 5) * 70}ms`,
+        } as React.CSSProperties
+      }
       onMouseEnter={() => setActive(project.chain)}
       onMouseLeave={() => setActive(null)}
     >
-      <div className="project-visual" style={{ "--project-accent": project.linkColor } as React.CSSProperties} aria-hidden="true">
-        <span>{String(index + 1).padStart(2, "0")}</span>
-        <strong>{project.name.slice(0, 2).toUpperCase()}</strong>
-        <small>{project.categories[0]}</small>
+      <div className="featured-visual">
+        <ProjectThumbnail id={project.id} />
       </div>
-      <div className="project-content">
-        <div className="project-topline">
-          <span className={`project-badge badge-${project.badgeType}`}>{project.badge}</span>
-          <span className="project-chain">{project.chain}</span>
+
+      <div className="featured-body">
+        <div className="row-head">
+          <span className="row-index">{String(index + 1).padStart(2, "0")}</span>
+          <span className="row-badge" style={{ color: chainTint(project.chain) }}>
+            {project.badge}
+          </span>
         </div>
+
         <h3>{project.name}</h3>
         <p>{project.description}</p>
-        <div className="project-tags">
-          {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+
+        <div className="row-tags">
+          <span className="row-chain" style={{ color: chainTint(project.chain) }}>
+            {chainName(project.chain)}
+          </span>
+          {project.tags.slice(0, 3).map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
         </div>
-        <div className="project-links">
-          <a href={project.href} target="_blank" rel="noopener noreferrer">Live project</a>
-          {project.repo ? <a href={project.repo} target="_blank" rel="noopener noreferrer">Source code</a> : null}
-        </div>
+
+        <RowLinks project={project} />
       </div>
     </article>
   );
 }
 
-export default function ProjectsTemplate() {
+function ArchiveCard({ project, index }: { project: Project; index: number }) {
+  const { setActive } = useConstellation();
+
+  return (
+    <article
+      className="project-card archive-card"
+      style={
+        {
+          "--row-accent": project.linkColor,
+          animationDelay: `${index * 55}ms`,
+        } as React.CSSProperties
+      }
+      onMouseEnter={() => setActive(project.chain)}
+      onMouseLeave={() => setActive(null)}
+    >
+      <div className="archive-visual">
+        <ProjectThumbnail id={project.id} />
+      </div>
+      <div className="archive-body">
+        <div className="archive-top">
+          <h4>{project.name}</h4>
+          <span className="archive-chain" style={{ color: chainTint(project.chain) }}>
+            {chainName(project.chain)}
+          </span>
+        </div>
+        <p>{project.description}</p>
+        <RowLinks project={project} />
+      </div>
+    </article>
+  );
+}
+
+export default function Projects() {
   const [filter, setFilter] = useState("All");
   const [showArchive, setShowArchive] = useState(false);
 
-  const filters = ["All", ...CHAINS.map((chain) => chain.id)];
-  const visibleProjects = useMemo(() => {
-    const source = showArchive ? [...featuredProjects, ...archivedProjects] : featuredProjects;
-    return source.filter((project) => filter === "All" || project.chain === filter);
-  }, [filter, showArchive]);
+  const isFiltered = filter !== "All";
+
+  const matches = (project: Project) =>
+    !isFiltered || (DOMAINS[project.id] ?? []).includes(filter);
+
+  // Unfiltered: the curated six as rows, the rest behind the drawer.
+  // Filtered: everything that matches, so nothing hides in the archive.
+  const rows = useMemo(
+    () => (isFiltered ? projects.filter(matches) : featuredProjects),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filter]
+  );
+
+  const archived = useMemo(
+    () => archivedProjects.filter(matches),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [filter]
+  );
+
+  const shownCount = isFiltered ? rows.length : projects.length;
 
   return (
     <section id="work" className="section work-section">
       <div className="site-grid">
         <p className="section-label reveal">02 / Work</p>
-        <div className="work-heading">
+
+        <div className="work-head">
           <div>
             <h2 className="section-title reveal">A portfolio of useful things.</h2>
-            <p className="section-intro reveal">Selected products across DeFi, developer tools, creator infrastructure, and the systems around them.</p>
+            <p className="section-intro reveal">
+              Selected products across DeFi, developer tools, creator
+              infrastructure, and the systems around them.
+            </p>
           </div>
-          <div className="work-count reveal"><strong>12</strong><span>shipped products</span></div>
+          <div className="work-count reveal">
+            <strong>{shownCount}</strong>
+            <span>{isFiltered ? `${filter} products` : "shipped products"}</span>
+          </div>
         </div>
 
-        <div className="work-toolbar reveal" aria-label="Filter projects by chain">
+        <div className="work-filters reveal" aria-label="Filter projects by domain">
           <div className="filter-list">
-            {filters.map((item) => (
-              <button key={item} type="button" className={filter === item ? "active" : ""} onClick={() => setFilter(item)} aria-pressed={filter === item}>
-                {item === "All" ? item : CHAINS.find((chain) => chain.id === item)?.name ?? item}
+            {FILTERS.map((item) => (
+              <button
+                key={item}
+                type="button"
+                className={filter === item ? "active" : ""}
+                onClick={() => setFilter(item)}
+                aria-pressed={filter === item}
+              >
+                {item}
               </button>
             ))}
           </div>
-          <button type="button" className="archive-button" onClick={() => setShowArchive((open) => !open)} aria-expanded={showArchive}>
-            {showArchive ? "Show featured" : `Show all ${featuredProjects.length + archivedProjects.length}`}
-          </button>
+          <span className="filter-note">
+            {isFiltered ? `${rows.length} of ${projects.length} shown` : "Curated selection"}
+          </span>
         </div>
 
-        <div className="project-grid">
-          {visibleProjects.map((project, index) => <ProjectRow key={project.id} project={project} index={index} />)}
+        <div className="featured-list">
+          {rows.map((project, index) => (
+            <FeaturedRow
+              key={project.id}
+              project={project}
+              index={index}
+              flip={index % 2 === 1}
+            />
+          ))}
         </div>
-        {visibleProjects.length === 0 ? <p className="empty-state">No projects are tagged to this chain yet.</p> : null}
+
+        {rows.length === 0 ? (
+          <p className="empty-state">Nothing is tagged to this domain yet.</p>
+        ) : null}
+
+        {!isFiltered ? (
+          <>
+            <button
+              type="button"
+              className="archive-toggle"
+              onClick={() => setShowArchive((open) => !open)}
+              aria-expanded={showArchive}
+              aria-controls="project-archive"
+            >
+              <span className="archive-line" aria-hidden="true" />
+              {showArchive ? "Hide the archive" : `The archive — ${archived.length} more`}
+              <span className="archive-line" aria-hidden="true" />
+              <span className={`archive-caret${showArchive ? " up" : ""}`} aria-hidden="true">
+                ↓
+              </span>
+            </button>
+
+            <div
+              id="project-archive"
+              className={`archive-panel${showArchive ? " open" : ""}`}
+            >
+              <div className="archive-inner">
+                <div className="archive-grid">
+                  {archived.map((project, index) => (
+                    <ArchiveCard key={project.id} project={project} index={index} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : null}
       </div>
 
-      <style jsx>{`
+      {/* Global, not scoped: styled-jsx only stamps its scope class onto
+          elements rendered by THIS component. The rows live in child
+          components, so a scoped block silently dropped every row style —
+          which is exactly why this section used to render unstyled. */}
+      <style jsx global>{`
         .work-section { border-top: 1px solid var(--border-soft); }
-        .work-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 2rem; }
-        .work-count { display: grid; gap: 0.25rem; padding-bottom: 0.3rem; color: var(--muted); font-family: var(--font-mono); text-align: right; text-transform: uppercase; }
-        .work-count strong { color: var(--lime); font-size: 2.8rem; font-weight: 500; letter-spacing: -0.06em; line-height: 1; }
+
+        /* ── Header ── */
+        .work-head {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 2rem;
+        }
+        .work-count {
+          display: grid;
+          gap: 0.3rem;
+          padding-bottom: 0.35rem;
+          color: var(--muted);
+          font-family: var(--font-mono);
+          text-align: right;
+          text-transform: uppercase;
+        }
+        .work-count strong {
+          color: var(--lime);
+          font-size: 2.8rem;
+          font-weight: 500;
+          letter-spacing: -0.06em;
+          line-height: 1;
+        }
         .work-count span { font-size: 0.62rem; letter-spacing: 0.08em; }
-        .work-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-block: 0.9rem; border-block: 1px solid var(--border); }
+
+        /* ── Filters ── */
+        .work-filters {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1.5rem;
+          margin-top: 3rem;
+          padding-block: 0.85rem;
+          border-block: 1px solid var(--border);
+        }
         .filter-list { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-        .filter-list button, .archive-button { padding: 0.45rem 0.65rem; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; font-family: var(--font-mono); font-size: 0.61rem; letter-spacing: 0.06em; text-transform: uppercase; transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease; }
-        .filter-list button:hover, .filter-list button.active { border-color: var(--lime); color: var(--lime); background: rgba(217, 249, 157, 0.06); }
-        .archive-button { border-color: var(--cyan); color: var(--cyan); white-space: nowrap; }
-        .archive-button:hover { background: rgba(94, 234, 212, 0.08); }
-        .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 3rem; border: 1px solid var(--border); background: var(--border); }
-        .project-row { min-width: 0; display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1.4rem; padding: 1.4rem; background: var(--bg); transition: background 0.2s ease; }
-        .project-row:hover { background: var(--surface); }
-        .project-visual { display: flex; min-height: 9rem; flex-direction: column; justify-content: space-between; padding: 0.75rem; border: 1px solid var(--border); background: var(--surface); }
-        .project-row:hover .project-visual { border-color: var(--project-accent, var(--lime)); }
-        .project-visual span, .project-visual small { color: var(--muted); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; }
-        .project-visual strong { color: var(--project-accent, var(--lime)); font-size: 2.5rem; font-weight: 600; letter-spacing: -0.08em; }
-        .project-content { min-width: 0; display: flex; flex-direction: column; }
-        .project-topline { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-        .project-badge, .project-chain { color: var(--muted); font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; }
-        .badge-orange { color: var(--orange); }
-        .badge-purple { color: var(--purple); }
-        .badge-cyan { color: var(--cyan); }
-        .project-chain { color: var(--cyan); }
-        .project-content h3 { margin: 0.7rem 0 0; color: var(--white); font-size: 1.35rem; font-weight: 600; letter-spacing: -0.03em; }
-        .project-content p { display: -webkit-box; overflow: hidden; margin: 0.65rem 0 0; color: var(--muted); font-size: 0.83rem; line-height: 1.65; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
-        .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1rem; }
-        .project-tags span { padding: 0.28rem 0.45rem; border: 1px solid var(--border-soft); color: var(--muted); font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.04em; text-transform: uppercase; }
-        .project-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: auto; padding-top: 1.2rem; }
-        .project-links a { color: var(--white); font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 0.25rem; text-transform: uppercase; }
-        .project-links a:hover { color: var(--lime); }
-        .empty-state { margin-top: 2rem; color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; }
-        @media (max-width: 980px) { .project-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 700px) { .work-heading { grid-template-columns: 1fr; } .work-count { display: flex; align-items: baseline; gap: 0.55rem; text-align: left; } .work-count strong { font-size: 2rem; } .work-toolbar { align-items: flex-start; flex-direction: column; } }
-        @media (max-width: 520px) { .project-row { grid-template-columns: 1fr; } .project-visual { min-height: 7rem; } .project-visual strong { font-size: 2.2rem; } }
+        .filter-list button {
+          padding: 0.45rem 0.8rem;
+          border: 1px solid var(--border);
+          background: transparent;
+          color: var(--muted);
+          cursor: pointer;
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+        }
+        .filter-list button:hover { color: var(--white); border-color: var(--border); }
+        .filter-list button.active {
+          border-color: var(--lime);
+          color: var(--lime);
+          background: rgba(217, 249, 157, 0.07);
+        }
+        .filter-note {
+          color: var(--muted);
+          font-family: var(--font-mono);
+          font-size: 0.6rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        /* ── Featured rows ── */
+        .featured-list { display: grid; gap: 1.4rem; margin-top: 3rem; }
+
+        .featured-row {
+          display: grid;
+          grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+          border: 1px solid var(--border);
+          background: var(--surface);
+          overflow: hidden;
+          animation: rowInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+          transition: border-color 0.3s ease;
+        }
+        .featured-row:hover { border-color: var(--row-accent, var(--lime)); }
+        .featured-row.flip .featured-visual { order: 2; }
+
+        .featured-visual {
+          position: relative;
+          min-height: 300px;
+          border-right: 1px solid var(--border);
+        }
+        .featured-row.flip .featured-visual {
+          border-right: 0;
+          border-left: 1px solid var(--border);
+        }
+
+        .featured-body {
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          padding: 2.1rem 2.3rem;
+        }
+
+        .row-head {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+        .row-index {
+          color: var(--muted);
+          font-family: var(--font-mono);
+          font-size: 0.66rem;
+          letter-spacing: 0.24em;
+        }
+        .row-badge {
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          text-align: right;
+        }
+
+        .featured-body h3 {
+          margin: 1.1rem 0 0;
+          color: var(--white);
+          font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+          font-weight: 600;
+          letter-spacing: -0.035em;
+          line-height: 1.05;
+        }
+        .featured-body p {
+          margin: 0.95rem 0 0;
+          max-width: 48ch;
+          color: var(--muted);
+          font-size: 0.87rem;
+          line-height: 1.72;
+        }
+
+        .row-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.4rem; }
+        .row-tags span {
+          padding: 0.3rem 0.5rem;
+          border: 1px solid var(--border-soft);
+          color: var(--muted);
+          font-family: var(--font-mono);
+          font-size: 0.56rem;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+        }
+        .row-tags .row-chain { border-color: currentColor; }
+
+        .row-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.5rem;
+          margin-top: auto;
+          padding-top: 1.7rem;
+        }
+        .row-links a {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding-bottom: 0.2rem;
+          border-bottom: 1px solid var(--border);
+          color: var(--white);
+          font-family: var(--font-mono);
+          font-size: 0.66rem;
+          letter-spacing: 0.09em;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .row-links a:hover { color: var(--lime); border-color: var(--lime); }
+
+        /* ── Archive ── */
+        .archive-toggle {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          width: 100%;
+          margin-top: 3.5rem;
+          padding: 1.3rem 0;
+          border: 0;
+          border-top: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+          background: transparent;
+          color: var(--cyan);
+          cursor: pointer;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          transition: color 0.2s ease;
+        }
+        .archive-toggle:hover { color: var(--white); }
+        .archive-line { flex: 0 0 38px; height: 1px; background: var(--border); }
+        .archive-caret {
+          margin-left: auto;
+          font-size: 0.9rem;
+          transition: transform 0.3s ease;
+        }
+        .archive-caret.up { transform: rotate(180deg); }
+
+        .archive-panel {
+          display: grid;
+          grid-template-rows: 0fr;
+          overflow: hidden;
+          transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .archive-panel.open { grid-template-rows: 1fr; }
+        .archive-inner { min-height: 0; }
+
+        .archive-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1.2rem;
+          padding-top: 2rem;
+        }
+        .archive-card {
+          display: flex;
+          flex-direction: column;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          overflow: hidden;
+          animation: rowInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+          transition: border-color 0.3s ease;
+        }
+        .archive-card:hover { border-color: var(--row-accent, var(--cyan)); }
+        .archive-visual { height: 150px; border-bottom: 1px solid var(--border); }
+        .archive-body {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          padding: 1.1rem 1.2rem 1.3rem;
+        }
+        .archive-top {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 0.6rem;
+        }
+        .archive-body h4 {
+          margin: 0;
+          color: var(--white);
+          font-size: 1.02rem;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+        }
+        .archive-chain {
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+        .archive-body p {
+          display: -webkit-box;
+          overflow: hidden;
+          margin: 0.6rem 0 0;
+          color: var(--muted);
+          font-size: 0.75rem;
+          line-height: 1.62;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+        }
+        .archive-body .row-links { gap: 1rem; padding-top: 1.2rem; }
+        .archive-body .row-links a { font-size: 0.6rem; }
+
+        .empty-state {
+          margin-top: 2rem;
+          color: var(--muted);
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
+        }
+
+        @keyframes rowInUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to { opacity: 1; transform: none; }
+        }
+
+        @media (max-width: 900px) {
+          .featured-row,
+          .featured-row.flip { grid-template-columns: 1fr; }
+          .featured-row.flip .featured-visual { order: 0; }
+          .featured-visual,
+          .featured-row.flip .featured-visual {
+            min-height: 230px;
+            border-right: 0;
+            border-left: 0;
+            border-bottom: 1px solid var(--border);
+          }
+          .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 620px) {
+          .work-head { grid-template-columns: 1fr; }
+          .work-count { text-align: left; }
+          .work-count strong { font-size: 2.1rem; }
+          .work-filters { align-items: flex-start; flex-direction: column; }
+          .featured-body { padding: 1.5rem 1.3rem; }
+          .featured-visual { min-height: 190px; }
+          .archive-grid { grid-template-columns: 1fr; }
+        }
       `}</style>
     </section>
   );

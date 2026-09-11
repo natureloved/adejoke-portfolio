@@ -133,3 +133,41 @@ button, a { -webkit-tap-highlight-color: transparent; }
   }
   .reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* ── Project previews ───────────────────────────────────────────────
+   The 12 bespoke animated thumbnails. They hold still until the owning
+   .project-card is hovered, so a wall of them never strobes at rest.
+   Height is inherited, so the same visual works at row and grid scale. */
+.thumbnail-wrap {
+  height: 100%;
+  background: #04040a;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes vozPulse { from { transform: scaleY(0.35); } to { transform: scaleY(1.15); } }
+@keyframes fillIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes rowIn { from { opacity: 0; transform: translateX(-7px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes softBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes dotPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.7); opacity: 0.5; } }
+@keyframes ekgDraw { from { stroke-dashoffset: 240; } to { stroke-dashoffset: -240; } }
+
+.project-card:hover .viz-bar { animation: vozPulse 0.65s ease-in-out infinite alternate; }
+.project-card:hover .fill-bar { transform-origin: left; animation: fillIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.project-card:hover .row-stagger { animation: rowIn 0.4s ease-out both; }
+.project-card:hover .blink-soft { animation: softBlink 1s ease-in-out infinite; }
+.pulse-dot { animation: dotPulse 1.6s ease-in-out infinite; }
+.cursor-blink { animation: softBlink 1.1s steps(1) infinite; }
+.ekg-line { stroke-dasharray: 60 180; stroke-dashoffset: 240; animation: ekgDraw 2.6s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover .viz-bar,
+  .project-card:hover .fill-bar,
+  .project-card:hover .row-stagger,
+  .project-card:hover .blink-soft,
+  .pulse-dot,
+  .cursor-blink,
+  .ekg-line { animation: none; }
+  .ekg-line { stroke-dasharray: none; stroke-dashoffset: 0; }
+}
