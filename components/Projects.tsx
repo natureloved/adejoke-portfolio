@@ -70,7 +70,9 @@ function FeaturedRow({
       className={`project-card featured-row${flip ? " flip" : ""}`}
       style={
         {
-          "--row-accent": project.linkColor,
+          // Tinted by chain, not by palette token — so each project reads as
+          // a node of the constellation it belongs to.
+          "--row-accent": chainTint(project.chain),
           animationDelay: `${Math.min(index, 5) * 70}ms`,
         } as React.CSSProperties
       }
@@ -78,7 +80,7 @@ function FeaturedRow({
       onMouseLeave={() => setActive(null)}
     >
       <div className="featured-visual">
-        <ProjectThumbnail id={project.id} />
+        <ProjectThumbnail id={project.id} color={chainTint(project.chain)} />
       </div>
 
       <div className="featured-body">
@@ -115,7 +117,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
       className="project-card archive-card"
       style={
         {
-          "--row-accent": project.linkColor,
+          "--row-accent": chainTint(project.chain),
           animationDelay: `${index * 55}ms`,
         } as React.CSSProperties
       }
@@ -123,7 +125,7 @@ function ArchiveCard({ project, index }: { project: Project; index: number }) {
       onMouseLeave={() => setActive(null)}
     >
       <div className="archive-visual">
-        <ProjectThumbnail id={project.id} />
+        <ProjectThumbnail id={project.id} color={chainTint(project.chain)} />
       </div>
       <div className="archive-body">
         <div className="archive-top">

@@ -346,7 +346,7 @@ function TaskyThumbnail() {
   );
 }
 
-export function ProjectThumbnail({ id }: { id: string }) {
+function Mockup({ id }: { id: string }) {
   const thumbnails: Record<string, React.ReactNode> = {
     voz: <VozThumbnail />, hashpilot: <HashPilotThumbnail />, stashflow: <StashFlowThumbnail />,
     staxiq: <StaxiqThumbnail />, "runes-rumble": <RunesRumbleThumbnail />, "ton-pilot": <TonPilotThumbnail />,
@@ -354,4 +354,166 @@ export function ProjectThumbnail({ id }: { id: string }) {
     "proof-of-rest": <ProofOfRestThumbnail />, expatship: <ExpatShipThumbnail />, tasky: <TaskyThumbnail />,
   };
   return <div className="thumbnail-wrap">{thumbnails[id] ?? null}</div>;
+}
+
+/* ─── Backdrops ──────────────────────────────────────────────────────
+   One generative SVG per project, drawn from what the product actually
+   does rather than decoration: orbital rings for the aggregator, a
+   heartbeat for the vault, a radar sweep for the alert bot. Pure SVG +
+   CSS transforms so twelve of them cost nothing. Each is a 400x300
+   canvas sliced to fill, in the project's own chain colour. */
+
+const S = { fill: "none", strokeWidth: 1.2, vectorEffect: "non-scaling-stroke" } as const;
+
+function Backdrop({ id, color }: { id: string; color: string }) {
+  const common = { viewBox: "0 0 400 300", preserveAspectRatio: "xMidYMid slice", className: "pv-svg", "aria-hidden": true } as const;
+  const g = { stroke: color, ...S };
+
+  switch (id) {
+    case "voz": // voice — concentric waveforms radiating out
+      return (
+        <svg {...common}>
+          {[46, 84, 122, 160, 198].map((r, i) => (
+            <circle key={r} cx="200" cy="150" r={r} {...g} className="pv-ring" style={{ animationDelay: `${i * 0.35}s` }} />
+          ))}
+          <path d="M40 150 Q70 96 100 150 T160 150 T220 150 T280 150 T340 150 T400 150" {...g} className="pv-wave" />
+        </svg>
+      );
+
+    case "hashpilot": // mining — a hashrate spectrum
+      return (
+        <svg {...common}>
+          {Array.from({ length: 26 }, (_, i) => {
+            const h = 26 + ((i * 37) % 150);
+            return <rect key={i} x={12 + i * 15} y={280 - h} width="5" height={h} rx="2" fill={color} opacity="0.5" className="pv-bar" style={{ animationDelay: `${i * 0.07}s` }} />;
+          })}
+        </svg>
+      );
+
+    case "stashflow": // savings — rings compounding outward
+      return (
+        <svg {...common}>
+          {[30, 62, 94, 126, 158, 190].map((r, i) => (
+            <circle key={r} cx="200" cy="150" r={r} {...g} strokeDasharray="4 10" className="pv-orbit" style={{ animationDelay: `${i * 0.25}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "staxiq": // the aggregator — protocols orbiting one hub
+      return (
+        <svg {...common}>
+          <ellipse cx="200" cy="150" rx="170" ry="62" {...g} className="pv-orbit" />
+          <ellipse cx="200" cy="150" rx="120" ry="106" {...g} className="pv-orbit" style={{ animationDelay: "0.4s" }} />
+          <ellipse cx="200" cy="150" rx="60" ry="140" {...g} className="pv-orbit" style={{ animationDelay: "0.8s" }} />
+          <circle cx="200" cy="150" r="5" fill={color} />
+          {[[30, 150], [370, 150], [200, 44], [200, 256]].map(([x, y], i) => (
+            <circle key={i} cx={x} cy={y} r="3.5" fill={color} className="pv-node" style={{ animationDelay: `${i * 0.4}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "runes-rumble": // prediction market — a probability split
+      return (
+        <svg {...common}>
+          {Array.from({ length: 9 }, (_, i) => (
+            <line key={i} x1={40 + i * 40} y1="0" x2={-20 + i * 40} y2="300" {...g} opacity="0.7" className="pv-slant" style={{ animationDelay: `${i * 0.08}s` }} />
+          ))}
+          <path d="M0 210 L400 90" {...g} strokeWidth="2" strokeDasharray="7 7" className="pv-dash" />
+        </svg>
+      );
+
+    case "ton-pilot": // broadcast bot — signal rings from one source
+      return (
+        <svg {...common}>
+          <circle cx="70" cy="230" r="6" fill={color} />
+          {[44, 88, 132, 176, 220, 264].map((r, i) => (
+            <path key={r} d={`M ${70 - r} 230 A ${r} ${r} 0 0 1 ${70 + r} 230`} {...g} className="pv-ping" style={{ animationDelay: `${i * 0.28}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "tipwall": // creator tips — stacked support rising
+      return (
+        <svg {...common}>
+          {Array.from({ length: 7 }, (_, i) => (
+            <rect key={i} x="60" y={244 - i * 32} width={280 - i * 26} height="7" rx="3.5" fill={color} opacity={0.22 + i * 0.1} className="pv-stack" style={{ animationDelay: `${i * 0.12}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "deadman-vault": // inheritance — a heartbeat that must keep going
+      return (
+        <svg {...common}>
+          <path d="M0 150 H90 l14-46 16 92 14-72 12 26 H400" {...g} strokeWidth="1.8" className="pv-ekg" pathLength={400} />
+          {[60, 340].map((x, i) => (
+            <circle key={x} cx={x} cy="150" r="26" {...g} strokeDasharray="3 7" className="pv-orbit" style={{ animationDelay: `${i * 0.5}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "clarityquest": // learning — a ladder of levels climbed
+      return (
+        <svg {...common}>
+          {Array.from({ length: 8 }, (_, i) => (
+            <rect key={i} x={26 + i * 44} y={250 - i * 24} width="30" height={12 + i * 24} {...g} rx="3" className="pv-step" style={{ animationDelay: `${i * 0.1}s` }} />
+          ))}
+        </svg>
+      );
+
+    case "proof-of-rest": // commitment device — a timer counting down
+      return (
+        <svg {...common}>
+          <circle cx="200" cy="150" r="112" {...g} strokeDasharray="4 12" className="pv-orbit" />
+          <circle cx="200" cy="150" r="86" {...g} strokeWidth="2" strokeDasharray="180 360" strokeLinecap="round" className="pv-timer" />
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            return <line key={i} x1={200 + Math.cos(a) * 132} y1={150 + Math.sin(a) * 132} x2={200 + Math.cos(a) * 142} y2={150 + Math.sin(a) * 142} {...g} />;
+          })}
+        </svg>
+      );
+
+    case "expatship": // shipping — a route between two ports
+      return (
+        <svg {...common}>
+          <path d="M40 232 Q200 40 360 176" {...g} strokeWidth="1.6" strokeDasharray="8 8" className="pv-dash" />
+          <circle cx="40" cy="232" r="7" {...g} strokeWidth="2" />
+          <circle cx="360" cy="176" r="7" {...g} strokeWidth="2" />
+          <circle cx="40" cy="232" r="16" {...g} strokeDasharray="3 6" className="pv-orbit" />
+        </svg>
+      );
+
+    case "tasky": // alert bot — a radar sweep hunting feeds
+      return (
+        <svg {...common}>
+          {[52, 96, 140, 184].map((r, i) => (
+            <circle key={r} cx="200" cy="150" r={r} {...g} className="pv-orbit" style={{ animationDelay: `${i * 0.3}s` }} />
+          ))}
+          <line x1="200" y1="150" x2="200" y2="0" {...g} strokeWidth="2" className="pv-sweep" />
+          <line x1="200" y1="150" x2="40" y2="150" {...g} opacity="0.5" />
+          <line x1="200" y1="150" x2="360" y2="150" {...g} opacity="0.5" />
+          <line x1="200" y1="150" x2="200" y2="300" {...g} opacity="0.5" />
+        </svg>
+      );
+
+    default:
+      return null;
+  }
+}
+
+/**
+ * A project preview: generative backdrop, chain-coloured aura, then the
+ * functional mockup floating on top. Everything animates on hover of the
+ * owning .project-card, so a page of twelve stays still at rest.
+ */
+export function ProjectThumbnail({ id, color }: { id: string; color: string }) {
+  return (
+    <div className="pv" style={{ "--pv-accent": color } as React.CSSProperties}>
+      <Backdrop id={id} color={color} />
+      <span className="pv-aura" aria-hidden="true" />
+      <span className="pv-grid" aria-hidden="true" />
+      <div className="pv-frame">
+        <Mockup id={id} />
+      </div>
+    </div>
+  );
 }

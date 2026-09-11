@@ -171,3 +171,114 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .ekg-line { animation: none; }
   .ekg-line { stroke-dasharray: none; stroke-dashoffset: 0; }
 }
+
+/* ── Preview composition ────────────────────────────────────────────
+   Generative backdrop → chain-coloured aura → grid floor → mockup
+   floating in a frame. Four cheap layers, no filters or backdrop-blur,
+   because twelve of these sit on one page. */
+.pv {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 62%),
+    #04040a;
+}
+
+.pv-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+  transition: opacity 0.5s ease;
+}
+.project-card:hover .pv-svg { opacity: 0.9; }
+
+.pv-aura {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 58%, var(--pv-accent) 0%, transparent 58%);
+  opacity: 0.15;
+  transition: opacity 0.55s ease;
+}
+.project-card:hover .pv-aura { opacity: 0.32; }
+
+.pv-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(circle at 50% 62%, #000 18%, transparent 76%);
+  mask-image: radial-gradient(circle at 50% 62%, #000 18%, transparent 76%);
+}
+
+.pv-frame {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  margin: 1.15rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(6, 7, 12, 0.88);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease, box-shadow 0.45s ease;
+}
+.project-card:hover .pv-frame {
+  transform: translateY(-4px);
+  border-color: var(--pv-accent);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.55);
+}
+.pv .thumbnail-wrap { background: transparent; }
+
+.archive-visual .pv-frame { margin: 0.6rem; }
+
+/* ── Backdrop motion (hover-gated) ── */
+.pv-orbit, .pv-ring, .pv-timer, .pv-ping, .pv-node,
+.pv-bar, .pv-stack, .pv-step { transform-box: fill-box; transform-origin: center; }
+.pv-sweep { transform-box: view-box; transform-origin: 200px 150px; }
+.pv-wave { stroke-dasharray: 12 10; }
+.pv-ekg { stroke-dasharray: 70 330; }
+
+@keyframes pvSpin { to { transform: rotate(360deg); } }
+@keyframes pvPing { 0% { transform: scale(0.88); opacity: 0.85; } 100% { transform: scale(1.12); opacity: 0; } }
+@keyframes pvBreathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes pvDash { to { stroke-dashoffset: -64; } }
+@keyframes pvTrace { to { stroke-dashoffset: -400; } }
+@keyframes pvGrow { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+@keyframes pvSlide { from { transform: translateY(9px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.project-card:hover .pv-orbit { animation: pvSpin 9s linear infinite; }
+.project-card:hover .pv-timer { animation: pvSpin 7s linear infinite; }
+.project-card:hover .pv-sweep { animation: pvSpin 3.4s linear infinite; }
+.project-card:hover .pv-ring { animation: pvPing 2.6s ease-out infinite; }
+.project-card:hover .pv-ping { animation: pvPing 3s ease-out infinite; }
+.project-card:hover .pv-node { animation: pvBreathe 1.8s ease-in-out infinite; }
+.project-card:hover .pv-slant { animation: pvBreathe 2.2s ease-in-out infinite; }
+.project-card:hover .pv-wave { animation: pvDash 2.4s linear infinite; }
+.project-card:hover .pv-dash { animation: pvDash 1.6s linear infinite; }
+.project-card:hover .pv-ekg { animation: pvTrace 3s linear infinite; }
+.project-card:hover .pv-bar { animation: pvGrow 0.9s ease-in-out infinite alternate; }
+.project-card:hover .pv-stack { animation: pvSlide 0.6s ease-out both; }
+.project-card:hover .pv-step { animation: pvSlide 0.6s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover .pv-orbit,
+  .project-card:hover .pv-timer,
+  .project-card:hover .pv-sweep,
+  .project-card:hover .pv-ring,
+  .project-card:hover .pv-ping,
+  .project-card:hover .pv-node,
+  .project-card:hover .pv-slant,
+  .project-card:hover .pv-wave,
+  .project-card:hover .pv-dash,
+  .project-card:hover .pv-ekg,
+  .project-card:hover .pv-bar,
+  .project-card:hover .pv-stack,
+  .project-card:hover .pv-step { animation: none; }
+  .pv-svg { opacity: 0.7; }
+}
