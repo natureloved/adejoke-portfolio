@@ -1,8 +1,9 @@
 import Hero from "@/components/hero/Hero";
+import ProjectShowcase from "@/components/ProjectShowcase";
 import About from "@/components/About";
-import Projects from "@/components/Projects";
-import Skills from "@/components/Skills";
-import Programs from "@/components/Programs";
+import BuilderProfile from "@/components/BuilderProfile";
+import LabGrid from "@/components/LabGrid";
+import JourneyTimeline from "@/components/JourneyTimeline";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -10,10 +11,11 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <ProjectShowcase />
       <About />
-      <Projects />
-      <Skills />
-      <Programs />
+      <BuilderProfile />
+      <LabGrid />
+      <JourneyTimeline />
       <Contact />
       <Footer />
     </>

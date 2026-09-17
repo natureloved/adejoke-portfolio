@@ -5,12 +5,11 @@ import { ConstellationProvider } from "@/lib/constellation-context";
 import ConstellationField from "@/components/hero/ConstellationField";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
-import Compass from "@/components/Compass";
-import ChainBar from "@/components/ChainBar";
+import ScrollProgress from "@/components/ScrollProgress";
 import ScrollReveal from "@/components/ScrollReveal";
-import BootSequence from "@/components/BootSequence";
 import CommandPalette from "@/components/CommandPalette";
 import EasterEgg from "@/components/EasterEgg";
+import CinematicEntrance from "@/components/CinematicEntrance";
 
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,39 +28,41 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.v
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
-    template: "%s | Adejoke Elizabeth",
+    default: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
+    template: "%s | Akinola Adejoke",
   },
   description:
-    "Portfolio of Akinola Adejoke Elizabeth, a full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
+    "I build full-stack products for money, ownership, and opportunity. Full-stack & blockchain developer specializing in Bitcoin L2s, smart contracts, and high-precision systems.",
   keywords: [
-    "Adejoke Elizabeth",
+    "Akinola Adejoke",
+    "Adejoke",
     "Full Stack Developer",
     "Blockchain Developer",
+    "Bitcoin L2",
+    "Stacks",
+    "Clarity",
     "Solidity",
     "Cairo",
-    "Clarity",
-    "Stacks",
     "DeFi",
     "Web3",
   ],
-  authors: [{ name: "Akinola Adejoke Elizabeth" }],
+  authors: [{ name: "Akinola Adejoke" }],
   icons: { icon: "/icon.svg" },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Adejoke Elizabeth | Portfolio",
-    title: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
+    siteName: "Akinola Adejoke | Portfolio",
+    title: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
     description:
-      "Full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
+      "I build full-stack products for money, ownership, and opportunity across Bitcoin L2s, smart contracts, and modern systems.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Akinola Adejoke Elizabeth | Full Stack and Multi-Chain Developer",
+    title: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
     description:
-      "Full stack and multi-chain developer building useful products across Bitcoin, EVM, and emerging ecosystems.",
+      "I build full-stack products for money, ownership, and opportunity across Bitcoin L2s, smart contracts, and modern systems.",
     creator: "@adejoke_btc",
   },
 };
@@ -81,14 +82,14 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Akinola Adejoke Elizabeth",
+              name: "Akinola Adejoke",
               url: siteUrl,
               sameAs: [
                 "https://x.com/adejoke_btc",
                 "https://github.com/natureloved",
                 "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
               ],
-              jobTitle: "Full Stack and Multi-Chain Developer",
+              jobTitle: "Full-Stack & Blockchain Developer",
             }),
           }}
         />
@@ -98,19 +99,19 @@ export default function RootLayout({
           Skip to content
         </a>
         <ConstellationProvider>
-          {/* First-paint handshake — once per session, skippable */}
-          <BootSequence />
-          {/* Cmd/Ctrl+K — jump anywhere, open any project, copy the email */}
+          {/* Cinematic entrance animation */}
+          <CinematicEntrance />
+          {/* Thin scroll progress indicator */}
+          <ScrollProgress />
+          {/* Cmd/Ctrl+K — jump anywhere, open any project */}
           <CommandPalette />
-          {/* The living backdrop — eight chains orbiting behind everything */}
+          {/* Subtle backdrop field */}
           <ConstellationField />
-          <ChainBar />
           <CustomCursor />
           <Navbar />
-          <Compass />
           <ScrollReveal />
           <main id="main">{children}</main>
-          {/* Hidden "rasta" easter egg — renders nothing until triggered */}
+          {/* Easter egg */}
           <EasterEgg />
         </ConstellationProvider>
       </body>
