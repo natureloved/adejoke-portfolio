@@ -298,3 +298,39 @@ img, svg, canvas, video {
   .project-card:hover .pv-step { animation: none; }
   .pv-svg { opacity: 0.7; }
 }
+
+/* ==========================================================================
+   Critical Cinematic Entrance & Anti-FOUC Overlay Styles
+   ========================================================================== */
+.cinematic-curtain {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 99999 !important;
+  background: #06080a !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  transition: transform 0.75s cubic-bezier(0.85, 0, 0.15, 1),
+    opacity 0.75s cubic-bezier(0.85, 0, 0.15, 1) !important;
+}
+
+.cinematic-curtain.is-exiting {
+  transform: translateY(-100%) !important;
+  opacity: 0.95 !important;
+  pointer-events: none !important;
+}
+
+/* Initially hide animated text before stages activate to avoid initial text flash */
+.cinematic-curtain .name-mask:not(.is-active) {
+  opacity: 0 !important;
+}
+.cinematic-curtain .cinematic-eyebrow:not(.is-visible) {
+  opacity: 0 !important;
+}
+.cinematic-curtain .cinematic-thesis:not(.is-visible) {
+  opacity: 0 !important;
+}
+.cinematic-curtain .system-progress-bar:not(.is-visible) {
+  opacity: 0 !important;
+}

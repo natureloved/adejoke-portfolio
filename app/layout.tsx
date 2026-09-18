@@ -10,6 +10,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import CommandPalette from "@/components/CommandPalette";
 import EasterEgg from "@/components/EasterEgg";
 import CinematicEntrance from "@/components/CinematicEntrance";
+import StyledJsxRegistry from "./registry";
 
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
@@ -102,25 +103,27 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-        <ConstellationProvider>
-          {/* Cinematic entrance animation */}
-          <CinematicEntrance />
-          {/* Thin scroll progress indicator */}
-          <ScrollProgress />
-          {/* Cmd/Ctrl+K — jump anywhere, open any project */}
-          <CommandPalette />
-          {/* Subtle backdrop field */}
-          <ConstellationField />
-          <CustomCursor />
-          <Navbar />
-          <ScrollReveal />
-          <main id="main">{children}</main>
-          {/* Easter egg */}
-          <EasterEgg />
-        </ConstellationProvider>
+        <StyledJsxRegistry>
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
+          <ConstellationProvider>
+            {/* Cinematic entrance animation */}
+            <CinematicEntrance />
+            {/* Thin scroll progress indicator */}
+            <ScrollProgress />
+            {/* Cmd/Ctrl+K — jump anywhere, open any project */}
+            <CommandPalette />
+            {/* Subtle backdrop field */}
+            <ConstellationField />
+            <CustomCursor />
+            <Navbar />
+            <ScrollReveal />
+            <main id="main">{children}</main>
+            {/* Easter egg */}
+            <EasterEgg />
+          </ConstellationProvider>
+        </StyledJsxRegistry>
       </body>
     </html>
   );
