@@ -14,9 +14,9 @@ function StaxiqPreview({ isHovered }: { isHovered: boolean }) {
           <span className="dot green" />
         </div>
         <div className="chrome-title">STAXIQ // BITCOIN L2 DEFI AGGREGATOR</div>
-        <div className="chrome-status">
-          <span className="live-pill" />
-          <span>STACKS MAINNET</span>
+        <div className="simulation-badge">
+          <span className="sim-dot" aria-hidden="true" />
+          <span>Interactive concept preview • Simulated demo data</span>
         </div>
       </div>
 
@@ -184,9 +184,9 @@ function VozPreview({ isHovered }: { isHovered: boolean }) {
           <span className="dot green" />
         </div>
         <div className="chrome-title">VOZ // VOICE REMITTANCE ENGINE</div>
-        <div className="chrome-status">
-          <span className="live-pill blue" />
-          <span>SOLANA + LI.FI</span>
+        <div className="simulation-badge">
+          <span className="sim-dot blue" aria-hidden="true" />
+          <span>Prototype interaction • Simulated demo data</span>
         </div>
       </div>
 
@@ -417,9 +417,9 @@ function TipWallPreview({ isHovered }: { isHovered: boolean }) {
           <span className="dot green" />
         </div>
         <div className="chrome-title">TIPWALL // NIMIQ CREATOR WALL</div>
-        <div className="chrome-status">
-          <span className="live-pill orange" />
-          <span>0% FEES · P2P</span>
+        <div className="simulation-badge">
+          <span className="sim-dot orange" aria-hidden="true" />
+          <span>Prototype interaction • Simulated demo data</span>
         </div>
       </div>
 
@@ -623,9 +623,9 @@ function ClarityQuestPreview({ isHovered }: { isHovered: boolean }) {
           <span className="dot green" />
         </div>
         <div className="chrome-title">CLARITYQUEST // CLARINET IN-BROWSER WASM</div>
-        <div className="chrome-status">
-          <span className="live-pill cyan" />
-          <span>LEVEL 12 / 20</span>
+        <div className="simulation-badge">
+          <span className="sim-dot cyan" aria-hidden="true" />
+          <span>In-browser WASM preview • Simulated execution</span>
         </div>
       </div>
 
@@ -763,6 +763,11 @@ function ClarityQuestPreview({ isHovered }: { isHovered: boolean }) {
 /* ── Main Project Section Component ──────────────────────── */
 export default function ProjectShowcase() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [expandedCaseStudy, setExpandedCaseStudy] = useState<string | null>(null);
+
+  const toggleDeepDive = (id: string) => {
+    setExpandedCaseStudy((prev) => (prev === id ? null : id));
+  };
 
   const renderPreview = (project: FeaturedProject, isHovered: boolean) => {
     switch (project.id) {
@@ -783,21 +788,23 @@ export default function ProjectShowcase() {
     <section id="work" className="showcase-section" aria-label="Selected Work">
       <div className="site-grid">
         <div className="showcase-head">
-          <p className="section-label">Selected Work</p>
-          <h2 className="section-title">One product at a time. Systems built to last.</h2>
+          <p className="section-label">Selected Work // Flagship Products</p>
+          <h2 className="section-title">One product at a time. Verified systems built to last.</h2>
           <p className="section-intro">
-            Instead of a dense wall of thumbnails, each flagship product is presented with its own architecture, case study, and interactive product simulation.
+            Instead of vague screenshots, each flagship project is structured as a transparent mini case study with verifiable proof points and interactive prototypes.
           </p>
         </div>
 
-        {/* List of full sections */}
+        {/* List of full sections with generous breathing room */}
         <div className="project-sections-list">
           {FEATURED_PROJECTS.map((project) => {
             const isHovered = hoveredProject === project.id;
+            const isExpanded = expandedCaseStudy === project.id;
+
             return (
               <article
                 key={project.id}
-                className="project-row"
+                className={`project-row ${isExpanded ? "is-expanded" : ""}`}
                 style={{
                   "--accent-color": project.atmosphere.accent,
                   "--ambient-glow": project.atmosphere.ambientGlow,
@@ -809,22 +816,57 @@ export default function ProjectShowcase() {
                 <div className="atmosphere-glow" aria-hidden="true" />
 
                 <div className="project-layout">
-                  {/* Left Column: Story, Role, Stack, Links */}
+                  {/* Left Column: Mini Case Study Structure */}
                   <div className="project-narrative">
                     <div className="project-index-row">
                       <span className="project-num">{project.number} /</span>
-                      <span className="project-badge">{project.role}</span>
+                      <span className="proof-badge">{project.proofBadge}</span>
+                      <span className="project-role">{project.role}</span>
                       <span className="project-year">{project.year}</span>
                     </div>
 
                     <h3 className="project-title">{project.name}</h3>
-
                     <p className="project-tagline">{project.tagline}</p>
 
-                    <div className="project-case-study">
-                      <p>{project.caseStudy}</p>
+                    {/* 4-Part Structured Mini Case Study */}
+                    <div className="mini-case-study">
+                      <div className="study-block">
+                        <span className="block-label">01 / WHAT IT IS</span>
+                        <p className="block-body">{project.whatItIs}</p>
+                      </div>
+
+                      <div className="study-block">
+                        <span className="block-label">02 / WHY IT MATTERS</span>
+                        <p className="block-body">{project.whyItMatters}</p>
+                      </div>
+
+                      <div className="study-block">
+                        <span className="block-label">03 / WHAT I BUILT</span>
+                        <ul className="contrib-list">
+                          {project.whatIBuilt.map((item, idx) => (
+                            <li key={idx} className="contrib-item">
+                              <span className="contrib-bullet">▹</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Verified Proof Points */}
+                      <div className="study-block proof-block">
+                        <span className="block-label">VERIFIED PROOF & WORKING CAPABILITIES</span>
+                        <div className="works-pills">
+                          {project.whatActuallyWorks.map((item, idx) => (
+                            <span key={idx} className="work-pill">
+                              <span className="pill-check">✓</span>
+                              <span>{item}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
+                    {/* Technology Stack */}
                     <div className="project-stack-wrap">
                       <span className="stack-label">Stack:</span>
                       <div className="stack-pills">
@@ -836,35 +878,95 @@ export default function ProjectShowcase() {
                       </div>
                     </div>
 
+                    {/* Part 4: Where to see it & Deep Dive */}
                     <div className="project-links">
                       <a
                         href={project.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="link-btn link-primary"
+                        id={`btn-live-${project.id}`}
                       >
-                        Live site
+                        <span>Live demo</span>
                         <span className="arrow" aria-hidden="true">↗</span>
                       </a>
+
                       {project.repo && (
                         <a
                           href={project.repo}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="link-btn link-secondary"
+                          id={`btn-repo-${project.id}`}
                         >
-                          GitHub source
+                          <span>GitHub repository</span>
                           <span className="arrow" aria-hidden="true">↗</span>
                         </a>
+                      )}
+
+                      {project.deepDive && (
+                        <button
+                          type="button"
+                          className={`link-btn link-deep-dive ${isExpanded ? "active" : ""}`}
+                          onClick={() => toggleDeepDive(project.id)}
+                          aria-expanded={isExpanded}
+                          id={`btn-deepdive-${project.id}`}
+                        >
+                          <span>{isExpanded ? "Close case study breakdown ↑" : "Architecture breakdown ↓"}</span>
+                        </button>
                       )}
                     </div>
                   </div>
 
-                  {/* Right Column: Strong Visual & Interactive Mockup */}
+                  {/* Right Column: Interactive Mockup Simulation */}
                   <div className="project-preview-wrapper">
                     {renderPreview(project, isHovered)}
                   </div>
                 </div>
+
+                {/* Expandable Deep Dive Case Study Drawer (TipWall & Staxiq) */}
+                {project.deepDive && isExpanded && (
+                  <div className="deep-dive-drawer" id={`drawer-${project.id}`}>
+                    <div className="drawer-header">
+                      <span className="drawer-eyebrow">ENGINEERING CASE STUDY // ARCHITECTURE DEEP DIVE</span>
+                      <h4 className="drawer-title">{project.deepDive.title}</h4>
+                      <p className="drawer-problem">{project.deepDive.problem}</p>
+                    </div>
+
+                    <div className="drawer-grid">
+                      <div className="drawer-col">
+                        <span className="col-heading">System Architecture</span>
+                        <div className="arch-cards-list">
+                          {project.deepDive.architecture.map((arch, idx) => (
+                            <div key={idx} className="arch-card">
+                              <span className="arch-component">{arch.component}</span>
+                              <p className="arch-detail">{arch.detail}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="drawer-col">
+                        <span className="col-heading">Key Technical Hurdles Solved</span>
+                        <ul className="drawer-list">
+                          {project.deepDive.keyChallenges.map((c, idx) => (
+                            <li key={idx}>{c}</li>
+                          ))}
+                        </ul>
+
+                        <span className="col-heading margin-top">Verifiable Production Benchmarks</span>
+                        <ul className="drawer-list proof-list">
+                          {project.deepDive.verifiableResults.map((r, idx) => (
+                            <li key={idx}>
+                              <span className="list-check">✓</span>
+                              <span>{r}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </article>
             );
           })}
@@ -874,25 +976,26 @@ export default function ProjectShowcase() {
       <style jsx global>{`
         .showcase-section {
           position: relative;
-          padding: 8rem 0 6rem;
+          padding: clamp(6rem, 10vw, 9rem) 0;
           border-top: 1px solid var(--border-soft);
         }
 
         .showcase-head {
-          margin-bottom: 5rem;
+          margin-bottom: clamp(3.5rem, 6vw, 5rem);
         }
 
+        /* Generous visual breathing room between projects */
         .project-sections-list {
           display: flex;
           flex-direction: column;
-          gap: 6rem;
+          gap: clamp(5rem, 8vw, 8rem);
         }
 
         .project-row {
           position: relative;
           border: 1px solid var(--border);
-          background: rgba(14, 18, 22, 0.65);
-          backdrop-filter: blur(12px);
+          background: rgba(14, 18, 22, 0.7);
+          backdrop-filter: blur(14px);
           overflow: hidden;
           transition: border-color 0.4s ease, transform 0.3s ease;
         }
@@ -901,10 +1004,14 @@ export default function ProjectShowcase() {
           border-color: var(--accent-color);
         }
 
+        .project-row.is-expanded {
+          border-color: var(--accent-color);
+        }
+
         .atmosphere-glow {
           position: absolute;
           inset: 0;
-          background: radial-gradient(circle at 75% 50%, var(--ambient-glow) 0%, transparent 65%);
+          background: radial-gradient(circle at 75% 40%, var(--ambient-glow) 0%, transparent 65%);
           pointer-events: none;
           opacity: 0.6;
           transition: opacity 0.5s ease;
@@ -918,10 +1025,10 @@ export default function ProjectShowcase() {
           position: relative;
           z-index: 2;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(360px, 1.15fr);
+          grid-template-columns: minmax(0, 1.15fr) minmax(360px, 1.05fr);
           align-items: center;
-          gap: clamp(2rem, 5vw, 4.5rem);
-          padding: clamp(2.5rem, 4vw, 4rem);
+          gap: clamp(2.5rem, 5vw, 5rem);
+          padding: clamp(2.2rem, 4.5vw, 4.5rem);
         }
 
         .project-narrative {
@@ -931,11 +1038,12 @@ export default function ProjectShowcase() {
 
         .project-index-row {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 0.85rem;
+          gap: 0.75rem;
           font-family: var(--font-mono);
           font-size: 0.68rem;
-          margin-bottom: 1rem;
+          margin-bottom: 1.1rem;
         }
 
         .project-num {
@@ -944,13 +1052,23 @@ export default function ProjectShowcase() {
           letter-spacing: 0.15em;
         }
 
-        .project-badge {
+        .proof-badge {
+          padding: 0.2rem 0.55rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: var(--cyan);
+          font-size: 0.58rem;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        .project-role {
           padding: 0.2rem 0.55rem;
           border: 1px solid rgba(255, 255, 255, 0.08);
           color: var(--muted);
           text-transform: uppercase;
           font-size: 0.58rem;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.06em;
         }
 
         .project-year {
@@ -959,7 +1077,7 @@ export default function ProjectShowcase() {
 
         .project-title {
           margin: 0;
-          font-size: clamp(2.2rem, 4vw, 3.4rem);
+          font-size: clamp(2.4rem, 4.5vw, 3.6rem);
           font-weight: 650;
           letter-spacing: -0.04em;
           color: var(--white);
@@ -967,26 +1085,96 @@ export default function ProjectShowcase() {
         }
 
         .project-tagline {
-          margin: 1rem 0 0;
+          margin: 0.9rem 0 0;
           font-size: 1.05rem;
           font-weight: 500;
           color: var(--accent-color);
           line-height: 1.5;
         }
 
-        .project-case-study {
-          margin-top: 1.25rem;
+        /* 4-Part Mini Case Study */
+        .mini-case-study {
+          display: flex;
+          flex-direction: column;
+          gap: 1.15rem;
+          margin-top: 1.6rem;
+          padding: 1.25rem;
+          background: rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .study-block {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+
+        .block-label {
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.1em;
           color: var(--muted);
-          font-size: 0.88rem;
-          line-height: 1.75;
-          max-width: 52ch;
+          text-transform: uppercase;
+        }
+
+        .block-body {
+          margin: 0;
+          font-size: 0.85rem;
+          line-height: 1.65;
+          color: rgba(244, 241, 234, 0.85);
+        }
+
+        .contrib-list {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 0.45rem;
+        }
+
+        .contrib-item {
+          display: flex;
+          align-items: baseline;
+          gap: 0.55rem;
+          font-size: 0.82rem;
+          line-height: 1.6;
+          color: rgba(244, 241, 234, 0.82);
+        }
+
+        .contrib-bullet {
+          color: var(--accent-color);
+          font-size: 0.72rem;
+        }
+
+        .works-pills {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.4rem;
+          margin-top: 0.25rem;
+        }
+
+        .work-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.25rem 0.55rem;
+          background: rgba(0, 240, 118, 0.06);
+          border: 1px solid rgba(0, 240, 118, 0.2);
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          color: #00f076;
+        }
+
+        .pill-check {
+          font-weight: 700;
         }
 
         .project-stack-wrap {
           display: flex;
           align-items: baseline;
           gap: 0.75rem;
-          margin-top: 1.75rem;
+          margin-top: 1.5rem;
         }
 
         .stack-label {
@@ -1014,30 +1202,34 @@ export default function ProjectShowcase() {
 
         .project-links {
           display: flex;
+          flex-wrap: wrap;
           align-items: center;
-          gap: 1rem;
-          margin-top: 2.2rem;
-          padding-top: 1.5rem;
+          gap: 0.85rem;
+          margin-top: 1.8rem;
+          padding-top: 1.4rem;
           border-top: 1px solid var(--border-soft);
         }
 
         .link-btn {
           display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
+          gap: 0.45rem;
+          min-height: 42px;
+          padding: 0.65rem 1.15rem;
           font-family: var(--font-mono);
           font-size: 0.68rem;
           font-weight: 500;
           letter-spacing: 0.08em;
           text-transform: uppercase;
           text-decoration: none;
+          cursor: pointer;
           transition: all 0.2s ease;
         }
 
         .link-primary {
-          padding: 0.65rem 1.15rem;
           background: var(--accent-color);
           color: #0b0e10;
+          font-weight: 600;
         }
 
         .link-primary:hover {
@@ -1046,7 +1238,7 @@ export default function ProjectShowcase() {
         }
 
         .link-secondary {
-          padding: 0.65rem 1rem;
+          background: transparent;
           border: 1px solid var(--border);
           color: var(--white);
         }
@@ -1054,21 +1246,140 @@ export default function ProjectShowcase() {
         .link-secondary:hover {
           border-color: var(--accent-color);
           color: var(--accent-color);
+          transform: translateY(-2px);
         }
 
-        /* ── Shared Preview Wrapper Styles ── */
-        .project-preview-wrapper {
+        .link-deep-dive {
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid var(--border-soft);
+          color: var(--cyan);
+        }
+
+        .link-deep-dive:hover,
+        .link-deep-dive.active {
+          border-color: var(--cyan);
+          background: rgba(94, 234, 212, 0.1);
+          color: var(--white);
+        }
+
+        /* ── Expandable Deep Dive Case Study Drawer ── */
+        .deep-dive-drawer {
           position: relative;
-          width: 100%;
+          z-index: 3;
+          padding: clamp(2rem, 4vw, 3.5rem);
+          border-top: 1px solid var(--accent-color);
+          background: rgba(9, 12, 16, 0.98);
+          animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .preview-container {
-          border: 1px solid var(--border);
-          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-          overflow: hidden;
-          transition: border-color 0.3s ease;
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
+        .drawer-header {
+          margin-bottom: 2.2rem;
+          max-width: 800px;
+        }
+
+        .drawer-eyebrow {
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.14em;
+          color: var(--accent-color);
+          text-transform: uppercase;
+        }
+
+        .drawer-title {
+          margin: 0.5rem 0 0.8rem;
+          font-size: clamp(1.4rem, 2.5vw, 2rem);
+          color: var(--white);
+          font-weight: 650;
+        }
+
+        .drawer-problem {
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.7;
+          color: rgba(244, 241, 234, 0.8);
+        }
+
+        .drawer-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2.5rem;
+        }
+
+        .col-heading {
+          display: block;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--cyan);
+          margin-bottom: 1rem;
+        }
+
+        .col-heading.margin-top {
+          margin-top: 2rem;
+        }
+
+        .arch-cards-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+        }
+
+        .arch-card {
+          padding: 1rem 1.2rem;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid var(--border-soft);
+        }
+
+        .arch-component {
+          display: block;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: var(--white);
+          margin-bottom: 0.35rem;
+        }
+
+        .arch-detail {
+          margin: 0;
+          font-size: 0.8rem;
+          line-height: 1.6;
+          color: var(--muted);
+        }
+
+        .drawer-list {
+          margin: 0;
+          padding: 0 0 0 1.2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          font-size: 0.82rem;
+          line-height: 1.6;
+          color: rgba(244, 241, 234, 0.85);
+        }
+
+        .proof-list {
+          list-style: none;
+          padding: 0;
+        }
+
+        .proof-list li {
+          display: flex;
+          align-items: baseline;
+          gap: 0.6rem;
+          color: #00f076;
+        }
+
+        .list-check {
+          font-weight: 700;
+        }
+
+        /* ── Preview Chrome Simulation Badge ── */
         .preview-chrome {
           display: flex;
           align-items: center;
@@ -1077,6 +1388,31 @@ export default function ProjectShowcase() {
           background: rgba(6, 8, 10, 0.95);
           border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
+
+        .simulation-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          font-family: var(--font-mono);
+          font-size: 0.54rem;
+          letter-spacing: 0.04em;
+          color: rgba(244, 241, 234, 0.65);
+          padding: 0.15rem 0.5rem;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 999px;
+        }
+
+        .sim-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #00f076;
+        }
+
+        .sim-dot.blue { background: #60a5fa; }
+        .sim-dot.orange { background: #ff7a45; }
+        .sim-dot.cyan { background: #38bdf8; }
 
         .chrome-dots {
           display: flex;
@@ -1101,28 +1437,6 @@ export default function ProjectShowcase() {
           letter-spacing: 0.1em;
         }
 
-        .chrome-status {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-family: var(--font-mono);
-          font-size: 0.55rem;
-          color: var(--muted);
-          text-transform: uppercase;
-        }
-
-        .live-pill {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #00f076;
-          box-shadow: 0 0 6px #00f076;
-        }
-
-        .live-pill.blue { background: #60a5fa; box-shadow: 0 0 6px #60a5fa; }
-        .live-pill.orange { background: #ff7a45; box-shadow: 0 0 6px #ff7a45; }
-        .live-pill.cyan { background: #38bdf8; box-shadow: 0 0 6px #38bdf8; }
-
         .preview-body {
           padding: 1.25rem;
         }
@@ -1138,14 +1452,40 @@ export default function ProjectShowcase() {
           letter-spacing: 0.04em;
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: 1024px) {
           .project-layout {
             grid-template-columns: 1fr;
-            padding: 2rem 1.5rem;
+            padding: 2.2rem 1.6rem;
           }
 
-          .project-sections-list {
-            gap: 3.5rem;
+          .drawer-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+
+          .preview-chrome {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .project-title {
+            font-size: 2.2rem;
+          }
+
+          .project-links {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .link-btn {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .mini-case-study {
+            padding: 1rem 0.85rem;
           }
         }
       `}</style>

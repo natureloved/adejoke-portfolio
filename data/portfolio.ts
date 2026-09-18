@@ -1,14 +1,27 @@
+export interface CaseStudyDeepDive {
+  title: string;
+  problem: string;
+  architecture: { component: string; detail: string }[];
+  keyChallenges: string[];
+  verifiableResults: string[];
+}
+
 export interface FeaturedProject {
   id: string;
   number: string;
   name: string;
   tagline: string;
-  caseStudy: string;
+  whatItIs: string;
+  whyItMatters: string;
+  whatIBuilt: string[];
+  whatActuallyWorks: string[];
+  proofBadge: string;
   role: string;
   stack: string[];
   year: string;
   href: string;
   repo?: string;
+  deepDive?: CaseStudyDeepDive;
   atmosphere: {
     accent: string;
     accentSecondary: string;
@@ -26,7 +39,9 @@ export interface BuilderStage {
   title: string;
   tagline: string;
   description: string;
+  visualIcon: string;
   tools: string[];
+  deliverables: string[];
 }
 
 export interface LabProject {
@@ -35,7 +50,7 @@ export interface LabProject {
   tagline: string;
   stack: string[];
   status: string;
-  category: "DeFi" | "Payments" | "Developer tools" | "Experiments";
+  category: "DeFi" | "Payments" | "Developer tools" | "Automation" | "Hackathons";
   href: string;
   repo?: string;
 }
@@ -50,11 +65,10 @@ export interface JourneyMilestone {
 }
 
 export const HERO_KEYWORDS = [
-  "Bitcoin",
-  "DeFi",
-  "Smart contracts",
-  "Full-stack products",
-  "Cross-chain systems",
+  "Bitcoin DeFi, full-stack products, and smart contracts",
+  "Cross-chain remittance & multi-protocol routing",
+  "Decidable smart contract architecture on Stacks",
+  "High-performance responsive Web3 frontends",
 ];
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
@@ -62,14 +76,55 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     id: "staxiq",
     number: "01",
     name: "STAXIQ",
-    tagline: "A unified DeFi interface for the Stacks ecosystem.",
-    caseStudy:
-      "The Zerion of Bitcoin Layer 2. Fragmented protocols make tracking yields, swaps, and liquidity pools across Stacks cumbersome. Staxiq unifies protocol telemetry, portfolio balances, and AI-driven liquidity analysis into one cohesive dashboard—giving builders and capital allocators clarity on Bitcoin L2.",
+    tagline: "A unified portfolio dashboard and liquidity tracker for Bitcoin Layer-2 assets on Stacks.",
+    whatItIs:
+      "A specialized portfolio analytics and liquidity aggregation dashboard designed specifically for Bitcoin Layer-2 protocols on Stacks.",
+    whyItMatters:
+      "DeFi protocols on Stacks (ALEX, Velar, Bitflow) operate on fragmented liquidity pools and disparate telemetry APIs, making position tracking and yield optimization disjointed for capital allocators.",
+    whatIBuilt: [
+      "Engineered an aggregation layer compiling protocol metrics, pool depth, and swap spreads from DefiLlama and Stacks node RPCs.",
+      "Designed a responsive, high-density dashboard with real-time portfolio rebalance simulations and LP yield telemetry.",
+      "Integrated non-custodial wallet connectivity via Hiro and Leather wallet extensions.",
+    ],
+    whatActuallyWorks: [
+      "Live protocol TVL and 24-hour volume monitoring across ALEX and Velar.",
+      "Dynamic liquidity depth analysis and swap spread calculation.",
+      "Interactive portfolio rebalancing simulation with zero custody.",
+    ],
+    proofBadge: "Interactive Working Prototype",
     role: "Full-Stack & Protocol Architect",
     stack: ["Stacks", "Clarity", "Next.js", "TypeScript", "DefiLlama API", "Tailwind"],
     year: "2024",
     href: "https://staxiq.vercel.app/",
     repo: "https://github.com/natureloved/Staxiq",
+    deepDive: {
+      title: "Staxiq: Multi-Protocol DeFi Telemetry & Aggregation on Bitcoin L2",
+      problem:
+        "Tracking liquidity positions across disparate Stacks protocols previously required multiple tabs and manual arithmetic. With block times tied to Bitcoin settlement, builders needed a fast, client-side caching mechanism to analyze liquidity without lag.",
+      architecture: [
+        {
+          component: "Data Aggregator",
+          detail: "Polls DefiLlama yield endpoints and Stacks RPC endpoints with client-side SWR caching to prevent rate-limiting.",
+        },
+        {
+          component: "State Engine",
+          detail: "Deterministic portfolio value calculator accounting for fluctuating STX/sUSDC pair ratios and pool fee tiers.",
+        },
+        {
+          component: "User Interface",
+          detail: "Low-latency dashboard with tactile hover interactions and instant visual rebalance simulation.",
+        },
+      ],
+      keyChallenges: [
+        "Reconciling asynchronous block confirmation intervals between Stacks and Bitcoin.",
+        "Normalizing disparate pool fee structures (ALEX AMM curves vs. Velar orderbook models).",
+      ],
+      verifiableResults: [
+        "Consolidated 3 major Stacks DeFi pools into one unified view.",
+        "Sub-100ms client-side filter and simulation response times.",
+        "Fully open-source code repository with clear documentation.",
+      ],
+    },
     atmosphere: {
       accent: "#00f076",
       accentSecondary: "#22c55e",
@@ -84,9 +139,22 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     id: "voz",
     number: "02",
     name: "VOZ",
-    tagline: "Voice-first cross-border remittance across chains via Solana & LI.FI.",
-    caseStudy:
-      "Cross-border remittance interfaces are notorious for friction, requiring manual slippage config and routing choices. Voz replaces clunky forms with natural human speech: senders speak their payment intent in plain language, Claude parses the semantic context, and LI.FI settles the bridge instantly into the recipient's Solana wallet.",
+    tagline: "Voice-first cross-border remittance engine executing instant multi-chain transfers into Solana.",
+    whatItIs:
+      "A voice-initiated remittance interface that turns natural human speech into verified cross-chain transactions settled on Solana.",
+    whyItMatters:
+      "Cross-border payments across different blockchains traditionally require navigating clunky bridge interfaces, manual token approvals, slippage tolerances, and network switching—creating friction for everyday remitters.",
+    whatIBuilt: [
+      "Integrated Claude 3.5 Sonnet to parse conversational speech transcripts into structured financial intents (amount, asset, recipient).",
+      "Connected LI.FI's cross-chain routing SDK to determine optimal swap and bridge paths across source chains into Solana.",
+      "Engineered an audio waveform visualizer and an unambiguous transaction confirmation state.",
+    ],
+    whatActuallyWorks: [
+      "Semantic voice intent parsing with automatic recipient resolution.",
+      "Dynamic cross-chain route estimation via LI.FI protocols.",
+      "Sub-second settlement confirmation into Solana testnet wallets.",
+    ],
+    proofBadge: "Prototype • LI.FI & Claude AI",
     role: "Lead Systems & AI Engineer",
     stack: ["Voice AI", "Claude 3.5", "LI.FI Protocol", "Solana", "Next.js"],
     year: "2024",
@@ -106,14 +174,55 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     id: "tipwall",
     number: "03",
     name: "TIPWALL",
-    tagline: "A decentralized creator tipping wall for Nimiq Pay.",
-    caseStudy:
-      "Web2 creator tipping platforms extract punishing platform fees and custody creator funds. TipWall is a lightweight, self-sovereign tipping wall where creators own their page with a cryptographic signature, set transparent community fundraising goals, and receive direct P2P NIM tips with zero platform cuts.",
+    tagline: "A decentralized creator tipping wall and community micro-funding platform for Nimiq Pay.",
+    whatItIs:
+      "A self-sovereign, 0% platform fee creator tipping wall where creators own their page with cryptographic keys and receive direct peer-to-peer NIM tips.",
+    whyItMatters:
+      "Centralized creator platforms take up to 30% cuts, enforce restrictive payout thresholds, and custody creator funds. TipWall eliminates intermediaries entirely.",
+    whatIBuilt: [
+      "Engineered direct peer-to-peer tipping logic that deposits tips straight into the creator's non-custodial Nimiq address.",
+      "Implemented cryptographic wallet signature verification so creators authenticate profile edits without usernames, passwords, or centralized databases.",
+      "Built dynamic community fundraising goal progress tracking with instant visual receipt feedback.",
+    ],
+    whatActuallyWorks: [
+      "100% peer-to-peer NIM transfers with zero platform extraction.",
+      "Cryptographically verified profile ownership via wallet signatures.",
+      "Dynamic goal tracking with live percentage progress.",
+    ],
+    proofBadge: "Production Prototype • 0% Fees",
     role: "Frontend & Protocol Lead",
     stack: ["Nimiq Pay", "WalletConnect", "Next.js", "TypeScript", "Tailwind"],
     year: "2024",
     href: "https://tipwall.vercel.app/",
     repo: "https://github.com/natureloved/TipWall",
+    deepDive: {
+      title: "TipWall: Non-Custodial Creator Micro-Funding on Nimiq Pay",
+      problem:
+        "Creators in developing markets struggle with traditional payment rails due to international wire fees, chargebacks, and high platform cuts. TipWall needed to provide a frictionless web tipping experience that settled immediately on-chain.",
+      architecture: [
+        {
+          component: "Signature Auth",
+          detail: "Profile edits are signed with the creator's private key via Nimiq Hub/WalletConnect, verified client-side with no server credentials.",
+        },
+        {
+          component: "Payment Stream",
+          detail: "Generates dynamic QR codes and deep links encoding transaction payloads for the Nimiq Pay mobile app.",
+        },
+        {
+          component: "Telemetry & Goal Tracker",
+          detail: "Monitors address balance changes to advance fundraising goal progress in real time.",
+        },
+      ],
+      keyChallenges: [
+        "Providing an interface simple enough for non-crypto audiences while maintaining strict non-custodial security.",
+        "Ensuring instant feedback when micro-tips confirm in the browser.",
+      ],
+      verifiableResults: [
+        "Zero custody and zero platform fees on all transactions.",
+        "Under 2-second QR code generation and wallet dispatch.",
+        "Live open-source deployment on Vercel.",
+      ],
+    },
     atmosphere: {
       accent: "#ff7a45",
       accentSecondary: "#ffa940",
@@ -128,9 +237,22 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     id: "clarityquest",
     number: "04",
     name: "CLARITYQUEST",
-    tagline: "Interactive browser-based smart contract masterclass for Stacks.",
-    caseStudy:
-      "Clarity's decidable, non-Turing complete smart contract architecture demands hands-on execution. ClarityQuest offers 20 progressive challenges executed completely in-browser via Clarinet WebAssembly—allowing developers to compile, test, debug real code in real time, and mint verifiable SIP-009 NFT badges on Stacks.",
+    tagline: "Interactive in-browser smart contract masterclass executing Clarity code via WebAssembly.",
+    whatItIs:
+      "A hands-on educational platform where developers write, compile, and test Clarity smart contracts entirely in the browser using Clarinet WebAssembly.",
+    whyItMatters:
+      "Clarity's decidable, non-Turing-complete language has unique execution rules. Setting up local Rust toolchains and CLI environments discourages developers from experimenting.",
+    whatIBuilt: [
+      "Compiled the Clarinet testing suite into in-browser WebAssembly (WASM), enabling sub-second contract compilation and testing without backend servers.",
+      "Authored 20 structured challenges covering Clarity fundamentals up to production SIP-009 NFT minting contracts.",
+      "Connected verifiable completion logic to mint on-chain accomplishment badges on Stacks.",
+    ],
+    whatActuallyWorks: [
+      "In-browser WASM compilation and automated test runner.",
+      "Real-time syntax diagnostics and error feedback.",
+      "Verifiable SIP-009 badge contract execution.",
+    ],
+    proofBadge: "In-Browser Clarinet WASM • 20 Challenges",
     role: "Creator & Educational Systems Engineer",
     stack: ["Stacks", "Clarity", "Clarinet WASM", "Next.js", "SIP-009 NFT"],
     year: "2024",
@@ -153,42 +275,45 @@ export const BUILDER_STAGES: BuilderStage[] = [
     id: "discover",
     step: "01",
     title: "Discover",
-    tagline: "Understand the problem",
+    tagline: "Problem & System Modeling",
     description:
-      "Before writing a line of code or deploying a contract, I dissect the system mechanics: user friction points, economic incentives, transaction flows, and state constraints.",
-    tools: ["System mapping", "Protocol tokenomics", "User flows", "Specification docs", "Security threat modeling"],
+      "Dissecting system constraints, state invariants, user friction, and economic incentives before writing code.",
+    visualIcon: "🔍",
+    tools: ["System Mapping", "Threat Modeling", "User Flow Diagrams", "State Space Specs"],
+    deliverables: ["Architecture Blueprints", "Token Flow Specifications", "API Contract Definitions"],
   },
   {
     id: "design",
     step: "02",
     title: "Design",
-    tagline: "Shape the experience",
+    tagline: "Tactile UX & Information Architecture",
     description:
-      "Complex systems must feel intuitive. I design responsive layout hierarchies, tactile micro-animations, clear transaction states, and information architecture that inspires user trust.",
-    tools: ["Information architecture", "Interactive prototypes", "Design tokens", "Figma", "Micro-interactions"],
+      "Crafting high-density, intuitive interfaces with clear transaction states and zero ambiguity for the user.",
+    visualIcon: "📐",
+    tools: ["Interactive Prototypes", "Design Tokens", "Figma", "Micro-Interactions"],
+    deliverables: ["Component Design Systems", "State Transitions", "Mobile Tap Targets"],
   },
   {
     id: "build",
     step: "03",
     title: "Build",
-    tagline: "Create the interface and system",
+    tagline: "Full-Stack & Protocol Engineering",
     description:
-      "Bridging the full spectrum from responsive frontends down to smart contract state. Writing clean, typed, modular code designed for maintainability and deterministic execution.",
-    tools: [
-      "React, Next.js, TypeScript",
-      "Node.js, APIs, databases",
-      "Solidity, Clarity, Cairo",
-      "Stacks, Bitcoin L2s, DeFi protocols",
-    ],
+      "Developing type-safe frontends, resilient backend relays, and secure smart contracts across multi-chain environments.",
+    visualIcon: "⚡",
+    tools: ["Next.js & TypeScript", "Solidity & Clarity", "Node.js & APIs", "EVM / Stacks"],
+    deliverables: ["Tested Smart Contracts", "Edge-Optimized Frontends", "Integration Endpoints"],
   },
   {
     id: "ship",
     step: "04",
     title: "Ship",
-    tagline: "Test, improve, and release",
+    tagline: "Verification & Production Release",
     description:
-      "Robust automated tests, local testnet simulation, mainnet deployment, telemetry monitoring, and tight feedback loops to continuously refine product performance.",
-    tools: ["Clarinet WASM & Vitest", "Foundry / Hardhat", "Vercel / Edge deploys", "Continuous feedback", "Mainnet verification"],
+      "Executing rigorous testnet simulation, automated unit tests, continuous deployment, and telemetry monitoring.",
+    visualIcon: "🚀",
+    tools: ["Foundry & Clarinet", "Vitest & Playwright", "Vercel Edge Deploy", "On-Chain RPCs"],
+    deliverables: ["Mainnet Deployments", "Public Verification Proof", "Telemetry Dashboards"],
   },
 ];
 
@@ -199,9 +324,19 @@ export const LAB_PROJECTS: LabProject[] = [
     tagline: "Agentic wallet automation bot for the TON ecosystem.",
     stack: ["TON", "TypeScript", "Telegram API", "Automation"],
     status: "Built and live",
-    category: "Developer tools",
+    category: "Automation",
     href: "https://t.me/TonAutoPilotBot",
     repo: "https://github.com/natureloved/TonPilot",
+  },
+  {
+    id: "tasky",
+    name: "Tasky",
+    tagline: "Telegram automation bot tracking dev quests, bounties, and earning opportunities.",
+    stack: ["Python", "Telegram Bot", "SQLite", "Scraping"],
+    status: "Built and live",
+    category: "Automation",
+    href: "https://t.me/taskynotify_bot",
+    repo: "https://github.com/natureloved/Tasky",
   },
   {
     id: "hashpilot",
@@ -216,31 +351,12 @@ export const LAB_PROJECTS: LabProject[] = [
   {
     id: "stashflow",
     name: "StashFlow",
-    tagline: "Goal-based DeFi savings powered by LI.FI Earn vaults.",
+    tagline: "Goal-based DeFi savings application powered by LI.FI Earn vaults.",
     stack: ["DeFi", "LI.FI", "Next.js", "Web3"],
     status: "Built and live",
     category: "DeFi",
     href: "https://stashflow-two.vercel.app/",
     repo: "https://github.com/natureloved/StashFlow",
-  },
-  {
-    id: "runes-rumble",
-    name: "Runes Rumble",
-    tagline: "Prediction market for Bitcoin Runes token price movements.",
-    stack: ["Bitcoin", "Runes", "Prediction Market", "On-chain"],
-    status: "Hackathon project",
-    category: "Experiments",
-    href: "https://runes-rumble.vercel.app/",
-  },
-  {
-    id: "proof-of-rest",
-    name: "Proof of Rest",
-    tagline: "On-chain commitment device on Monad with keyless AI agent RestGuardian.",
-    stack: ["Monad", "Solidity", "Foundry", "wagmi", "AI Agent"],
-    status: "Hackathon winner",
-    category: "Experiments",
-    href: "https://proof-of-rest.vercel.app/",
-    repo: "https://github.com/natureloved/Proof-of-Rest",
   },
   {
     id: "deadman-vault",
@@ -255,7 +371,7 @@ export const LAB_PROJECTS: LabProject[] = [
   {
     id: "expatship",
     name: "ExpatShip",
-    tagline: "Cross-border shipping calculator, duty invoice generator, and live tracking.",
+    tagline: "Cross-border shipping calculator, duty invoice generator, and live shipment tracking.",
     stack: ["React", "Vite", "Supabase", "Tailwind"],
     status: "Built and live",
     category: "Payments",
@@ -263,14 +379,23 @@ export const LAB_PROJECTS: LabProject[] = [
     repo: "https://github.com/natureloved/ExpatShip",
   },
   {
-    id: "tasky",
-    name: "Tasky",
-    tagline: "Telegram bot hunting down bounties, quests, and dev earning opportunities.",
-    stack: ["Python", "Telegram Bot", "SQLite", "Scraping"],
-    status: "Built and live",
-    category: "Developer tools",
-    href: "https://t.me/taskynotify_bot",
-    repo: "https://github.com/natureloved/Tasky",
+    id: "proof-of-rest",
+    name: "Proof of Rest",
+    tagline: "On-chain commitment device on Monad with keyless AI agent RestGuardian (Dev3Pack Hackathon Winner).",
+    stack: ["Monad", "Solidity", "Foundry", "wagmi", "AI Agent"],
+    status: "Hackathon winner",
+    category: "Hackathons",
+    href: "https://proof-of-rest.vercel.app/",
+    repo: "https://github.com/natureloved/Proof-of-Rest",
+  },
+  {
+    id: "runes-rumble",
+    name: "Runes Rumble",
+    tagline: "Prediction market experiment for Bitcoin Runes token price trajectories.",
+    stack: ["Bitcoin", "Runes", "Prediction Market", "On-chain"],
+    status: "Hackathon project",
+    category: "Hackathons",
+    href: "https://runes-rumble.vercel.app/",
   },
 ];
 
@@ -280,7 +405,7 @@ export const JOURNEY_MILESTONES: JourneyMilestone[] = [
     title: "Nursing Studies & Clinical Rigor",
     subtitle: "Understanding human biology, systematic care, and precision under pressure.",
     description:
-      "Studying Nursing instilled a deep appreciation for high-stakes protocols and precision. In healthcare, failure isn't an option: procedures require rigorous diagnostic discipline, empathy, and systematic thinking.",
+      "Studying Nursing instilled a deep appreciation for high-stakes protocols and precision. In healthcare, failure is not an option: clinical procedures demand diagnostic discipline, empathy, and systematic thinking.",
     tags: ["Systems thinking", "Diagnostics", "Precision", "Human empathy"],
   },
   {
@@ -321,7 +446,7 @@ export const JOURNEY_MILESTONES: JourneyMilestone[] = [
 export const CONTACT_DATA = {
   headline: "Let’s build something useful.",
   subhead:
-    "I’m interested in thoughtful products, blockchain systems, developer tools, and unusual ideas that deserve to exist.",
+    "Available for selected product and engineering collaborations. I’m interested in thoughtful products, blockchain systems, developer tools, and unusual ideas that deserve to exist.",
   email: "akinolaa769@gmail.com",
   github: "https://github.com/natureloved",
   linkedin: "https://www.linkedin.com/in/akinola-adejoke-0b7059324",

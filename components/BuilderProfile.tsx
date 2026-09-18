@@ -4,83 +4,171 @@ import { useState } from "react";
 import { BUILDER_STAGES } from "@/data/portfolio";
 
 export default function BuilderProfile() {
-  const [activeStage, setActiveStage] = useState<string>("build");
+  const [activeStageId, setActiveStageId] = useState<string>("build");
+
+  const activeStage = BUILDER_STAGES.find((s) => s.id === activeStageId) ?? BUILDER_STAGES[2];
 
   return (
-    <section id="builder" className="builder-section" aria-label="How I Work">
+    <section id="builder" className="builder-section" aria-label="Engineering Process">
       <div className="site-grid">
         <div className="builder-head">
-          <p className="section-label">02 / Builder Profile</p>
-          <h2 className="section-title">A map of how I work. No vanity percentages.</h2>
+          <p className="section-label">02 / Process & Methodology</p>
+          <h2 className="section-title">An interactive map of how I ship software.</h2>
           <p className="section-intro">
-            Instead of saying I am 95% skilled in a framework, here is the actual end-to-end engineering methodology I follow to ship software that holds up in production.
+            Deterministic engineering from system discovery to mainnet release. Click any milestone to inspect deliverables and verification points.
           </p>
         </div>
 
-        {/* 4-Step Pipeline Flow */}
-        <div className="pipeline-container">
-          <div className="pipeline-grid">
+        {/* Visual Pipeline Progress Stepper */}
+        <div className="pipeline-stepper-wrap">
+          <div className="stepper-track" aria-hidden="true" />
+          <div className="stepper-nodes" role="tablist" aria-label="Engineering Process Stages">
             {BUILDER_STAGES.map((stage, idx) => {
-              const isActive = activeStage === stage.id;
+              const isSelected = activeStageId === stage.id;
               return (
-                <div
+                <button
                   key={stage.id}
-                  className={`pipeline-card ${isActive ? "is-active" : ""}`}
-                  onClick={() => setActiveStage(stage.id)}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  className={`stepper-node-btn ${isSelected ? "is-active" : ""}`}
+                  onClick={() => setActiveStageId(stage.id)}
+                  id={`stage-tab-${stage.id}`}
                 >
-                  <div className="card-top">
-                    <span className="step-num">{stage.step}</span>
-                    <span className="step-tag">{stage.tagline}</span>
+                  <div className="node-circle">
+                    <span className="node-icon">{stage.visualIcon}</span>
                   </div>
-
-                  <h3 className="step-title">{stage.title}</h3>
-
-                  <p className="step-desc">{stage.description}</p>
-
-                  <div className="step-tools">
-                    <span className="tools-heading">Tools & Deliverables</span>
-                    <div className="tools-list">
-                      {stage.tools.map((t) => (
-                        <span key={t} className="tool-tag">
-                          {t}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="node-meta">
+                    <span className="node-step">STAGE {stage.step}</span>
+                    <span className="node-title">{stage.title}</span>
                   </div>
-
                   {idx < BUILDER_STAGES.length - 1 && (
-                    <span className="step-connector" aria-hidden="true">
-                      →
-                    </span>
+                    <span className="node-connector" aria-hidden="true">→</span>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
         </div>
 
-        {/* Featured Stack Deep Dive Banner */}
+        {/* Visual Stage Inspector Card */}
+        <div className="stage-inspector-card">
+          <div className="inspector-left">
+            <div className="inspector-badge">
+              <span className="badge-step">PHASE {activeStage.step} OF 04</span>
+              <span className="badge-sep">{"//"}</span>
+              <span className="badge-tagline">{activeStage.tagline}</span>
+            </div>
+
+            <h3 className="inspector-title">
+              <span className="icon-title">{activeStage.visualIcon}</span> {activeStage.title}
+            </h3>
+
+            <p className="inspector-desc">{activeStage.description}</p>
+
+            {/* Deliverables Chips */}
+            <div className="inspector-block">
+              <span className="block-title">Key Concrete Deliverables</span>
+              <div className="chips-row">
+                {activeStage.deliverables.map((deliv, idx) => (
+                  <span key={idx} className="deliverable-chip">
+                    <span className="chip-check">✓</span>
+                    <span>{deliv}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Tools & Frameworks */}
+            <div className="inspector-block">
+              <span className="block-title">Primary Toolchain</span>
+              <div className="chips-row">
+                {activeStage.tools.map((tool, idx) => (
+                  <span key={idx} className="tool-chip">
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Visual Graphic Schematic */}
+          <div className="inspector-right">
+            <div className="schematic-window">
+              <div className="schematic-header">
+                <span className="schematic-title">
+                  TELEMETRY // {activeStage.title.toUpperCase()}_SPECIFICATION
+                </span>
+                <span className="schematic-status">ACTIVE STAGE</span>
+              </div>
+
+              <div className="schematic-content">
+                {activeStage.id === "discover" && (
+                  <div className="diagram-box">
+                    <div className="diagram-node">Problem Domain</div>
+                    <div className="diagram-arrow">↓ State Constraints</div>
+                    <div className="diagram-node node-highlight">Economic Model & Token Flows</div>
+                    <div className="diagram-arrow">↓ Attack Vectors</div>
+                    <div className="diagram-node">Threat Surface Verified</div>
+                  </div>
+                )}
+
+                {activeStage.id === "design" && (
+                  <div className="diagram-box">
+                    <div className="diagram-node">Information Architecture</div>
+                    <div className="diagram-arrow">↓ Component Tokens</div>
+                    <div className="diagram-node node-highlight">Tactile Micro-Interactions</div>
+                    <div className="diagram-arrow">↓ Usability Checks</div>
+                    <div className="diagram-node">High-Density Responsive UI</div>
+                  </div>
+                )}
+
+                {activeStage.id === "build" && (
+                  <div className="diagram-box">
+                    <div className="diagram-node">Next.js Frontend & TypeScript</div>
+                    <div className="diagram-arrow">↕ Multi-Chain Relays</div>
+                    <div className="diagram-node node-highlight">Smart Contracts (Clarity & Solidity)</div>
+                    <div className="diagram-arrow">↕ RPC Telemetry</div>
+                    <div className="diagram-node">Deterministic System Execution</div>
+                  </div>
+                )}
+
+                {activeStage.id === "ship" && (
+                  <div className="diagram-box">
+                    <div className="diagram-node">Clarinet & Foundry Test Suites</div>
+                    <div className="diagram-arrow">↓ Edge Deployment</div>
+                    <div className="diagram-node node-highlight">Testnet Verification & Bug Bounties</div>
+                    <div className="diagram-arrow">↓ Telemetry Monitoring</div>
+                    <div className="diagram-node">Public Mainnet Release</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Curated Stack Deep Dive Strip */}
         <div className="stack-deep-dive">
           <div className="deep-dive-header">
-            <span className="deep-dive-label">CORE TOOLCHAIN SPECIALIZATION</span>
+            <span className="deep-dive-label">SPECIALIZED CORE CAPABILITIES</span>
             <span className="deep-dive-metric">Production Verified</span>
           </div>
           <div className="deep-dive-grid">
             <div className="deep-group">
-              <span className="group-category">Frontend & Tactile UX</span>
+              <span className="group-category">Frontend Systems</span>
               <p className="group-items">React, Next.js (App Router), TypeScript, Tailwind CSS, Responsive Design</p>
             </div>
             <div className="deep-group">
-              <span className="group-category">Backend & System Relays</span>
-              <p className="group-items">Node.js, REST & GraphQL APIs, SQLite, Supabase, Claude 3.5 Agentic Workflows</p>
+              <span className="group-category">Smart Contracts</span>
+              <p className="group-items">Clarity (Stacks / Clarinet), Solidity (EVM / Foundry), Cairo (Starknet)</p>
             </div>
             <div className="deep-group">
-              <span className="group-category">Smart Contracts & Protocols</span>
-              <p className="group-items">Solidity (EVM / Foundry), Clarity (Stacks / Clarinet), Cairo (Starknet)</p>
+              <span className="group-category">Cross-Chain & APIs</span>
+              <p className="group-items">LI.FI Aggregator, Solana, Nimiq Pay, TON, Node.js REST & WebSockets</p>
             </div>
             <div className="deep-group">
-              <span className="group-category">Ecosystems & Liquidity</span>
-              <p className="group-items">Stacks, Bitcoin L2s, LI.FI Multi-Chain Routing, Solana, Nimiq Pay, TON</p>
+              <span className="group-category">Verification & DevOps</span>
+              <p className="group-items">WASM In-Browser Runners, Vitest, Vercel Edge, GitHub Actions CI</p>
             </div>
           </div>
         </div>
@@ -89,122 +177,293 @@ export default function BuilderProfile() {
       <style jsx>{`
         .builder-section {
           position: relative;
-          padding: 8rem 0;
+          padding: clamp(6rem, 10vw, 8rem) 0;
           border-top: 1px solid var(--border-soft);
         }
 
         .builder-head {
-          margin-bottom: 4rem;
+          margin-bottom: 3.5rem;
         }
 
-        .pipeline-container {
+        /* ── Visual Stepper Track ── */
+        .pipeline-stepper-wrap {
           position: relative;
-          margin-bottom: 4rem;
+          margin-bottom: 2.5rem;
         }
 
-        .pipeline-grid {
+        .stepper-track {
+          position: absolute;
+          top: 24px;
+          left: 5%;
+          right: 5%;
+          height: 2px;
+          background: rgba(255, 255, 255, 0.08);
+          z-index: 1;
+        }
+
+        .stepper-nodes {
+          position: relative;
+          z-index: 2;
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 1.25rem;
+          gap: 1rem;
         }
 
-        .pipeline-card {
-          position: relative;
+        .stepper-node-btn {
           display: flex;
-          flex-direction: column;
-          padding: 1.75rem 1.4rem;
+          align-items: center;
+          gap: 0.9rem;
+          padding: 0.85rem 1.1rem;
           background: rgba(14, 18, 22, 0.7);
           border: 1px solid var(--border);
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          text-align: left;
         }
 
-        .pipeline-card:hover,
-        .pipeline-card.is-active {
+        .stepper-node-btn:hover {
+          border-color: rgba(217, 249, 157, 0.4);
+          background: rgba(18, 24, 30, 0.9);
+          transform: translateY(-2px);
+        }
+
+        .stepper-node-btn.is-active {
           border-color: var(--lime);
           background: rgba(18, 24, 30, 0.95);
-          transform: translateY(-4px);
+          box-shadow: 0 4px 20px rgba(217, 249, 157, 0.15);
         }
 
-        .card-top {
+        .node-circle {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.2rem;
+          justify-content: center;
+          font-size: 1.1rem;
+          flex-shrink: 0;
+          transition: border-color 0.2s ease, background 0.2s ease;
         }
 
-        .step-num {
-          font-family: var(--font-mono);
-          font-size: 0.82rem;
-          font-weight: 700;
-          color: var(--lime);
+        .stepper-node-btn.is-active .node-circle {
+          background: rgba(217, 249, 157, 0.15);
+          border-color: var(--lime);
         }
 
-        .step-tag {
-          font-family: var(--font-mono);
-          font-size: 0.58rem;
-          color: var(--muted);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-        }
-
-        .step-title {
-          margin: 0;
-          font-size: 1.5rem;
-          font-weight: 650;
-          letter-spacing: -0.02em;
-          color: var(--white);
-        }
-
-        .step-desc {
-          margin: 0.85rem 0 0;
-          font-size: 0.82rem;
-          line-height: 1.65;
-          color: var(--muted);
+        .node-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
           flex: 1;
         }
 
-        .step-tools {
-          margin-top: 1.75rem;
+        .node-step {
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          color: var(--muted);
+          letter-spacing: 0.08em;
+        }
+
+        .stepper-node-btn.is-active .node-step {
+          color: var(--lime);
+          font-weight: 600;
+        }
+
+        .node-title {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: var(--white);
+        }
+
+        .node-connector {
+          display: none;
+        }
+
+        /* ── Stage Inspector Card ── */
+        .stage-inspector-card {
+          display: grid;
+          grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+          gap: 3rem;
+          padding: clamp(2rem, 4vw, 3.5rem);
+          background: rgba(14, 18, 22, 0.8);
+          border: 1px solid var(--border);
+          backdrop-filter: blur(14px);
+          margin-bottom: 3.5rem;
+        }
+
+        .inspector-left {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .inspector-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          margin-bottom: 0.85rem;
+        }
+
+        .badge-step {
+          color: var(--lime);
+          font-weight: 700;
+          letter-spacing: 0.1em;
+        }
+
+        .badge-sep {
+          color: rgba(255, 255, 255, 0.2);
+        }
+
+        .badge-tagline {
+          color: var(--cyan);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+
+        .inspector-title {
+          margin: 0;
+          font-size: clamp(2rem, 3.5vw, 2.8rem);
+          font-weight: 650;
+          letter-spacing: -0.03em;
+          color: var(--white);
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .icon-title {
+          font-size: 1.8rem;
+        }
+
+        .inspector-desc {
+          margin: 1rem 0 1.8rem;
+          font-size: 0.92rem;
+          line-height: 1.7;
+          color: rgba(244, 241, 234, 0.85);
+          max-width: 58ch;
+        }
+
+        .inspector-block {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+          margin-top: 1.25rem;
           padding-top: 1.25rem;
           border-top: 1px solid var(--border-soft);
         }
 
-        .tools-heading {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 0.56rem;
-          color: var(--cyan);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          margin-bottom: 0.65rem;
-        }
-
-        .tools-list {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.35rem;
-        }
-
-        .tool-tag {
-          padding: 0.2rem 0.45rem;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+        .block-title {
           font-family: var(--font-mono);
           font-size: 0.6rem;
+          letter-spacing: 0.08em;
+          color: var(--muted);
+          text-transform: uppercase;
+        }
+
+        .chips-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .deliverable-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.35rem 0.75rem;
+          background: rgba(0, 240, 118, 0.06);
+          border: 1px solid rgba(0, 240, 118, 0.25);
+          color: var(--white);
+          font-size: 0.75rem;
+        }
+
+        .chip-check {
+          color: #00f076;
+          font-weight: 700;
+        }
+
+        .tool-chip {
+          padding: 0.35rem 0.65rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border-soft);
+          color: var(--cyan);
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+        }
+
+        /* ── Right Diagram / Schematic ── */
+        .inspector-right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .schematic-window {
+          background: rgba(6, 9, 12, 0.95);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          overflow: hidden;
+        }
+
+        .schematic-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.65rem 1rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+          background: rgba(255, 255, 255, 0.02);
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+        }
+
+        .schematic-title {
+          color: var(--muted);
+          letter-spacing: 0.08em;
+        }
+
+        .schematic-status {
+          color: var(--lime);
+          font-weight: 600;
+        }
+
+        .schematic-content {
+          padding: 1.5rem;
+        }
+
+        .diagram-box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.6rem;
+        }
+
+        .diagram-node {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          text-align: center;
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border-soft);
           color: rgba(244, 241, 234, 0.85);
         }
 
-        .pipeline-card:hover .tool-tag,
-        .pipeline-card.is-active .tool-tag {
-          border-color: rgba(217, 249, 157, 0.3);
+        .diagram-node.node-highlight {
+          border-color: var(--lime);
+          background: rgba(217, 249, 157, 0.08);
           color: var(--white);
+          font-weight: 600;
         }
 
-        .step-connector {
-          display: none;
+        .diagram-arrow {
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          color: var(--muted);
         }
 
+        /* ── Deep Dive Matrix ── */
         .stack-deep-dive {
           border: 1px solid var(--border);
           background: rgba(11, 15, 18, 0.85);
@@ -259,14 +518,17 @@ export default function BuilderProfile() {
 
         .group-items {
           margin: 0;
-          font-size: 0.85rem;
+          font-size: 0.82rem;
           color: rgba(244, 241, 234, 0.85);
           line-height: 1.55;
         }
 
         @media (max-width: 1024px) {
-          .pipeline-grid {
+          .stepper-nodes {
             grid-template-columns: repeat(2, 1fr);
+          }
+          .stage-inspector-card {
+            grid-template-columns: 1fr;
           }
           .deep-dive-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -274,8 +536,11 @@ export default function BuilderProfile() {
         }
 
         @media (max-width: 640px) {
-          .pipeline-grid {
+          .stepper-nodes {
             grid-template-columns: 1fr;
+          }
+          .stepper-track {
+            display: none;
           }
           .deep-dive-grid {
             grid-template-columns: 1fr;

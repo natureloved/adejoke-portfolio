@@ -84,9 +84,12 @@ export default function CinematicEntrance() {
         <div className="name-reveal-box">
           <div className={`name-mask ${stage === "name" || stage === "thesis" || stage === "exit" ? "is-active" : ""}`}>
             <h1 className="cinematic-name">
-              <span className="first-name">AKINOLA</span>
-              <span className="last-name">ADEJOKE</span>
+              <span className="first-name">RASTA</span>
+              <span className="last-name">DEV</span>
             </h1>
+            <div className="name-sub-meta">
+              <span>AKINOLA ADEJOKE // PROTOCOL & SYSTEMS ARCHITECT</span>
+            </div>
             {/* Luminous Light Sweep Ray */}
             <div className="light-sweep" aria-hidden="true" />
           </div>
@@ -249,13 +252,23 @@ export default function CinematicEntrance() {
         .cinematic-name {
           margin: 0;
           display: flex;
-          flex-direction: column;
-          gap: 0.2rem;
-          font-size: clamp(3.6rem, 9.5vw, 8rem);
+          align-items: center;
+          justify-content: center;
+          gap: clamp(0.5rem, 2vw, 1.5rem);
+          font-size: clamp(3.4rem, 10vw, 8.5rem);
           font-weight: 800;
-          letter-spacing: 0.04em;
-          line-height: 0.92;
+          letter-spacing: 0.05em;
+          line-height: 1;
           user-select: none;
+        }
+
+        .name-sub-meta {
+          margin-top: 0.85rem;
+          font-family: var(--font-mono);
+          font-size: clamp(0.62rem, 1.1vw, 0.76rem);
+          letter-spacing: 0.16em;
+          color: rgba(94, 234, 212, 0.9);
+          text-transform: uppercase;
         }
 
         .first-name {

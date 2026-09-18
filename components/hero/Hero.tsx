@@ -1,26 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { HERO_KEYWORDS } from "@/data/portfolio";
 import SystemMap from "./SystemMap";
 
 export default function Hero() {
-  const [keywordIndex, setKeywordIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setKeywordIndex((prev) => (prev + 1) % HERO_KEYWORDS.length);
-    }, 2400);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section id="hero" className="hero-section" aria-label="Introduction">
       <div className="site-grid hero-grid">
         <div className="hero-content">
-          <div className="location-pill">
-            <span className="live-indicator" aria-hidden="true" />
-            <span>Lagos, Nigeria / Global Systems & Protocols</span>
+          {/* Top Collaboration Badge & Location */}
+          <div className="hero-top-meta">
+            <div className="location-pill">
+              <span className="live-indicator" aria-hidden="true" />
+              <span>Lagos, Nigeria // Global Systems</span>
+            </div>
+
+            <a href="#contact" className="top-collab-badge" title="Connect directly">
+              <span className="collab-pulse" aria-hidden="true" />
+              <span className="collab-text">Available for selected product & engineering collaborations</span>
+              <span className="collab-arrow" aria-hidden="true">→</span>
+            </a>
           </div>
 
           <h1 className="hero-name">
@@ -32,33 +30,37 @@ export default function Hero() {
             I build full-stack products for money, ownership, and opportunity.
           </p>
 
-          {/* Animated line underneath cycling words smoothly */}
+          {/* Specialization line — complete, polished sentence */}
           <div className="hero-specialization">
-            <span className="spec-label">Specializing in:</span>
-            <div className="spec-rotator" aria-live="polite">
-              <span key={keywordIndex} className="spec-word">
-                {HERO_KEYWORDS[keywordIndex]}
-              </span>
-            </div>
+            <span className="spec-label">Specializing in</span>
+            <span className="spec-highlight">Bitcoin DeFi, full-stack products, and smart contracts</span>
           </div>
 
-          {/* Action buttons */}
+          {/* Action buttons — high-contrast, finger-friendly CTAs */}
           <div className="hero-ctas">
-            <a href="#work" className="btn btn-primary">
-              View selected work
+            <a href="#work" className="btn btn-primary" id="hero-view-work-cta">
+              <span>View selected work</span>
               <span className="arrow" aria-hidden="true">↓</span>
             </a>
-            <a href="#about" className="btn btn-outline">
-              About me
-            </a>
-            <a href="#contact" className="btn btn-quiet">
-              Let’s build
+            <a href="#contact" className="btn btn-collaborate" id="hero-collaborate-cta">
+              <span>Let’s build</span>
               <span className="arrow-right" aria-hidden="true">→</span>
+            </a>
+            <a href="#about" className="btn btn-outline" id="hero-about-cta">
+              <span>About me</span>
             </a>
           </div>
 
+          {/* Curated core technology stack — compact & uncluttered on mobile */}
           <div className="hero-footnote">
-            <span>Clarity • Solidity • Cairo • TypeScript • Next.js</span>
+            <span className="footnote-label">Core Stack:</span>
+            <div className="footnote-pills">
+              <span className="foot-pill">Stacks / Clarity</span>
+              <span className="foot-pill">Solidity</span>
+              <span className="foot-pill">TypeScript</span>
+              <span className="foot-pill desktop-only">Cairo</span>
+              <span className="foot-pill desktop-only">Next.js</span>
+            </div>
           </div>
         </div>
 
@@ -74,13 +76,13 @@ export default function Hero() {
           min-height: 100svh;
           display: flex;
           align-items: center;
-          padding-top: 6.5rem;
-          padding-bottom: 4rem;
+          padding-top: 7rem;
+          padding-bottom: 5rem;
         }
 
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+          grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
           align-items: center;
           gap: clamp(2.5rem, 5vw, 5.5rem);
         }
@@ -88,8 +90,15 @@ export default function Hero() {
         .hero-content {
           display: flex;
           flex-direction: column;
-          max-width: 620px;
-          padding-left: clamp(0.75rem, 2.5vw, 2.5rem);
+          max-width: 640px;
+          padding-left: clamp(0.5rem, 2vw, 1.8rem);
+        }
+
+        .hero-top-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+          margin-bottom: 1.6rem;
         }
 
         .location-pill {
@@ -98,7 +107,6 @@ export default function Hero() {
           gap: 0.55rem;
           width: fit-content;
           padding: 0.35rem 0.75rem;
-          margin-bottom: 1.5rem;
           border: 1px solid var(--border);
           background: rgba(18, 23, 26, 0.6);
           font-family: var(--font-mono);
@@ -114,6 +122,51 @@ export default function Hero() {
           border-radius: 50%;
           background: var(--cyan);
           box-shadow: 0 0 6px var(--cyan);
+        }
+
+        .top-collab-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          width: fit-content;
+          padding: 0.4rem 0.85rem;
+          background: rgba(0, 240, 118, 0.05);
+          border: 1px solid rgba(0, 240, 118, 0.25);
+          color: var(--white);
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          letter-spacing: 0.04em;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .top-collab-badge:hover {
+          background: rgba(0, 240, 118, 0.12);
+          border-color: #00f076;
+          transform: translateX(2px);
+        }
+
+        .collab-pulse {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #00f076;
+          box-shadow: 0 0 8px #00f076;
+          animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .collab-arrow {
+          color: #00f076;
+          transition: transform 0.2s ease;
+        }
+
+        .top-collab-badge:hover .collab-arrow {
+          transform: translateX(3px);
         }
 
         .hero-name {
@@ -141,14 +194,16 @@ export default function Hero() {
 
         .hero-specialization {
           display: flex;
-          align-items: center;
-          gap: 0.65rem;
-          margin-top: 1.35rem;
-          padding: 0.6rem 0;
+          flex-wrap: wrap;
+          align-items: baseline;
+          gap: 0.55rem;
+          margin-top: 1.4rem;
+          padding: 0.75rem 0;
           border-top: 1px solid var(--border-soft);
           border-bottom: 1px solid var(--border-soft);
           font-family: var(--font-mono);
-          font-size: 0.75rem;
+          font-size: clamp(0.74rem, 1.3vw, 0.84rem);
+          line-height: 1.5;
         }
 
         .spec-label {
@@ -156,31 +211,10 @@ export default function Hero() {
           letter-spacing: 0.04em;
         }
 
-        .spec-rotator {
-          position: relative;
-          display: inline-block;
-          overflow: hidden;
-          min-width: 200px;
-          height: 1.4rem;
-        }
-
-        .spec-word {
-          display: inline-block;
-          font-weight: 600;
+        .spec-highlight {
           color: var(--orange);
-          letter-spacing: 0.06em;
-          animation: wordSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes wordSlideIn {
-          from {
-            opacity: 0;
-            transform: translateY(12px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          font-weight: 600;
+          letter-spacing: 0.02em;
         }
 
         .hero-ctas {
@@ -188,38 +222,57 @@ export default function Hero() {
           flex-wrap: wrap;
           align-items: center;
           gap: 0.85rem;
-          margin-top: 2.2rem;
+          margin-top: 2.4rem;
         }
 
         .btn {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.75rem 1.25rem;
+          justify-content: center;
+          gap: 0.55rem;
+          min-height: 48px;
+          padding: 0.8rem 1.4rem;
           font-family: var(--font-mono);
-          font-size: 0.68rem;
-          font-weight: 500;
+          font-size: 0.72rem;
+          font-weight: 600;
           letter-spacing: 0.08em;
           text-transform: uppercase;
           text-decoration: none;
-          transition: all 0.2s ease;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .btn-primary {
           background: var(--lime);
-          color: #0b0e10;
+          color: #06090a;
           border: 1px solid var(--lime);
+          box-shadow: 0 4px 18px rgba(217, 249, 157, 0.25);
         }
 
         .btn-primary:hover {
           background: var(--white);
           border-color: var(--white);
           transform: translateY(-2px);
+          box-shadow: 0 6px 24px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-collaborate {
+          background: rgba(94, 234, 212, 0.1);
+          color: var(--cyan);
+          border: 1px solid rgba(94, 234, 212, 0.35);
+        }
+
+        .btn-collaborate:hover {
+          background: var(--cyan);
+          color: #06090a;
+          border-color: var(--cyan);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(94, 234, 212, 0.25);
         }
 
         .btn-outline {
           background: transparent;
-          color: var(--white);
+          color: rgba(244, 241, 234, 0.85);
           border: 1px solid var(--border);
         }
 
@@ -227,17 +280,6 @@ export default function Hero() {
           border-color: var(--lime);
           color: var(--lime);
           transform: translateY(-2px);
-        }
-
-        .btn-quiet {
-          background: transparent;
-          color: var(--cyan);
-          border: 1px solid transparent;
-        }
-
-        .btn-quiet:hover {
-          color: var(--white);
-          transform: translateX(3px);
         }
 
         .arrow, .arrow-right {
@@ -248,16 +290,37 @@ export default function Hero() {
           transform: translateY(2px);
         }
 
-        .btn-quiet:hover .arrow-right {
-          transform: translateX(4px);
+        .btn-collaborate:hover .arrow-right {
+          transform: translateX(3px);
         }
 
         .hero-footnote {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
           margin-top: 2.2rem;
           font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.08em;
-          color: #6d7b80;
+          font-size: 0.64rem;
+        }
+
+        .footnote-label {
+          color: var(--muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+
+        .footnote-pills {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.45rem;
+        }
+
+        .foot-pill {
+          padding: 0.2rem 0.55rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border-soft);
+          color: rgba(244, 241, 234, 0.75);
+          letter-spacing: 0.04em;
         }
 
         .hero-visual {
@@ -279,17 +342,48 @@ export default function Hero() {
           }
         }
 
-        @media (max-width: 520px) {
-          .hero-ctas {
-            display: grid;
-            grid-template-columns: 1fr;
-            width: 100%;
+        @media (max-width: 640px) {
+          .hero-content {
+            padding-left: 0;
           }
-          .btn {
-            justify-content: center;
+
+          .hero-top-meta {
+            gap: 0.5rem;
           }
+
+          .top-collab-badge {
+            font-size: 0.6rem;
+            padding: 0.35rem 0.65rem;
+            white-space: normal;
+            line-height: 1.4;
+          }
+
           .hero-name {
             font-size: 3.2rem;
+          }
+
+          .hero-statement {
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+          }
+
+          /* Impossible to miss on mobile */
+          .hero-ctas {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 0.75rem;
+            margin-top: 1.8rem;
+          }
+
+          .btn {
+            width: 100%;
+            min-height: 50px;
+            font-size: 0.76rem;
+          }
+
+          .desktop-only {
+            display: none;
           }
         }
       `}</style>

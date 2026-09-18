@@ -44,10 +44,10 @@ export default function Navbar() {
 
         {/* Right Status Indicator */}
         <div className="nav-right">
-          <div className="status-indicator" title="Currently accepting contract and collaboration work">
+          <a href="#contact" className="status-indicator" title="Currently accepting product and engineering collaborations (click to contact)">
             <span className="status-pulse" aria-hidden="true" />
             <span className="status-text">Available for selected projects</span>
-          </div>
+          </a>
 
           <a href="#contact" className="nav-cta">
             Let’s talk
@@ -158,6 +158,15 @@ export default function Navbar() {
           border: 1px solid rgba(0, 240, 118, 0.25);
           background: rgba(0, 240, 118, 0.06);
           border-radius: 999px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .status-indicator:hover {
+          border-color: #00f076;
+          background: rgba(0, 240, 118, 0.14);
+          transform: translateY(-1px);
         }
 
         .status-pulse {

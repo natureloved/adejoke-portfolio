@@ -3,39 +3,43 @@
 import { useState } from "react";
 import { LAB_PROJECTS } from "@/data/portfolio";
 
-const CATEGORIES = ["All", "DeFi", "Payments", "Developer tools", "Experiments"] as const;
+const CATEGORIES = ["All", "DeFi", "Payments", "Developer tools", "Automation", "Hackathons"] as const;
 
 export default function LabGrid() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [showAll, setShowAll] = useState<boolean>(false);
 
-  const filteredProjects =
+  const allFiltered =
     selectedCategory === "All"
       ? LAB_PROJECTS
       : LAB_PROJECTS.filter((p) => p.category === selectedCategory);
+
+  const displayedProjects =
+    selectedCategory === "All" && !showAll ? allFiltered.slice(0, 5) : allFiltered;
 
   return (
     <section id="lab" className="lab-section" aria-label="The Lab & Archive">
       <div className="site-grid">
         <div className="lab-head">
           <div>
-            <p className="section-label">03 / The Lab</p>
+            <p className="section-label">03 / The Lab & Archive</p>
             <h2 className="section-title">Experiments, tools & hackathon builds.</h2>
             <p className="section-intro">
-              Smaller projects, protocol utilities, and exploratory code that prove technical range across decentralized ecosystems.
+              Specialized protocol utilities, Telegram bots, and exploratory Web3 code proving multi-chain versatility.
             </p>
           </div>
 
           <div className="lab-count-badge">
-            <span className="count-num">{filteredProjects.length}</span>
+            <span className="count-num">{allFiltered.length}</span>
             <span className="count-label">
-              {selectedCategory === "All" ? "Archive Projects" : `${selectedCategory} Items`}
+              {selectedCategory === "All" ? "Total Experiments" : `${selectedCategory} Builds`}
             </span>
           </div>
         </div>
 
         {/* Filter Tabs */}
         <div className="filter-bar">
-          <div className="filter-pills" role="tablist">
+          <div className="filter-pills" role="tablist" aria-label="Lab categories">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -43,7 +47,11 @@ export default function LabGrid() {
                 role="tab"
                 aria-selected={selectedCategory === cat}
                 className={`filter-btn ${selectedCategory === cat ? "is-active" : ""}`}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setShowAll(false);
+                }}
+                id={`filter-tab-${cat.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 {cat}
               </button>
@@ -53,7 +61,7 @@ export default function LabGrid() {
 
         {/* Lab Compact Cards Grid */}
         <div className="lab-grid">
-          {filteredProjects.map((project) => (
+          {displayedProjects.map((project) => (
             <article key={project.id} className="lab-card">
               <div className="card-header">
                 <h3 className="card-name">{project.name}</h3>
@@ -65,6 +73,7 @@ export default function LabGrid() {
               <p className="card-tagline">{project.tagline}</p>
 
               <div className="card-stack">
+                <span className="category-pill">{project.category}</span>
                 {project.stack.map((tech) => (
                   <span key={tech} className="tech-badge">
                     {tech}
@@ -78,6 +87,7 @@ export default function LabGrid() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="card-link"
+                  id={`lab-live-${project.id}`}
                 >
                   Live <span aria-hidden="true">↗</span>
                 </a>
@@ -87,6 +97,7 @@ export default function LabGrid() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="card-link quiet"
+                    id={`lab-repo-${project.id}`}
                   >
                     GitHub <span aria-hidden="true">↗</span>
                   </a>
@@ -95,12 +106,26 @@ export default function LabGrid() {
             </article>
           ))}
         </div>
+
+        {/* Expand / Collapse Button for "All" view */}
+        {selectedCategory === "All" && allFiltered.length > 5 && (
+          <div className="view-all-wrap">
+            <button
+              type="button"
+              className="btn-view-all"
+              onClick={() => setShowAll(!showAll)}
+              id="btn-toggle-lab-all"
+            >
+              <span>{showAll ? "Show fewer experiments ↑" : `View all experiments (${allFiltered.length}) ↓`}</span>
+            </button>
+          </div>
+        )}
       </div>
 
       <style jsx>{`
         .lab-section {
           position: relative;
-          padding: 8rem 0;
+          padding: clamp(6rem, 10vw, 8rem) 0;
           border-top: 1px solid var(--border-soft);
         }
 
@@ -109,7 +134,7 @@ export default function LabGrid() {
           align-items: flex-end;
           justify-content: space-between;
           gap: 2rem;
-          margin-bottom: 3.5rem;
+          margin-bottom: 3rem;
         }
 
         .lab-count-badge {
@@ -147,7 +172,7 @@ export default function LabGrid() {
         }
 
         .filter-btn {
-          padding: 0.45rem 0.95rem;
+          padding: 0.5rem 1rem;
           border: 1px solid var(--border);
           background: transparent;
           color: var(--muted);
@@ -168,6 +193,7 @@ export default function LabGrid() {
           border-color: var(--cyan);
           background: rgba(94, 234, 212, 0.08);
           color: var(--cyan);
+          font-weight: 600;
         }
 
         .lab-grid {
@@ -241,10 +267,22 @@ export default function LabGrid() {
         .card-stack {
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
           gap: 0.35rem;
           margin-top: 1.4rem;
           padding-top: 1rem;
           border-top: 1px solid var(--border-soft);
+        }
+
+        .category-pill {
+          font-family: var(--font-mono);
+          font-size: 0.55rem;
+          color: var(--cyan);
+          background: rgba(94, 234, 212, 0.08);
+          border: 1px solid rgba(94, 234, 212, 0.2);
+          padding: 0.15rem 0.4rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
 
         .tech-badge {
@@ -284,6 +322,32 @@ export default function LabGrid() {
           color: var(--cyan);
         }
 
+        .view-all-wrap {
+          display: flex;
+          justify-content: center;
+          margin-top: 2.5rem;
+        }
+
+        .btn-view-all {
+          padding: 0.75rem 1.75rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--border);
+          color: var(--white);
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-view-all:hover {
+          border-color: var(--cyan);
+          color: var(--cyan);
+          background: rgba(94, 234, 212, 0.08);
+          transform: translateY(-2px);
+        }
+
         @media (max-width: 1024px) {
           .lab-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -300,6 +364,10 @@ export default function LabGrid() {
           }
           .lab-grid {
             grid-template-columns: 1fr;
+          }
+          .filter-btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.64rem;
           }
         }
       `}</style>
