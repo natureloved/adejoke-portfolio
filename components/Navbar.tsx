@@ -274,35 +274,51 @@ export default function Navbar() {
             right: 0;
             border-bottom: 1px solid var(--border);
             background: rgba(11, 14, 16, 0.98);
-            backdrop-filter: blur(18px);
+            backdrop-filter: blur(20px);
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
           }
 
           .mobile-menu.is-open {
-            max-height: 28rem;
+            max-height: calc(100vh - 4.25rem);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
           }
 
           .mobile-menu-links {
             display: flex;
             flex-direction: column;
-            gap: 1.1rem;
-            padding: 1.5rem 1.75rem;
+            gap: 0.25rem;
+            padding: 1.25rem 1.5rem 2rem;
           }
 
           .mobile-nav-item {
             font-family: var(--font-mono);
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: var(--white);
             text-decoration: none;
+            padding: 0.75rem 0.5rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-soft);
+            transition: color 0.2s ease, padding-left 0.2s ease;
+          }
+
+          .mobile-nav-item:hover,
+          .mobile-nav-item:active {
+            color: var(--lime);
+            padding-left: 0.85rem;
           }
 
           .mobile-status {
             display: flex;
             align-items: center;
             gap: 0.55rem;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
             font-family: var(--font-mono);
             font-size: 0.68rem;
             color: #00f076;
@@ -312,12 +328,15 @@ export default function Navbar() {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.75rem 1rem;
+            min-height: 48px;
+            padding: 0.85rem 1rem;
             margin-top: 0.5rem;
             background: var(--lime);
             color: #0b0e10;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             text-decoration: none;
           }

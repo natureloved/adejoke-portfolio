@@ -507,18 +507,54 @@ export default function Contact() {
         @media (max-width: 900px) {
           .contact-layout {
             grid-template-columns: 1fr;
+            gap: 3rem;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .contact-section {
+            padding: 4.5rem 0;
+          }
+
+          .contact-headline {
+            font-size: clamp(2rem, 8vw, 2.6rem);
+          }
+
+          input,
+          textarea {
+            font-size: 16px !important; /* Prevents unwanted iOS Safari auto-zoom */
+          }
+
+          .action-btn {
+            min-height: 48px;
+            padding: 0.75rem 1rem;
           }
         }
 
         @media (max-width: 540px) {
+          .form-card {
+            padding: 1.5rem 1rem;
+          }
+
           .form-row {
             grid-template-columns: 1fr;
+            gap: 1rem;
           }
+
           .email-action-row {
             flex-direction: column;
+            gap: 0.5rem;
           }
+
           .copy-btn {
-            padding: 0.75rem;
+            width: 100%;
+            min-height: 44px;
+            padding: 0.65rem;
+          }
+
+          .submit-btn {
+            min-height: 50px;
+            width: 100%;
           }
         }
       `}</style>

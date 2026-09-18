@@ -385,15 +385,31 @@ export default function CinematicEntrance() {
 
         @media (max-width: 640px) {
           .cinematic-name {
-            font-size: 3.4rem;
+            font-size: clamp(2.3rem, 11vw, 3.4rem);
+            gap: 0.5rem;
+          }
+          .name-sub-meta {
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            margin-top: 0.6rem;
           }
           .skip-intro-btn {
-            top: 1.25rem;
-            right: 1.25rem;
+            top: 1rem;
+            right: 1rem;
+            min-height: 44px;
+            padding: 0.45rem 0.85rem;
           }
           .thesis-line {
-            gap: 0.5rem;
-            letter-spacing: 0.12em;
+            gap: 0.4rem;
+            letter-spacing: 0.08em;
+            font-size: 0.72rem;
+          }
+          .thesis-sub {
+            font-size: 0.82rem;
+            padding: 0 0.5rem;
+          }
+          .system-progress-bar {
+            margin-top: 2rem;
           }
         }
       `}</style>

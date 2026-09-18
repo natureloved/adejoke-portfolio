@@ -315,12 +315,52 @@ export default function About() {
         @media (max-width: 900px) {
           .about-split-layout {
             grid-template-columns: 1fr;
-            gap: 4rem;
+            gap: 3.5rem;
           }
 
           .precision-mark-frame {
-            max-width: 420px;
+            max-width: 380px;
             margin: 0 auto;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .about-section {
+            padding: 4.5rem 0;
+          }
+
+          .about-split-layout {
+            gap: 2.5rem;
+          }
+
+          .precision-mark-frame {
+            max-width: 270px;
+            padding: 1.25rem 0.85rem;
+          }
+
+          .about-heading {
+            font-size: clamp(1.8rem, 7vw, 2.4rem);
+          }
+
+          .lead-paragraph,
+          .sub-paragraph {
+            font-size: 0.88rem;
+            line-height: 1.65;
+          }
+
+          .radiography-highlight {
+            padding: 0.85rem 1rem;
+            gap: 0.85rem;
+          }
+
+          .radiography-highlight p {
+            font-size: 0.88rem;
+          }
+
+          .tenets-grid {
+            gap: 1.25rem;
+            margin-top: 1.8rem;
+            padding-top: 1.5rem;
           }
         }
       `}</style>

@@ -168,6 +168,18 @@ function StaxiqPreview({ isHovered }: { isHovered: boolean }) {
           background: linear-gradient(90deg, #00f076, #5eead4);
           transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        @media (max-width: 480px) {
+          .market-stat-bar {
+            gap: 0.4rem;
+            padding: 0.5rem;
+          }
+          .stat-val { font-size: 0.8rem; }
+          .stat-label { font-size: 0.5rem; }
+          .stat-signal { font-size: 0.58rem; }
+          .protocol-card { padding: 0.65rem 0.75rem; }
+          .proto-name { font-size: 0.78rem; }
+          .proto-row { font-size: 0.65rem; }
+        }
       `}</style>
     </div>
   );
@@ -401,6 +413,26 @@ function VozPreview({ isHovered }: { isHovered: boolean }) {
           letter-spacing: 0.08em;
           color: var(--muted);
         }
+        @media (max-width: 480px) {
+          .voice-prompt-box {
+            padding: 0.65rem 0.75rem;
+            gap: 0.6rem;
+          }
+          .prompt-quote {
+            font-size: 0.78rem;
+          }
+          .route-flow {
+            padding: 0.65rem 0.75rem;
+          }
+          .route-bridge {
+            margin: 0 0.4rem;
+          }
+          .node-icon {
+            width: 28px;
+            height: 28px;
+            font-size: 0.58rem;
+          }
+        }
       `}</style>
     </div>
   );
@@ -607,6 +639,30 @@ function TipWallPreview({ isHovered }: { isHovered: boolean }) {
         }
         .tip-note { font-style: italic; color: rgba(244, 241, 234, 0.6); }
         .tip-amt { color: #22c55e; font-family: var(--font-mono); font-weight: 600; }
+        @media (max-width: 480px) {
+          .creator-badge-row {
+            padding: 0.65rem 0.75rem;
+            gap: 0.6rem;
+          }
+          .creator-avatar {
+            width: 30px;
+            height: 30px;
+            font-size: 0.7rem;
+          }
+          .creator-handle {
+            font-size: 0.78rem;
+          }
+          .tip-goal-card {
+            padding: 0.75rem 0.85rem;
+          }
+          .goal-top {
+            font-size: 0.72rem;
+          }
+          .tip-item {
+            font-size: 0.68rem;
+            padding: 0.35rem 0.5rem;
+          }
+        }
       `}</style>
     </div>
   );
@@ -755,6 +811,18 @@ function ClarityQuestPreview({ isHovered }: { isHovered: boolean }) {
         .reward-text strong { font-size: 0.76rem; color: var(--white); }
         .reward-text span { font-size: 0.62rem; color: rgba(244, 241, 234, 0.8); }
         .nft-id { font-family: var(--font-mono); font-size: 0.65rem; color: #38bdf8; font-weight: 700; }
+        @media (max-width: 480px) {
+          .code-lines {
+            font-size: 0.64rem;
+            padding: 0.55rem 0.65rem;
+          }
+          .test-runner-box {
+            padding: 0.55rem 0.65rem;
+          }
+          .badge-reward-card {
+            padding: 0.55rem 0.65rem;
+          }
+        }
       `}</style>
     </div>
   );
@@ -1470,22 +1538,67 @@ export default function ProjectShowcase() {
         }
 
         @media (max-width: 640px) {
+          .showcase-section {
+            padding: 4.5rem 0;
+          }
+
+          .project-sections-list {
+            gap: 3.5rem;
+          }
+
+          .project-layout {
+            padding: 1.4rem 1rem;
+            gap: 1.8rem;
+          }
+
           .project-title {
-            font-size: 2.2rem;
+            font-size: clamp(1.9rem, 8.5vw, 2.5rem);
+          }
+
+          .project-tagline {
+            font-size: 0.92rem;
+            margin-top: 0.6rem;
+          }
+
+          .mini-case-study {
+            padding: 1rem 0.75rem;
+            gap: 0.95rem;
+          }
+
+          .preview-body {
+            padding: 0.9rem 0.75rem;
+          }
+
+          .deep-dive-drawer {
+            padding: 1.5rem 1rem;
+          }
+
+          .drawer-title {
+            font-size: 1.35rem;
+          }
+
+          .drawer-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
           }
 
           .project-links {
             flex-direction: column;
             width: 100%;
+            gap: 0.65rem;
           }
 
           .link-btn {
             width: 100%;
+            min-height: 48px;
             justify-content: center;
           }
 
-          .mini-case-study {
-            padding: 1rem 0.85rem;
+          .simulation-badge {
+            font-size: 0.5rem;
+            padding: 0.15rem 0.4rem;
+            width: 100%;
+            justify-content: center;
           }
         }
       `}</style>

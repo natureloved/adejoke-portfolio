@@ -231,17 +231,40 @@ export default function JourneyTimeline() {
         }
 
         @media (max-width: 640px) {
+          .journey-section {
+            padding: 4.5rem 0;
+          }
+          .journey-head {
+            margin-bottom: 2.5rem;
+          }
+          .anchor-manifesto {
+            margin-top: 1.5rem;
+            padding: 1.1rem 1.25rem;
+          }
+          .manifesto-line {
+            font-size: 0.95rem;
+          }
           .timeline-container {
-            padding-left: 1.8rem;
+            padding-left: 2rem;
           }
           .timeline-spine {
-            left: 8px;
+            left: 10px;
           }
           .item-marker {
-            left: -1.8rem;
+            left: -2rem;
           }
           .item-card {
-            padding: 1.4rem;
+            padding: 1.25rem 1rem;
+          }
+          .card-title {
+            font-size: 1.15rem;
+          }
+          .card-subtitle {
+            font-size: 0.82rem;
+          }
+          .card-description {
+            font-size: 0.82rem;
+            line-height: 1.65;
           }
         }
       `}</style>

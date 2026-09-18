@@ -452,10 +452,60 @@ export default function SystemMap() {
         }
 
         @media (max-width: 640px) {
-          .map-viewport { height: 290px; }
-          .node-card { min-width: 120px; max-width: 150px; padding: 0.45rem 0.55rem; }
-          .node-title { font-size: 0.68rem; }
-          .node-sub { font-size: 0.52rem; }
+          .system-map-card {
+            transform: none !important;
+          }
+          .map-viewport {
+            height: auto;
+            min-height: auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.65rem;
+            padding: 0.85rem;
+          }
+          .connection-svg {
+            display: none;
+          }
+          .grid-overlay {
+            opacity: 0.3;
+          }
+          .system-node {
+            position: relative;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            width: 100%;
+          }
+          .system-node:hover {
+            transform: none !important;
+          }
+          .node-anchor {
+            display: none;
+          }
+          .node-card {
+            min-width: 0;
+            max-width: 100%;
+            width: 100%;
+            padding: 0.65rem;
+          }
+          .node-title {
+            font-size: 0.72rem;
+          }
+          .node-sub {
+            font-size: 0.55rem;
+          }
+          .map-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.35rem;
+            padding: 0.65rem 0.85rem;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .map-viewport {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </div>

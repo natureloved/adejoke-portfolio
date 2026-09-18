@@ -343,28 +343,46 @@ export default function Hero() {
         }
 
         @media (max-width: 640px) {
+          .hero-section {
+            padding-top: 5.5rem;
+            padding-bottom: 3rem;
+          }
+
           .hero-content {
             padding-left: 0;
           }
 
           .hero-top-meta {
-            gap: 0.5rem;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+          }
+
+          .location-pill {
+            font-size: 0.58rem;
           }
 
           .top-collab-badge {
-            font-size: 0.6rem;
-            padding: 0.35rem 0.65rem;
+            font-size: 0.62rem;
+            padding: 0.5rem 0.75rem;
             white-space: normal;
             line-height: 1.4;
+            width: 100%;
           }
 
           .hero-name {
-            font-size: 3.2rem;
+            font-size: clamp(2.3rem, 11vw, 3.4rem);
+            letter-spacing: -0.06em;
           }
 
           .hero-statement {
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 4.5vw, 1.25rem);
             margin-top: 1.2rem;
+          }
+
+          .hero-specialization {
+            font-size: 0.76rem;
+            margin-top: 1.1rem;
+            padding: 0.6rem 0;
           }
 
           /* Impossible to miss on mobile */
@@ -378,8 +396,12 @@ export default function Hero() {
 
           .btn {
             width: 100%;
-            min-height: 50px;
+            min-height: 52px;
             font-size: 0.76rem;
+          }
+
+          .hero-footnote {
+            margin-top: 1.6rem;
           }
 
           .desktop-only {

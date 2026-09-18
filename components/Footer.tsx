@@ -74,10 +74,22 @@ export default function Footer() {
         }
 
         @media (max-width: 640px) {
+          .site-footer {
+            padding: 2rem 0 3.5rem;
+          }
           .footer-inner {
             flex-direction: column;
             align-items: flex-start;
-            gap: 0.85rem;
+            gap: 1rem;
+          }
+          .footer-left {
+            flex-wrap: wrap;
+            gap: 0.4rem;
+          }
+          .back-to-top {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
           }
         }
       `}</style>

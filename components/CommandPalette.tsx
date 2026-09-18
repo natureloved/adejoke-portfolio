@@ -530,6 +530,7 @@ export default function CommandPalette() {
 
         @media (max-width: 600px) {
           .cmd-scrim { padding: 8vh 0.8rem 1rem; }
+          .cmd-input { font-size: 16px; }
           .cmd-hint { display: none; }
           .cmd-foot-left { display: none; }
           .cmd-footer { justify-content: center; }

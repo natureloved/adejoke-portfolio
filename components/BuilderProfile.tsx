@@ -536,14 +536,35 @@ export default function BuilderProfile() {
         }
 
         @media (max-width: 640px) {
+          .builder-section {
+            padding: 4.5rem 0;
+          }
           .stepper-nodes {
             grid-template-columns: 1fr;
+            gap: 0.6rem;
+          }
+          .stepper-node-btn {
+            min-height: 48px;
+            padding: 0.75rem 0.95rem;
           }
           .stepper-track {
             display: none;
           }
+          .stage-inspector-card {
+            padding: 1.4rem 1rem;
+            gap: 1.8rem;
+          }
+          .inspector-title {
+            font-size: clamp(1.6rem, 7vw, 2.2rem);
+          }
+          .schematic-content {
+            padding: 1rem 0.85rem;
+          }
           .deep-dive-grid {
             grid-template-columns: 1fr;
+          }
+          .deep-group {
+            padding: 1.25rem 1rem;
           }
         }
       `}</style>

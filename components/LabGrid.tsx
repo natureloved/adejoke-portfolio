@@ -355,19 +355,49 @@ export default function LabGrid() {
         }
 
         @media (max-width: 640px) {
+          .lab-section {
+            padding: 4.5rem 0;
+          }
           .lab-head {
             flex-direction: column;
             align-items: flex-start;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
           }
           .lab-count-badge {
             align-items: flex-start;
           }
-          .lab-grid {
-            grid-template-columns: 1fr;
+          .filter-bar {
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.8rem;
+          }
+          .filter-pills {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.4rem;
+            scrollbar-width: none;
+          }
+          .filter-pills::-webkit-scrollbar {
+            display: none;
           }
           .filter-btn {
-            padding: 0.4rem 0.75rem;
-            font-size: 0.64rem;
+            padding: 0.45rem 0.85rem;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-height: 40px;
+          }
+          .lab-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+          .lab-card {
+            padding: 1.3rem 1.1rem;
+          }
+          .btn-view-all {
+            width: 100%;
+            min-height: 48px;
           }
         }
       `}</style>
