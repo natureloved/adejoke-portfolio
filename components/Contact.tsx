@@ -1,563 +1,171 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CONTACT_DATA } from "@/data/portfolio";
+import { useState, type FormEvent } from "react";
+import { CONTACT, SITE } from "@/lib/site";
+import { Section, SectionHead } from "./ui";
 
 const FORMSPREE_URL = process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "https://formspree.io/f/xojrppdv";
 
+const CHANNELS = [
+  { label: "Email", value: SITE.email, href: `mailto:${SITE.email}`, note: "Fastest reply" },
+  { label: "GitHub", value: "@natureloved", href: SITE.github, note: "35 repositories" },
+  {
+    label: "LinkedIn",
+    value: "Akinola Adejoke",
+    href: SITE.linkedin,
+    note: "Professional profile",
+  },
+  { label: "X", value: "@adejoke_btc", href: SITE.x, note: "Build notes" },
+];
+
+type Status = "idle" | "sending" | "sent" | "error";
+
 export default function Contact() {
-  const [copied, setCopied] = useState(false);
-  const [lagosTime, setLagosTime] = useState("--:--:--");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [form, setForm] = useState({ name: "", email: "", message: "", _gotcha: "" });
+  const [status, setStatus] = useState<Status>("idle");
 
-  useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Africa/Lagos",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    const update = () => setLagosTime(formatter.format(new Date()));
-    update();
-    const id = window.setInterval(update, 1000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const copyEmail = async () => {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setStatus("sending");
     try {
-      await navigator.clipboard.writeText(CONTACT_DATA.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2400);
-    } catch {
-      window.location.href = `mailto:${CONTACT_DATA.email}`;
-    }
-  };
-
-  const updateField = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setForm((curr) => ({ ...curr, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (form._gotcha) return;
-    setStatus("loading");
-    try {
-      const res = await fetch(FORMSPREE_URL, {
+      const response = await fetch(FORMSPREE_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(form),
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
       });
-      setStatus(res.ok ? "success" : "error");
+      if (!response.ok) throw new Error(String(response.status));
+      form.reset();
+      setStatus("sent");
     } catch {
       setStatus("error");
     }
-  };
+  }
 
   return (
-    <section id="contact" className="contact-section" aria-label="Contact and Collaboration">
-      <div className="site-grid">
-        <div className="contact-head">
-          <p className="section-label">05 / Contact</p>
-          <h2 className="contact-headline">{CONTACT_DATA.headline}</h2>
-          <p className="contact-subhead">{CONTACT_DATA.subhead}</p>
-        </div>
+    <Section id="contact">
+      <SectionHead
+        id="contact"
+        eyebrow="Contact"
+        title={CONTACT.headline}
+        lede={CONTACT.sub}
+      />
 
-        <div className="contact-layout">
-          {/* Left Column: Direct Links and Actions */}
-          <div className="direct-column">
-            <span className="column-title">Direct Connections</span>
-
-            <div className="action-buttons-list">
-              {/* Email Button with Copy Option */}
-              <div className="email-action-row">
-                <a href={`mailto:${CONTACT_DATA.email}`} className="action-btn email-btn">
-                  <span className="btn-icon">✉</span>
-                  <span>Email me</span>
-                  <span className="btn-detail">{CONTACT_DATA.email}</span>
-                </a>
-                <button
-                  type="button"
-                  className="copy-btn"
-                  onClick={copyEmail}
-                  title="Copy email to clipboard"
-                  aria-label="Copy email"
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16">
+        <div className="flex flex-col gap-8">
+          <ul className="grid gap-px border border-line-soft bg-line-soft">
+            {CHANNELS.map((channel) => (
+              <li key={channel.label} className="bg-bg">
+                <a
+                  href={channel.href}
+                  target={channel.href.startsWith("http") ? "_blank" : undefined}
+                  rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="flex min-h-[64px] items-center justify-between gap-4 px-5 py-4 no-underline transition-colors hover:bg-bg-raise"
                 >
-                  {copied ? "Copied ✓" : "Copy"}
-                </button>
-              </div>
+                  <span className="flex flex-col gap-0.5">
+                    <span className="font-mono text-[13px] uppercase tracking-[0.14em] text-muted">
+                      {channel.label}
+                    </span>
+                    <span className="text-[15px] text-ink">{channel.value}</span>
+                  </span>
+                  <span className="flex shrink-0 flex-col items-end gap-0.5">
+                    <span className="text-[13px] text-muted">{channel.note}</span>
+                    <span aria-hidden="true" className="text-teal">
+                      ↗
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
 
-              {/* View GitHub */}
-              <a
-                href={CONTACT_DATA.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn"
-              >
-                <span className="btn-icon">⌨</span>
-                <span>View GitHub</span>
-                <span className="btn-arrow" aria-hidden="true">↗</span>
-              </a>
+          <a
+            href={SITE.resume}
+            download
+            className="btn btn-quiet w-full sm:w-fit"
+          >
+            <span>Download résumé (PDF)</span>
+            <span aria-hidden="true" className="opacity-60">
+              ↓
+            </span>
+          </a>
 
-              {/* Connect on LinkedIn */}
-              <a
-                href={CONTACT_DATA.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn"
-              >
-                <span className="btn-icon">in</span>
-                <span>Connect on LinkedIn</span>
-                <span className="btn-arrow" aria-hidden="true">↗</span>
-              </a>
-
-              {/* Download Résumé */}
-              <a
-                href={CONTACT_DATA.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn resume-btn"
-              >
-                <span className="btn-icon">📄</span>
-                <span>Download résumé</span>
-                <span className="btn-arrow" aria-hidden="true">↓</span>
-              </a>
-            </div>
-
-            {/* Lagos Time Footnote */}
-            <div className="lagos-clock-card">
-              <span className="clock-dot" />
-              <span>Lagos, Nigeria // {lagosTime} WAT</span>
-            </div>
-          </div>
-
-          {/* Right Column: Clean, Short Inquiry Form */}
-          <div className="form-column">
-            <span className="column-title">Send a direct message</span>
-
-            <div className="form-card">
-              {status === "success" ? (
-                <div className="form-success-state">
-                  <div className="success-icon">✓</div>
-                  <h3>Message transmitted</h3>
-                  <p>Thanks for reaching out. I’ll review your note and get back to you shortly.</p>
-                  <button
-                    type="button"
-                    className="btn-reset"
-                    onClick={() => {
-                      setForm({ name: "", email: "", message: "", _gotcha: "" });
-                      setStatus("idle");
-                    }}
-                  >
-                    Send another message
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <input
-                    name="_gotcha"
-                    value={form._gotcha}
-                    onChange={updateField}
-                    tabIndex={-1}
-                    className="honeypot"
-                    autoComplete="off"
-                    aria-hidden="true"
-                  />
-
-                  <div className="form-row">
-                    <label>
-                      <span>Name</span>
-                      <input
-                        name="name"
-                        value={form.name}
-                        onChange={updateField}
-                        required
-                        placeholder="Your name"
-                        disabled={status === "loading"}
-                      />
-                    </label>
-                    <label>
-                      <span>Email</span>
-                      <input
-                        name="email"
-                        type="email"
-                        value={form.email}
-                        onChange={updateField}
-                        required
-                        placeholder="you@domain.com"
-                        disabled={status === "loading"}
-                      />
-                    </label>
-                  </div>
-
-                  <label className="message-label">
-                    <span>What are you building?</span>
-                    <textarea
-                      name="message"
-                      value={form.message}
-                      onChange={updateField}
-                      required
-                      rows={5}
-                      placeholder="Share a brief overview of the product, challenge, or timeline..."
-                      disabled={status === "loading"}
-                    />
-                  </label>
-
-                  {status === "error" && (
-                    <p className="form-error-msg">
-                      Something went wrong. Please email directly at {CONTACT_DATA.email}
-                    </p>
-                  )}
-
-                  <button type="submit" className="submit-btn" disabled={status === "loading"}>
-                    {status === "loading" ? "Transmitting..." : "Send message →"}
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
+          <p className="flex items-center gap-2.5 font-mono text-[13px] text-muted">
+            <span className="h-2 w-2 rounded-full bg-teal" aria-hidden="true" />
+            Based in {SITE.location} · working with teams anywhere
+          </p>
         </div>
+
+        <form onSubmit={onSubmit} className="flex flex-col gap-5">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="flex flex-col gap-2">
+              <span className="font-mono text-[13px] uppercase tracking-[0.14em] text-muted">
+                Your name
+              </span>
+              <input
+                required
+                name="name"
+                autoComplete="name"
+                className="min-h-[48px] border border-line bg-bg-card px-4 text-[16px] text-ink placeholder:text-muted/60 focus:border-teal focus:outline-none"
+                placeholder="Who am I talking to?"
+              />
+            </label>
+            <label className="flex flex-col gap-2">
+              <span className="font-mono text-[13px] uppercase tracking-[0.14em] text-muted">
+                Your email
+              </span>
+              <input
+                required
+                type="email"
+                name="email"
+                autoComplete="email"
+                className="min-h-[48px] border border-line bg-bg-card px-4 text-[16px] text-ink placeholder:text-muted/60 focus:border-teal focus:outline-none"
+                placeholder="you@company.com"
+              />
+            </label>
+          </div>
+
+          <label className="flex flex-col gap-2">
+            <span className="font-mono text-[13px] uppercase tracking-[0.14em] text-muted">
+              What are you building?
+            </span>
+            <textarea
+              required
+              name="message"
+              rows={5}
+              className="resize-y border border-line bg-bg-card px-4 py-3 text-[16px] leading-relaxed text-ink placeholder:text-muted/60 focus:border-teal focus:outline-none"
+              placeholder="The problem, the deadline, and what you need someone to do about it."
+            />
+          </label>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <button type="submit" disabled={status === "sending"} className="btn btn-primary disabled:opacity-60">
+              <span>{status === "sending" ? "Sending…" : "Send message"}</span>
+              <span aria-hidden="true" className="opacity-70">
+                →
+              </span>
+            </button>
+
+            {status === "sent" ? (
+              <p role="status" className="text-[15px] text-teal">
+                Got it — I&apos;ll reply shortly.
+              </p>
+            ) : null}
+            {status === "error" ? (
+              <p role="alert" className="text-[15px] text-amber">
+                That didn&apos;t send. Email me directly at{" "}
+                <a href={`mailto:${SITE.email}`} className="underline underline-offset-4">
+                  {SITE.email}
+                </a>
+                .
+              </p>
+            ) : null}
+          </div>
+
+          <p className="text-[13px] leading-relaxed text-muted">
+            Goes straight to my inbox via Formspree. Nothing stored here, no tracking.
+          </p>
+        </form>
       </div>
-
-      <style jsx>{`
-        .contact-section {
-          position: relative;
-          padding: 8rem 0 6rem;
-          border-top: 1px solid var(--border-soft);
-        }
-
-        .contact-head {
-          max-width: 820px;
-          margin-bottom: 4.5rem;
-        }
-
-        .contact-headline {
-          margin: 0;
-          font-size: clamp(2.4rem, 5.2vw, 4.4rem);
-          font-weight: 650;
-          letter-spacing: -0.04em;
-          line-height: 1;
-          color: var(--white);
-        }
-
-        .contact-subhead {
-          margin: 1.5rem 0 0;
-          font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-          line-height: 1.65;
-          color: var(--muted);
-          max-width: 64ch;
-        }
-
-        .contact-layout {
-          display: grid;
-          grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
-          gap: clamp(2.5rem, 6vw, 6rem);
-          align-items: start;
-        }
-
-        .column-title {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          color: var(--cyan);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          margin-bottom: 1.5rem;
-        }
-
-        .action-buttons-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.85rem;
-        }
-
-        .email-action-row {
-          display: flex;
-          gap: 0.5rem;
-        }
-
-        .action-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.9rem;
-          padding: 1.1rem 1.4rem;
-          background: rgba(14, 18, 22, 0.7);
-          border: 1px solid var(--border);
-          color: var(--white);
-          text-decoration: none;
-          font-family: var(--font-mono);
-          font-size: 0.82rem;
-          letter-spacing: 0.04em;
-          transition: all 0.2s ease;
-          flex: 1;
-        }
-
-        .action-btn:hover {
-          border-color: var(--lime);
-          color: var(--lime);
-          transform: translateY(-2px);
-          background: rgba(18, 24, 30, 0.9);
-        }
-
-        .btn-icon {
-          font-size: 1rem;
-          color: var(--muted);
-        }
-
-        .action-btn:hover .btn-icon {
-          color: var(--lime);
-        }
-
-        .btn-detail {
-          margin-left: auto;
-          font-size: 0.68rem;
-          color: var(--muted);
-        }
-
-        .btn-arrow {
-          margin-left: auto;
-          font-size: 0.85rem;
-        }
-
-        .copy-btn {
-          padding: 0 1.1rem;
-          background: rgba(14, 18, 22, 0.7);
-          border: 1px solid var(--border);
-          color: var(--cyan);
-          font-family: var(--font-mono);
-          font-size: 0.68rem;
-          text-transform: uppercase;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          white-space: nowrap;
-        }
-
-        .copy-btn:hover {
-          border-color: var(--cyan);
-          background: rgba(94, 234, 212, 0.08);
-        }
-
-        .lagos-clock-card {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.55rem;
-          margin-top: 2rem;
-          padding: 0.6rem 1rem;
-          border: 1px solid var(--border-soft);
-          background: rgba(11, 14, 16, 0.5);
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.08em;
-          color: var(--muted);
-          text-transform: uppercase;
-        }
-
-        .clock-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--lime);
-          box-shadow: 0 0 6px var(--lime);
-        }
-
-        /* Form Styles */
-        .form-card {
-          padding: 2.2rem 2rem;
-          background: rgba(14, 18, 22, 0.7);
-          border: 1px solid var(--border);
-          backdrop-filter: blur(12px);
-        }
-
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-        }
-
-        label {
-          display: flex;
-          flex-direction: column;
-          gap: 0.45rem;
-        }
-
-        label span {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          color: var(--muted);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-        }
-
-        input, textarea {
-          width: 100%;
-          padding: 0.85rem 1rem;
-          background: rgba(8, 11, 14, 0.85);
-          border: 1px solid var(--border);
-          color: var(--white);
-          font-family: var(--font-sans);
-          font-size: 0.88rem;
-          outline: none;
-          transition: border-color 0.2s ease, background 0.2s ease;
-        }
-
-        input:focus, textarea:focus {
-          border-color: var(--lime);
-          background: rgba(11, 15, 18, 0.95);
-        }
-
-        input::placeholder, textarea::placeholder {
-          color: #5a6669;
-        }
-
-        textarea {
-          resize: vertical;
-          min-height: 120px;
-        }
-
-        .submit-btn {
-          padding: 0.95rem 1.5rem;
-          background: var(--lime);
-          color: #0b0e10;
-          border: 1px solid var(--lime);
-          font-family: var(--font-mono);
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .submit-btn:hover {
-          background: var(--white);
-          border-color: var(--white);
-          transform: translateY(-2px);
-        }
-
-        .submit-btn:disabled {
-          opacity: 0.6;
-          cursor: wait;
-        }
-
-        .honeypot {
-          display: none;
-        }
-
-        .form-success-state {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          padding: 2rem 1rem;
-          gap: 0.85rem;
-        }
-
-        .success-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: rgba(0, 240, 118, 0.15);
-          color: #00f076;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.3rem;
-          font-weight: bold;
-        }
-
-        .form-success-state h3 {
-          margin: 0;
-          font-size: 1.25rem;
-          color: var(--white);
-        }
-
-        .form-success-state p {
-          margin: 0;
-          font-size: 0.85rem;
-          color: var(--muted);
-          max-width: 36ch;
-        }
-
-        .btn-reset {
-          margin-top: 1rem;
-          padding: 0.65rem 1.2rem;
-          border: 1px solid var(--border);
-          background: transparent;
-          color: var(--white);
-          font-family: var(--font-mono);
-          font-size: 0.68rem;
-          cursor: pointer;
-        }
-
-        .form-error-msg {
-          color: var(--orange);
-          font-family: var(--font-mono);
-          font-size: 0.72rem;
-          margin: 0;
-        }
-
-        @media (max-width: 900px) {
-          .contact-layout {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .contact-section {
-            padding: 4.5rem 0;
-          }
-
-          .contact-headline {
-            font-size: clamp(2rem, 8vw, 2.6rem);
-          }
-
-          input,
-          textarea {
-            font-size: 16px !important; /* Prevents unwanted iOS Safari auto-zoom */
-          }
-
-          .action-btn {
-            min-height: 48px;
-            padding: 0.75rem 1rem;
-          }
-        }
-
-        @media (max-width: 540px) {
-          .form-card {
-            padding: 1.5rem 1rem;
-          }
-
-          .form-row {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-
-          .email-action-row {
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-
-          .copy-btn {
-            width: 100%;
-            min-height: 44px;
-            padding: 0.65rem;
-          }
-
-          .submit-btn {
-            min-height: 50px;
-            width: 100%;
-          }
-        }
-      `}</style>
-    </section>
+    </Section>
   );
 }

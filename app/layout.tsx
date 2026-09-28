@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ConstellationProvider } from "@/lib/constellation-context";
-import ConstellationField from "@/components/hero/ConstellationField";
-import Navbar from "@/components/Navbar";
-import CustomCursor from "@/components/CustomCursor";
-import ScrollProgress from "@/components/ScrollProgress";
-import ScrollReveal from "@/components/ScrollReveal";
-import CommandPalette from "@/components/CommandPalette";
-import EasterEgg from "@/components/EasterEgg";
-import CinematicEntrance from "@/components/CinematicEntrance";
-import StyledJsxRegistry from "./registry";
+import { SITE } from "@/lib/site";
 
 const geist = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,44 +17,44 @@ const geistMono = localFont({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.vercel.app";
 
+const title = `${SITE.name} — Full-stack products and smart contracts`;
+
+const description =
+  "I build full-stack products and smart contracts: Bitcoin L2 lending, voice payments, AI agents that move money, and the university software people actually use. Live demos and open source, no claims without a link.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: {
-    default: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
-    template: "%s | Akinola Adejoke",
-  },
-  description:
-    "I build full-stack products for money, ownership, and opportunity. Full-stack & blockchain developer specializing in Bitcoin L2s, smart contracts, and high-precision systems.",
+  title: { default: title, template: `%s | ${SITE.name}` },
+  description,
   keywords: [
     "Akinola Adejoke",
-    "Adejoke",
-    "Full Stack Developer",
-    "Blockchain Developer",
+    "full stack developer",
+    "smart contract developer",
     "Bitcoin L2",
     "Stacks",
     "Clarity",
     "Solidity",
-    "Cairo",
     "DeFi",
-    "Web3",
+    "AI agents",
+    "Next.js",
+    "TypeScript",
+    "Lagos",
   ],
-  authors: [{ name: "Akinola Adejoke" }],
+  authors: [{ name: SITE.name }],
   icons: { icon: "/icon.svg" },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Akinola Adejoke | Portfolio",
-    title: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
-    description:
-      "I build full-stack products for money, ownership, and opportunity across Bitcoin L2s, smart contracts, and modern systems.",
+    siteName: `${SITE.name} | Portfolio`,
+    title,
+    description,
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Akinola Adejoke | Full-Stack Products for Money, Ownership & Opportunity",
-    description:
-      "I build full-stack products for money, ownership, and opportunity across Bitcoin L2s, smart contracts, and modern systems.",
+    title,
+    description,
     creator: "@adejoke_btc",
   },
 };
@@ -71,59 +62,50 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
   themeColor: "#0b0e10",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: SITE.name,
+    alternateName: SITE.alias,
+    url: siteUrl,
+    email: `mailto:${SITE.email}`,
+    jobTitle: "Full-Stack & Protocol Engineer",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Lagos",
+      addressCountry: "NG",
+    },
+    knowsAbout: [
+      "Bitcoin Layer 2",
+      "Smart Contracts",
+      "DeFi",
+      "AI Agents",
+      "TypeScript",
+    ],
+    sameAs: [SITE.x, SITE.github, SITE.linkedin],
+  };
+
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
-      <head>
-        <meta name="theme-color" content="#0b0e10" />
+    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} data-reading="plain">
+      <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Akinola Adejoke",
-              url: siteUrl,
-              sameAs: [
-                "https://x.com/adejoke_btc",
-                "https://github.com/natureloved",
-                "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
-              ],
-              jobTitle: "Full-Stack & Blockchain Developer",
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
-      </head>
-      <body>
-        <StyledJsxRegistry>
-          <a href="#main" className="skip-link">
-            Skip to content
-          </a>
-          <ConstellationProvider>
-            {/* Cinematic entrance animation */}
-            <CinematicEntrance />
-            {/* Thin scroll progress indicator */}
-            <ScrollProgress />
-            {/* Cmd/Ctrl+K — jump anywhere, open any project */}
-            <CommandPalette />
-            {/* Subtle backdrop field */}
-            <ConstellationField />
-            <CustomCursor />
-            <Navbar />
-            <ScrollReveal />
-            <main id="main">{children}</main>
-            {/* Easter egg */}
-            <EasterEgg />
-          </ConstellationProvider>
-        </StyledJsxRegistry>
+        <a
+          href="#main"
+          className="fixed left-4 top-[-4rem] z-[100] bg-lime px-4 py-2.5 font-mono text-[13px] font-semibold text-[#0a0d0e] no-underline transition-[top] focus:top-4"
+        >
+          Skip to content
+        </a>
+        {children}
       </body>
     </html>
   );

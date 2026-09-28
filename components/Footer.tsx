@@ -1,98 +1,65 @@
-"use client";
+import { SITE } from "@/lib/site";
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="site-footer">
-      <div className="site-grid footer-inner">
-        <div className="footer-left">
-          <span className="footer-name">Akinola Adejoke</span>
-          <span className="footer-sep">/</span>
-          <span className="footer-role">Full-Stack & Protocol Developer</span>
+    <footer className="border-t border-line-soft py-12">
+      <div className="wrap flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-2">
+          <p className="text-[17px] font-semibold text-ink">{SITE.name}</p>
+          <p className="max-w-[40ch] text-[15px] leading-relaxed text-muted">
+            Full-stack and protocol engineer. {SITE.location}. Currently taking on product
+            and engineering work.
+          </p>
         </div>
 
-        <div className="footer-right">
-          <span>Lagos, Nigeria</span>
-          <span className="footer-sep">•</span>
-          <button type="button" onClick={scrollToTop} className="back-to-top">
-            Back to top ↑
-          </button>
-        </div>
+        <nav aria-label="Footer" className="flex flex-col gap-2.5">
+          <a
+            href={SITE.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
+          >
+            GitHub
+          </a>
+          <a
+            href={SITE.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
+          >
+            LinkedIn
+          </a>
+          <a
+            href={SITE.x}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
+          >
+            X / Twitter
+          </a>
+          <a
+            href={`mailto:${SITE.email}`}
+            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
+          >
+            {SITE.email}
+          </a>
+        </nav>
       </div>
 
-      <style jsx>{`
-        .site-footer {
-          position: relative;
-          z-index: 10;
-          border-top: 1px solid var(--border-soft);
-          padding: 2.2rem 0 3rem;
-          color: var(--muted);
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.05em;
-        }
-
-        .footer-inner {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1.5rem;
-        }
-
-        .footer-left,
-        .footer-right {
-          display: flex;
-          align-items: center;
-          gap: 0.65rem;
-        }
-
-        .footer-name {
-          color: var(--white);
-          font-weight: 600;
-        }
-
-        .footer-sep {
-          color: #4b5558;
-        }
-
-        .back-to-top {
-          background: transparent;
-          border: 0;
-          color: var(--cyan);
-          cursor: pointer;
-          font-family: inherit;
-          font-size: inherit;
-          padding: 0;
-          transition: color 0.2s ease;
-        }
-
-        .back-to-top:hover {
-          color: var(--lime);
-        }
-
-        @media (max-width: 640px) {
-          .site-footer {
-            padding: 2rem 0 3.5rem;
-          }
-          .footer-inner {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-          }
-          .footer-left {
-            flex-wrap: wrap;
-            gap: 0.4rem;
-          }
-          .back-to-top {
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-          }
-        }
-      `}</style>
+      <div className="wrap mt-10 flex flex-col gap-3 border-t border-line-soft pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-[13px] text-muted">
+          © {year} {SITE.name}. Built and deployed, not templated.
+        </p>
+        <a
+          href="#top"
+          className="inline-flex min-h-[40px] w-fit items-center gap-2 font-mono text-[13px] text-muted transition-colors hover:text-ink"
+        >
+          Back to top
+          <span aria-hidden="true">↑</span>
+        </a>
+      </div>
     </footer>
   );
 }
