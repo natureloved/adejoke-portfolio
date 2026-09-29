@@ -83,6 +83,12 @@ Copy `.env.example` to `.env.local`:
 | `NEXT_PUBLIC_SITE_URL` | Canonical origin used for metadata, sitemap and JSON-LD |
 | `NEXT_PUBLIC_FORMSPREE_URL` | Formspree endpoint for the contact form |
 
+`NEXT_PUBLIC_SITE_URL` is read in one place, `SITE_URL` in `lib/site.ts`, and every consumer
+imports it from there. It has to be the custom domain, not the Vercel deployment alias: the
+alias is a different host, so a page served on the custom domain that points its canonical
+and `og:url` at the alias reads to a crawler as a duplicate of itself. Set the same value in
+the Vercel project environment, otherwise the deployed build overrides the fallback.
+
 The contact form posts to Formspree. If the endpoint is missing or the request fails, the
 form says so and offers a `mailto:` link rather than showing a false success message.
 
@@ -95,8 +101,7 @@ app/
   opengraph-image.tsx    Social card, rendered at the edge
   page.tsx               Section order
 components/
-  Nav.tsx                Sticky blurred header, active section dot, mobile menu
-  Hero.tsx               Headline, proof stats, art board with a real screenshot
+  Nav.tsx                Sticky blurred header, active section dot, mobile menu  Hero.tsx               Headline, proof stats, art board with a real screenshot
   Toolkit.tsx            The tool strip
   Work.tsx               Four flagship case studies, filters, case-study dialog
   Capabilities.tsx       Dark services panel plus the four process steps
@@ -112,7 +117,14 @@ components/
 data/work.ts             All project content: the only file to edit for copy
 lib/site.ts             Name, links, positioning, process, story, glossary
 public/shots/            Real screenshots of the live demos
+public/fonts/            Brand TTFs for the social card, see below
 ```
+
+The social card needs the real brand faces, not system fonts, otherwise the preview a
+visitor sees when they paste the link does not look like the site. Satori cannot read
+woff2, which is what `next/font` serves the page, so `public/fonts/` holds TTF copies of
+the same three families for `app/opengraph-image.tsx` to fetch. The page itself is still
+self-hosted through `next/font`; the files in `public/fonts` are only used by the card.
 
 ## Content
 

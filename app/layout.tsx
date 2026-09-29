@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Mono, DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { SITE, SITE_URL } from "@/lib/site";
 
 const sans = DM_Sans({
   subsets: ["latin"],
@@ -24,12 +24,18 @@ const serif = Instrument_Serif({
   variable: "--font-serif",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.vercel.app";
+// The canonical domain, defined once in lib/site. Everything social and SEO
+// related resolves from here, so it has to be the custom domain rather than
+// the deployment alias. Social crawlers treat the first canonical they see as
+// the real URL, and the alias is a different host, so a page served on the
+// custom domain while pointing canonical at the alias is read as a duplicate
+// of itself.
+const siteUrl = SITE_URL;
 
-const title = `${SITE.name}, Full-stack products and smart contracts`;
+const title = `${SITE.name}, Blockchain developer`;
 
 const description =
-  "I build full-stack products and smart contracts: Bitcoin L2 lending, voice payments, AI agents that move money, and the university software people actually use. Live demos and open source, no claims without a link.";
+  "Blockchain and full-stack developer building Bitcoin L2 lending, voice payments, on-chain agents, and the university software people actually use. Live demos and open source, no claims without a link.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

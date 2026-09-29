@@ -11,6 +11,18 @@ export const SITE = {
 } as const;
 
 /**
+ * The canonical origin, defined once.
+ *
+ * Metadata, sitemap, robots, JSON-LD and the OG image all need this. It used
+ * to be repeated as a fallback in each of those files, which meant fixing the
+ * domain in one place left the rest pointing at the deployment alias. Any
+ * module that needs the origin imports it from here instead of re-deriving it.
+ */
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke.my.id"
+).replace(/\/$/, "");
+
+/**
  * One line, no jargon. This is the first thing a visitor reads.
  */
 export const ONE_LINER =
