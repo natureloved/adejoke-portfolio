@@ -1,88 +1,69 @@
-import type { ReactNode } from "react";
-
-/**
- * A term the reader may not know. Rendered with a dotted underline and, when
- * the definition is shown, as the anchor a reader can jump to in the
- * glossary. Deliberately not a hover tooltip: those do not exist on a
- * touchscreen, and most people reading a portfolio are on a phone.
- */
-export function Gloss({ children, id }: { children: ReactNode; id?: string }) {
+/** A design-system icon. Referenced by id from the inline sprite. */
+export function Icon({
+  name,
+  className = "",
+  label,
+}: {
+  name: string;
+  className?: string;
+  label?: string;
+}) {
   return (
-    <span id={id} className="border-b border-dashed border-teal/60 text-ink">
-      {children}
-    </span>
+    <svg
+      className={`icon ${className}`.trim()}
+      aria-hidden={label ? undefined : true}
+      role={label ? "img" : undefined}
+      aria-label={label}
+      focusable="false"
+    >
+      <use href={`#${name}`} />
+    </svg>
   );
 }
 
-export function Eyebrow({ children }: { children: ReactNode }) {
-  return <p className="eyebrow">{children}</p>;
-}
-
-export function Section({
-  id,
+export function Eyebrow({
   children,
+  id,
   className = "",
 }: {
-  id: string;
-  children: ReactNode;
+  children: React.ReactNode;
+  id?: string;
   className?: string;
 }) {
   return (
-    <section id={id} className={`section ${className}`} aria-labelledby={`${id}-heading`}>
-      <div className="wrap">{children}</div>
-    </section>
+    <p className={`eyebrow ${className}`.trim()} id={id}>
+      <span className="eyebrow-line" aria-hidden="true" />
+      {children}
+    </p>
   );
 }
 
-export function SectionHead({
-  id,
-  eyebrow,
-  title,
-  lede,
-  aside,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  lede?: ReactNode;
-  aside?: ReactNode;
-}) {
-  return (
-    <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
-      <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <h2 id={`${id}-heading`} className="h2">
-          {title}
-        </h2>
-        {lede ? <div className="lede">{lede}</div> : null}
-      </div>
-      {aside ? <div className="shrink-0">{aside}</div> : null}
-    </div>
-  );
-}
-
-export function LinkOut({
-  href,
+export function SectionTitle({
   children,
-  variant = "quiet",
+  id,
+  className = "",
 }: {
-  href: string;
-  children: ReactNode;
-  variant?: "primary" | "quiet";
+  children: React.ReactNode;
+  id?: string;
+  className?: string;
 }) {
-  const external = href.startsWith("http");
   return (
-    <a
-      href={href}
-      className={`btn ${variant === "primary" ? "btn-primary" : "btn-quiet"}`}
-      {...(external
-        ? { target: "_blank", rel: "noopener noreferrer" }
-        : { download: href.endsWith(".pdf") || undefined })}
-    >
-      <span>{children}</span>
-      <span aria-hidden="true" className="opacity-60">
-        {external ? "↗" : "↓"}
-      </span>
+    <h2 id={id} className={`section-title ${className}`.trim()}>
+      {children}
+    </h2>
+  );
+}
+
+/**
+ * A term the reader may not know. Renders as a dotted-underlined link into the
+ * glossary accordion, which is reachable by keyboard and by touch. The previous
+ * build hid definitions behind a hover tooltip, which does not exist on a
+ * phone.
+ */
+export function Gloss({ children, term }: { children: React.ReactNode; term: string }) {
+  return (
+    <a className="glossary-link" href={`#faq-${term.toLowerCase().replace(/\s+/g, "-")}`}>
+      {children}
     </a>
   );
 }

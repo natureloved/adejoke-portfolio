@@ -1,36 +1,96 @@
-import { STORY } from "@/lib/site";
-import { Section, SectionHead } from "./ui";
+import { ABOUT_FACTS, SITE, STORY } from "@/lib/site";
+import { Eyebrow, Icon, SectionTitle } from "./ui";
+
+const ICONS = [
+  "i-pin",
+  "i-file",
+  "i-leaf",
+  "i-cube",
+  "i-message",
+  "i-sparkle",
+];
+
+/** A flat illustration of a desk: the page is decoration, so it is hidden. */
+function DeskArt() {
+  return (
+    <svg viewBox="0 0 520 372" role="presentation" aria-hidden="true" focusable="false">
+      <rect width="520" height="372" fill="#e8e9df" />
+      <rect x="0" y="272" width="520" height="100" fill="#e0e1d4" />
+      <rect x="34" y="36" width="196" height="128" rx="6" fill="#fbfcf5" stroke="#d8dccb" />
+      <rect x="52" y="58" width="120" height="9" rx="4.5" fill="#cdd4be" />
+      <rect x="52" y="78" width="160" height="6" rx="3" fill="#dde2d2" />
+      <rect x="52" y="92" width="140" height="6" rx="3" fill="#dde2d2" />
+      <rect x="52" y="106" width="152" height="6" rx="3" fill="#dde2d2" />
+      <rect x="52" y="126" width="86" height="22" rx="4" fill="#e9f0da" />
+      <rect x="52" y="126" width="86" height="22" rx="4" fill="none" stroke="#b9c7a2" />
+      <rect x="146" y="130" width="62" height="14" rx="3" fill="#d5ddc6" />
+      <circle cx="452" cy="96" r="58" fill="#dfe3d2" />
+      <circle cx="452" cy="96" r="46" fill="#eef1e4" />
+      <rect x="262" y="52" width="120" height="88" rx="6" fill="#fbfcf5" stroke="#d8dccb" />
+      <rect x="276" y="68" width="70" height="7" rx="3.5" fill="#cdd4be" />
+      <rect x="276" y="84" width="92" height="5" rx="2.5" fill="#dde2d2" />
+      <rect x="276" y="96" width="80" height="5" rx="2.5" fill="#dde2d2" />
+      <rect x="276" y="114" width="40" height="16" rx="3" fill="#dfe7d2" />
+      <rect x="140" y="196" width="240" height="18" rx="4" fill="#2c4531" />
+      <rect x="152" y="214" width="216" height="58" rx="4" fill="#f3f5ea" stroke="#d3d8c7" />
+      <rect x="164" y="226" width="80" height="6" rx="3" fill="#cfd6c1" />
+      <rect x="164" y="240" width="140" height="5" rx="2.5" fill="#dde2d2" />
+      <rect x="164" y="252" width="120" height="5" rx="2.5" fill="#dde2d2" />
+      <rect x="326" y="240" width="34" height="26" rx="3" fill="#dff3a4" stroke="#c3d98a" />
+      <rect x="46" y="236" width="66" height="42" rx="4" fill="#f6f7f0" stroke="#d6dbca" />
+      <rect x="58" y="248" width="42" height="5" rx="2.5" fill="#d3d8c7" />
+      <rect x="58" y="260" width="32" height="5" rx="2.5" fill="#e0e4d6" />
+      <rect x="418" y="228" width="26" height="44" rx="3" fill="#f6f7f0" stroke="#d6dbca" />
+      <circle cx="431" cy="288" r="15" fill="#b9c7a2" />
+      <path d="M431 280v16M423 288h16" stroke="#8a9b73" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function Story() {
   return (
-    <Section id="story">
-      <SectionHead
-        id="story"
-        eyebrow="Background"
-        title="I got here by a route nobody planned."
-        lede={STORY.lead}
-      />
+    <section className="container about-section" id="about" aria-labelledby="aboutHeading">
+      <div className="about-grid">
+        <div className="desk-visual">
+          <DeskArt />
+          <span className="desk-label">WORKSPACE, NAIJA</span>
+          <div className="desk-note">
+            <Icon name="i-leaf" />
+            <span>From night shifts to mainnet.</span>
+          </div>
+        </div>
 
-      <ol className="grid gap-px border border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
-        {STORY.chapters.map((chapter, i) => (
-          <li key={chapter.period} className="flex flex-col gap-3 bg-bg p-6">
-            <div className="flex items-baseline gap-2.5">
-              <span className="font-mono text-[13px] text-muted">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="font-mono text-[13px] uppercase tracking-[0.14em] text-amber">
-                {chapter.period}
-              </span>
-            </div>
-            <h3 className="text-[17px] font-semibold leading-snug text-ink">{chapter.title}</h3>
-            <p className="text-[15px] leading-relaxed text-muted">{chapter.body}</p>
-          </li>
-        ))}
-      </ol>
+        <div className="about-copy">
+          <Eyebrow>05 The person</Eyebrow>
+          <SectionTitle id="aboutHeading">
+            Not a straight <em>line.</em> That&rsquo;s the point.
+          </SectionTitle>
+          <p>{STORY.lead}</p>
+          <p>
+            <strong>{STORY.closing}</strong>
+          </p>
 
-      <p className="mt-10 max-w-[58ch] border-l-2 border-amber pl-6 text-[clamp(1.0625rem,1.9vw,1.25rem)] font-medium leading-[1.55] text-ink/90">
-        {STORY.closing}
-      </p>
-    </Section>
+          <div className="about-facts">
+            {ABOUT_FACTS.map((f, i) => (
+              <span className="about-fact" key={f}>
+                <Icon name={ICONS[i]} />
+                {f}
+              </span>
+            ))}
+          </div>
+
+          <div className="about-signature">
+            <span className="signature" aria-hidden="true">
+              {SITE.alias}
+            </span>
+            <small>
+              {SITE.name}
+              <br />
+              {SITE.availability}
+            </small>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

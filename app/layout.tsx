@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { DM_Mono, DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 
-const geist = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist",
+const sans = DM_Sans({
+  subsets: ["latin"],
   display: "swap",
+  variable: "--font-sans",
 });
 
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const mono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   display: "swap",
+  variable: "--font-mono",
+});
+
+const serif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-serif",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.vercel.app";
@@ -62,8 +71,8 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0b0e10",
-  colorScheme: "dark",
+  themeColor: "#f7f8f3",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -93,7 +102,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`} data-reading="plain">
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${serif.variable}`} data-reading="plain">
       <body>
         <script
           type="application/ld+json"
@@ -101,7 +110,7 @@ export default function RootLayout({
         />
         <a
           href="#main"
-          className="fixed left-4 top-[-4rem] z-[100] bg-lime px-4 py-2.5 font-mono text-[13px] font-semibold text-[#0a0d0e] no-underline transition-[top] focus:top-4"
+          className="skip-link"
         >
           Skip to content
         </a>

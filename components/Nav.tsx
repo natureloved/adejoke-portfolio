@@ -1,159 +1,170 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { SITE } from "@/lib/site";
-import ReadingToggle from "./ReadingToggle";
+import { useEffect, useRef, useState } from "react";
+import { useContact } from "./ContactContext";
+import { Icon } from "./ui";
 
 const LINKS = [
   { href: "#work", label: "Work" },
-  { href: "#capabilities", label: "What I do" },
+  { href: "#expertise", label: "Expertise" },
   { href: "#process", label: "Process" },
-  { href: "#lab", label: "More builds" },
-  { href: "#story", label: "Background" },
-  { href: "#contact", label: "Contact" },
+  { href: "#lab", label: "Lab" },
+  { href: "#about", label: "About" },
+  { href: "#faq", label: "FAQ" },
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { open: openContact } = useContact();
   const [active, setActive] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
+  // Shadow only once the page has moved, so the header stays flat at rest.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Highlight whichever section currently owns the top of the viewport, so
-  // a scroller always knows where they are in a seven-screen page.
+  // Highlight the section the reader is actually in. Measuring every section on
+  // each frame is deliberate: an IntersectionObserver callback only reports the
+  // entries that changed, so it keeps naming a section that has already left
+  // the viewport, which is visible as a stale dot on long sections.
   useEffect(() => {
-    const sections = LINKS.map((l) => document.querySelector(l.href)).filter(
-      (el): el is Element => Boolean(el)
+    const sections = LINKS.map((l) => document.querySelector<HTMLElement>(l.href)).filter(
+      (el): el is HTMLElement => Boolean(el)
     );
-    if (!sections.length) return;
+    if (sections.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(`#${visible.target.id}`);
-      },
-      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5] }
-    );
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      const line = window.scrollY + window.innerHeight * 0.32;
+      let current: string | null = null;
+      for (const s of sections) {
+        if (s.offsetTop <= line) current = s.id;
+      }
+      // The last section is often too short to reach the measuring line.
+      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 8;
+      if (atBottom) current = sections[sections.length - 1].id;
+      // No section yet, so no link is current: the reader is still in the hero.
+      setActive(current ? `#${current}` : "");
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(measure);
+    };
 
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
+  // Close the mobile menu on Escape, and return focus to the toggle.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.classList.add("modal-open");
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      document.body.classList.remove("modal-open");
     };
   }, [open]);
 
+  const go = (href: string) => {
+    setOpen(false);
+    const el = document.querySelector<HTMLElement>(href);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Move focus so keyboard and screen reader users land on the new section.
+    el.setAttribute("tabindex", "-1");
+    el.focus({ preventScroll: true });
+  };
+
   return (
-    <header
-      className={`sticky top-0 z-50 transition-colors duration-200 ${
-        scrolled
-          ? "border-b border-line-soft bg-bg/85 backdrop-blur-md"
-          : "border-b border-transparent"
-      }`}
-    >
-      <div className="wrap flex h-[68px] items-center justify-between gap-4">
+    <header ref={headerRef} className={`site-header${scrolled ? " scrolled" : ""}`}>
+      <div className="container header-inner">
         <a
+          className="brand"
           href="#top"
-          className="group flex items-baseline gap-2.5 no-underline"
-          onClick={() => setOpen(false)}
+          onClick={(e) => {
+            e.preventDefault();
+            go("#top");
+          }}
         >
-          <span className="text-[17px] font-semibold tracking-[-0.02em] text-ink group-hover:text-lime">
-            Akinola Adejoke
+          <span className="brand-mark" aria-hidden="true">
+            <Icon name="i-sparkle" />
           </span>
-          <span className="hidden font-mono text-[13px] text-muted sm:inline">
-            full-stack &amp; protocol
-          </span>
+          Akinola<span className="brand-dot">.</span>
         </a>
 
-        <nav aria-label="Sections" className="hidden items-center gap-1 lg:flex">
-          {LINKS.map((link) => (
+        <nav className={`main-nav${open ? " open" : ""}`} aria-label="Sections">
+          {LINKS.map((l) => (
             <a
-              key={link.href}
-              href={link.href}
-              aria-current={active === link.href ? "true" : undefined}
-              className={`inline-flex min-h-[40px] items-center rounded px-3 text-[15px] no-underline transition-colors ${
-                active === link.href ? "text-ink" : "text-muted hover:text-ink"
-              }`}
+              key={l.href}
+              href={l.href}
+              className={active === l.href ? "active" : undefined}
+              aria-current={active === l.href ? "true" : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                go(l.href);
+              }}
             >
-              {link.label}
+              {l.label}
             </a>
           ))}
+          <a
+            className="mobile-contact"
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              openContact();
+            }}
+          >
+            Start a conversation
+            <Icon name="i-arrow-up-right" />
+          </a>
         </nav>
 
-        <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <ReadingToggle />
-          </div>
-          <a
-            href="#contact"
-            className="hidden min-h-[38px] items-center border border-lime bg-lime px-4 text-[15px] font-semibold text-[#0a0d0e] no-underline transition-colors hover:bg-white hover:border-white sm:inline-flex"
-          >
-            Hire me
-          </a>
+        <div className="header-actions">
+          <span className="availability">
+            <span className="status-dot" aria-hidden="true" />
+            Open to work
+          </span>
           <button
             type="button"
-            onClick={() => setOpen((v) => !v)}
+            className="btn header-cta"
+            onClick={() => {
+              setOpen(false);
+              openContact();
+            }}
+          >
+            Let&rsquo;s talk
+            <Icon name="i-arrow-up-right" />
+          </button>
+          <button
+            type="button"
+            className="menu-toggle"
             aria-expanded={open}
             aria-controls="mobile-nav"
-            className="inline-flex h-[38px] w-[38px] items-center justify-center border border-line text-ink lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
           >
-            <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
-            <span aria-hidden="true" className="flex flex-col gap-[5px]">
-              <span
-                className={`block h-px w-4 bg-current transition-transform ${
-                  open ? "translate-y-[6px] rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`block h-px w-4 bg-current transition-transform ${
-                  open ? "-translate-y-[6px] -rotate-45" : ""
-                }`}
-              />
-            </span>
+            <Icon name={open ? "i-plus" : "i-menu"} />
           </button>
         </div>
       </div>
-
-      {open ? (
-        <div
-          id="mobile-nav"
-          className="fixed inset-x-0 top-[68px] bottom-0 z-50 overflow-y-auto border-t border-line-soft bg-bg lg:hidden"
-        >
-          <nav aria-label="Sections" className="wrap flex flex-col py-6">
-            {LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-line-soft py-4 text-[19px] text-ink no-underline"
-              >
-                {link.label}
-              </a>
-            ))}
-            <div className="mt-6 flex flex-col gap-4">
-              <ReadingToggle variant="full" />
-              <a
-                href="#contact"
-                onClick={() => setOpen(false)}
-                className="btn btn-primary w-full"
-              >
-                {SITE.availability}
-              </a>
-            </div>
-          </nav>
-        </div>
-      ) : null}
     </header>
   );
 }

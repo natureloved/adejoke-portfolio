@@ -25,6 +25,7 @@ export interface Flagship {
   shot: { src: string; alt: string; caption: string };
   links: { live?: string; liveLabel?: string; repo?: string };
   accent: string;
+  category: "Protocol" | "Product" | "Agent";
 }
 
 export interface LabItem {
@@ -93,6 +94,7 @@ export const FLAGSHIPS: Flagship[] = [
       repo: "https://github.com/natureloved/DrawBound",
     },
     accent: "#00f076",
+    category: "Protocol",
   },
   {
     id: "acadex",
@@ -148,6 +150,7 @@ export const FLAGSHIPS: Flagship[] = [
       repo: "https://github.com/natureloved/Acadex",
     },
     accent: "#5eead4",
+    category: "Product",
   },
   {
     id: "pegwatch",
@@ -202,6 +205,7 @@ export const FLAGSHIPS: Flagship[] = [
       repo: "https://github.com/natureloved/PegWatch",
     },
     accent: "#c5a7ff",
+    category: "Agent",
   },
   {
     id: "voz",
@@ -256,6 +260,7 @@ export const FLAGSHIPS: Flagship[] = [
       repo: "https://github.com/natureloved/Voz",
     },
     accent: "#ff8a65",
+    category: "Product",
   },
 ];
 

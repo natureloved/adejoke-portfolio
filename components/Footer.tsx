@@ -1,63 +1,49 @@
 import { SITE } from "@/lib/site";
+import { ContactTrigger } from "./ContactContext";
+import { Icon } from "./ui";
+
+const SOCIALS = [
+  { href: SITE.github, label: "GitHub", icon: "i-github" },
+  { href: SITE.linkedin, label: "LinkedIn", icon: "i-linkedin" },
+  { href: SITE.x, label: "X", icon: "i-x" },
+];
 
 export default function Footer() {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="border-t border-line-soft py-12">
-      <div className="wrap flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex flex-col gap-2">
-          <p className="text-[17px] font-semibold text-ink">{SITE.name}</p>
-          <p className="max-w-[40ch] text-[15px] leading-relaxed text-muted">
-            Full-stack and protocol engineer. {SITE.location}. Currently taking on product
-            and engineering work.
+    <footer className="container site-footer">
+      <div className="footer-top">
+        <div className="footer-brand">
+          <a className="brand" href="#top">
+            <span className="brand-mark" aria-hidden="true">
+              <Icon name="i-sparkle" />
+            </span>
+            Akinola<span className="brand-dot">.</span>
+          </a>
+          <p>
+            Building software that moves money and saves people work. Based in {SITE.location},
+            working with teams anywhere.
           </p>
         </div>
 
-        <nav aria-label="Footer" className="flex flex-col gap-2.5">
-          <a
-            href={SITE.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-          >
-            GitHub
-          </a>
-          <a
-            href={SITE.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={SITE.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-          >
-            X / Twitter
-          </a>
-          <a
-            href={`mailto:${SITE.email}`}
-            className="inline-flex min-h-[40px] items-center text-[15px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ink"
-          >
-            {SITE.email}
-          </a>
-        </nav>
+        <div className="social-links">
+          {SOCIALS.map((s) => (
+            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+              <Icon name={s.icon} />
+            </a>
+          ))}
+        </div>
+
+        <ContactTrigger className="btn btn-lime">
+          Start a conversation
+          <Icon name="i-arrow-up-right" />
+        </ContactTrigger>
       </div>
 
-      <div className="wrap mt-10 flex flex-col gap-3 border-t border-line-soft pt-6 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-[13px] text-muted">
-          © {year} {SITE.name}. Built and deployed, not templated.
-        </p>
-        <a
-          href="#top"
-          className="inline-flex min-h-[40px] w-fit items-center gap-2 font-mono text-[13px] text-muted transition-colors hover:text-ink"
-        >
-          Back to top
-          <span aria-hidden="true">↑</span>
+      <div className="footer-bottom">
+        <span>&copy; {new Date().getFullYear()} {SITE.name}. Built in Lagos.</span>
+        <a href="#top">
+          Back to the top
+          <Icon name="i-arrow-up-right" />
         </a>
       </div>
     </footer>

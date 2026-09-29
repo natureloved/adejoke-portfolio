@@ -1,88 +1,96 @@
-import { GLOSSARY, PROCESS, WHAT_I_DO } from "@/lib/site";
-import { Gloss, Section, SectionHead } from "./ui";
+import { PROCESS, PROCESS_NOTE, WHAT_I_DO } from "@/lib/site";
+import { Eyebrow, Icon, SectionTitle } from "./ui";
+
+/** One icon per service, keyed by position so the data stays presentational. */
+const ICONS = ["i-window", "i-cube", "i-sparkle"];
 
 export default function Capabilities() {
   return (
-    <Section id="capabilities">
-      <SectionHead
-        id="capabilities"
-        eyebrow="What I do"
-        title="Three kinds of problem I keep being handed."
-        lede="Not a skills list. These are the shapes of work that recur, and what I actually do about each."
-      />
-
-      <div className="grid gap-10 md:grid-cols-3 md:gap-8">
-        {WHAT_I_DO.map((item, i) => (
-          <div key={item.title} className="flex flex-col gap-3">
-            <span className="font-mono text-[13px] text-amber">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <h3 className="text-[19px] font-semibold leading-snug text-ink">{item.title}</h3>
-            <p className="text-[15px] leading-relaxed text-muted">{item.body}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Glossary ──
-          The previous build hid every one of these behind a hover
-          tooltip, which is invisible on a phone. This is a tap-to-open
-          panel instead: reachable by keyboard, readable on a
-          touchscreen, and closed by default so it does not become a wall
-          of text before the reader reaches the work. */}
-      <details className="group mt-12 border border-line-soft">
-        <summary className="flex min-h-[60px] cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-6 py-4 transition-colors hover:bg-bg-raise">
-          <span className="flex flex-col gap-1">
-            <span className="text-[17px] font-semibold text-ink">
-              New to this? {GLOSSARY.length} terms, in plain English.
-            </span>
-            <span className="text-[15px] text-muted">
-              Every piece of jargon used on this page, explained.
-            </span>
-          </span>
-          <span
-            aria-hidden="true"
-            className="shrink-0 font-mono text-[13px] uppercase tracking-[0.14em] text-teal transition-transform group-open:rotate-180"
-          >
-            Open ↓
-          </span>
-        </summary>
-        <dl className="grid border-t border-line-soft sm:grid-cols-2 sm:gap-x-10">
-          {GLOSSARY.map((entry) => (
-            <div
-              key={entry.term}
-              className="flex flex-col gap-1.5 border-b border-line-soft px-6 py-4 sm:[&:nth-last-child(2)]:border-b-0"
-            >
-              <dt>
-                <Gloss id={`term-${entry.term.toLowerCase().replace(/\s+/g, "-")}`}>
-                  {entry.term}
-                </Gloss>
-              </dt>
-              <dd className="text-[15px] leading-relaxed text-muted">{entry.def}</dd>
+    <>
+      <section className="container section" id="expertise" aria-labelledby="expertiseHeading">
+        <div className="services-panel">
+          <div className="services-layout">
+            <div className="services-intro">
+              <Eyebrow>02 What I do</Eyebrow>
+              <SectionTitle id="expertiseHeading">
+                Three things, done <em>properly.</em>
+              </SectionTitle>
+              <p>
+                I would rather be genuinely useful in three areas than name-check fifteen
+                technologies. These are the problems I have solved end to end, including the
+                unglamorous parts.
+              </p>
+              <p className="plain-language-note">
+                <Icon name="i-leaf" />
+                No jargon without a definition.
+              </p>
             </div>
-          ))}
-        </dl>
-      </details>
 
-      <div id="process" className="mt-16 scroll-mt-28 border-t border-line-soft pt-12">
-        <p className="eyebrow">How I work</p>
-        <h2 id="process-heading" className="max-w-[24ch] text-[clamp(1.4rem,2.8vw,1.9rem)] font-semibold text-ink">
-          The order I do things in.
-        </h2>
-        <p className="lede">
-          Most projects here were built in 48–72 hours in a hackathon, or alone in a few
-          weeks. This is the shape they all take.
-        </p>
+            <div>
+              {WHAT_I_DO.map((s, i) => (
+                <div className="service-item" key={s.title}>
+                  <span className="service-icon" aria-hidden="true">
+                    <Icon name={ICONS[i]} />
+                  </span>
+                  <div>
+                    <h3>{s.title}</h3>
+                    <p>{s.body}</p>
+                    <code className="service-examples">{s.examples}</code>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <ol className="mt-8 grid gap-px border border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
-          {PROCESS.map((step) => (
-            <li key={step.step} className="flex flex-col gap-3 bg-bg p-5">
-              <span className="font-mono text-[13px] text-teal">{step.step}</span>
-              <h3 className="text-[17px] font-semibold leading-snug text-ink">{step.title}</h3>
-              <p className="text-[15px] leading-relaxed text-muted">{step.body}</p>
+          <div className="services-footer">
+            <p>
+              <strong>Not sure which one you need?</strong> Describe the problem and I will tell
+              you honestly whether I am the right person for it.
+            </p>
+            <a className="text-link" href="#contact">
+              Ask me directly
+              <Icon name="i-arrow-up-right" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="container section" id="process" aria-labelledby="processHeading">
+        <div className="section-heading">
+          <div>
+            <Eyebrow>03 How it works</Eyebrow>
+            <SectionTitle id="processHeading">
+              A process you can <em>hold me to.</em>
+            </SectionTitle>
+            <p className="section-description">
+              Four steps. No jargon, no mystery, and a written record of the decisions at each
+              one.
+            </p>
+          </div>
+        </div>
+
+        <ol className="process-grid">
+          {PROCESS.map((p, i) => (
+            <li className="process-step" key={p.title}>
+              <span className="step-number" aria-hidden="true">
+                {p.step}
+              </span>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+              {i === 2 ? (
+                <span className="step-footnote">
+                  Typed, tested, and deployed on infrastructure you can inspect.
+                </span>
+              ) : null}
             </li>
           ))}
         </ol>
-      </div>
-    </Section>
+
+        <p className="process-note">
+          <Icon name="i-message" />
+          {PROCESS_NOTE}
+        </p>
+      </section>
+    </>
   );
 }

@@ -5,67 +5,84 @@ export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const INK = "#16210f";
+const MUTED = "#69765a";
+const GREEN = "#2c4531";
+const LIME = "#dff3a4";
+
+/** Matches the light editorial palette of the live page. */
 export default function OGImage() {
   return new ImageResponse(
     (
       <div
         style={{
-          background: "#0b0e10",
+          background: "#fbfcf5",
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "72px 80px",
+          padding: "64px 72px",
           position: "relative",
+          border: "1px solid #e6ead9",
         }}
       >
-        {/* One static glow, matching the hero. */}
+        {/* Faint grid, echoing the art board in the hero. */}
         <div
           style={{
             position: "absolute",
-            top: -220,
-            left: 180,
-            width: 900,
-            height: 620,
-            background:
-              "radial-gradient(ellipse at center, rgba(255,138,101,0.16) 0%, rgba(94,234,212,0.07) 40%, transparent 70%)",
+            inset: 0,
+            backgroundImage:
+              "linear-gradient(#e9ecdd 1px, transparent 1px), linear-gradient(90deg, #e9ecdd 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+            opacity: 0.55,
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: -170,
+            right: -110,
+            width: 520,
+            height: 520,
+            borderRadius: 999,
+            background: "radial-gradient(circle, #dff3a4 0%, rgba(223,243,164,0) 68%)",
             display: "flex",
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, zIndex: 1 }}>
           <div
             style={{
-              width: 10,
-              height: 10,
-              borderRadius: 99,
-              background: "#5eead4",
+              width: 34,
+              height: 34,
+              borderRadius: 8,
+              background: GREEN,
+              color: LIME,
               display: "flex",
-            }}
-          />
-          <div
-            style={{
-              fontSize: 24,
-              color: "#5eead4",
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 20,
             }}
           >
-            {SITE.availability}
+            ✦
+          </div>
+          <div style={{ fontSize: 27, color: GREEN, display: "flex" }}>
+            {SITE.name}
+            <span style={{ color: "#7a9c3d" }}>.</span>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20, zIndex: 1 }}>
           <div
             style={{
-              fontSize: 68,
-              fontWeight: 700,
-              lineHeight: 1.04,
-              letterSpacing: -2.4,
-              color: "#f4f1ea",
-              maxWidth: 940,
+              fontSize: 66,
+              fontWeight: 500,
+              lineHeight: 1.06,
+              letterSpacing: -2.6,
+              color: INK,
+              maxWidth: 950,
               display: "flex",
             }}
           >
@@ -73,14 +90,14 @@ export default function OGImage() {
           </div>
           <div
             style={{
-              fontSize: 27,
-              lineHeight: 1.4,
-              color: "#9aa6aa",
+              fontSize: 25,
+              lineHeight: 1.5,
+              color: MUTED,
               maxWidth: 860,
               display: "flex",
             }}
           >
-            Full-stack products and smart contracts: Bitcoin Layer-2s, AI agents, and the
+            Bitcoin Layer-2 lending, voice payments, AI agents that act on-chain, and the
             software institutions actually use.
           </div>
         </div>
@@ -88,19 +105,30 @@ export default function OGImage() {
         <div
           style={{
             display: "flex",
-            alignItems: "baseline",
-            gap: 20,
-            borderTop: "1px solid rgba(244,241,234,0.16)",
-            paddingTop: 26,
+            alignItems: "center",
+            gap: 18,
+            borderTop: "1px solid #dfe4d2",
+            paddingTop: 24,
+            zIndex: 1,
           }}
         >
-          <div style={{ fontSize: 30, fontWeight: 600, color: "#f4f1ea", display: "flex" }}>
-            {SITE.name}
+          <div
+            style={{
+              fontSize: 22,
+              color: GREEN,
+              border: "1px solid #d5dcc6",
+              background: "#ffffff",
+              borderRadius: 999,
+              padding: "8px 18px",
+              display: "flex",
+            }}
+          >
+            Open to work
           </div>
-          <div style={{ fontSize: 24, color: "#9aa6aa", display: "flex" }}>{SITE.location}</div>
+          <div style={{ fontSize: 22, color: MUTED, display: "flex" }}>{SITE.location}</div>
           <div style={{ display: "flex", flex: 1 }} />
-          <div style={{ fontSize: 24, color: "#9aa6aa", display: "flex" }}>
-            4 case studies · 15 builds · live demos
+          <div style={{ fontSize: 22, color: MUTED, display: "flex" }}>
+            12 live demos · 19 open source
           </div>
         </div>
       </div>

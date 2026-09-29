@@ -45,14 +45,17 @@ export const WHAT_I_DO = [
   {
     title: "Web apps people actually finish using",
     body: "Interfaces, auth, roles, payments, notifications, audit trails. Shipped end to end, not a prototype that stops at the login screen.",
+    examples: "Acadex / exam scheduling · DrawBound / credit",
   },
   {
     title: "Smart contracts and the rails around them",
     body: "Bitcoin L2, EVM, Starknet and Canton. The contract, the indexer, the relayer, the dashboard: the boring parts that make it real.",
+    examples: "DrawBound / L2 credit · PegWatch / agent risk",
   },
   {
     title: "AI that is accountable for what it does",
     body: "Agents that act on-chain, explain themselves, and are built so a human can inspect the audit trail afterwards.",
+    examples: "Elara / voice-to-chain · Efthesis / memory",
   },
 ] as const;
 
@@ -77,6 +80,19 @@ export const PROCESS = [
     title: "Show the evidence",
     body: "A live URL, a test run, a screenshot. Anyone can claim to have built something; I'd rather you check than take my word.",
   },
+] as const;
+
+/** A short reminder under the process, because the steps sound tidy but rarely are. */
+export const PROCESS_NOTE =
+  "In practice steps 1 and 2 overlap, and step 3 is where the schedule slips. I would rather tell you that now than promise a date I cannot keep.";
+
+export const ABOUT_FACTS = [
+  "Lagos, Nigeria",
+  "WATLP certified",
+  "BSc Computer Science, final year",
+  "Radiography & radiation science",
+  "Open to contracts",
+  "Open to a team",
 ] as const;
 
 export const STORY = {
