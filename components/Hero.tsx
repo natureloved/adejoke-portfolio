@@ -61,7 +61,7 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <ReadingToggle variant="full" />
               <span data-plain className="text-[15px] text-muted">
-                Technical terms are defined on hover.
+                Technical terms are explained in the glossary.
               </span>
               <span data-tech className="text-[15px] text-muted">
                 Showing the full engineering position.
@@ -92,31 +92,32 @@ export default function Hero() {
               that don't need a click to check. */}
           <dl className="grid max-w-2xl grid-cols-1 gap-x-8 gap-y-5 border-t border-line-soft pt-7 sm:grid-cols-3">
             {HERO_PROOF.map((item) => (
-              <div key={item.label} className="flex flex-col gap-1">
-                <dt className="sr-only">{item.label}</dt>
-                <dd>
+              <div key={item.label} className="flex flex-col">
+                {/* The label is the term and the value is its definition, so
+                    the reading order matches what is on screen. */}
+                <dt className="order-2 mt-2 text-[15px] leading-snug text-muted">
+                  {item.label}
+                </dt>
+                <dd className="order-1 flex flex-col">
                   <span className="block text-[clamp(1.6rem,3.4vw,2.1rem)] font-semibold leading-none tracking-[-0.03em] text-ink">
                     {item.value}
                   </span>
-                  <span className="mt-2 block text-[15px] leading-snug text-muted">
-                    {item.label}
-                  </span>
-                  <span className="mt-0.5 block text-[13px] leading-snug text-muted/70">
-                    {item.note}
-                  </span>
+                </dd>
+                <dd className="order-3 mt-0.5 text-[13px] leading-snug text-muted/70">
+                  {item.note}
                 </dd>
               </div>
             ))}
           </dl>
         </div>
 
-        {/* The three questions a visitor actually arrived with. */}
+        {/* The three questions a visitor actually arrived with. These are
+            parallel capabilities rather than a sequence, so they are not
+            numbered: 01/02/03 would imply an order that does not exist. */}
         <ul className="mt-12 grid gap-px border border-line-soft bg-line-soft sm:mt-14 sm:grid-cols-3">
-          {WHAT_I_DO.map((item, i) => (
+          {WHAT_I_DO.map((item) => (
             <li key={item.title} className="flex flex-col gap-2 bg-bg p-5">
-              <span className="font-mono text-[13px] text-amber">
-                {String(i + 1).padStart(2, "0")}
-              </span>
+              <span aria-hidden="true" className="h-1 w-8 bg-amber" />
               <h2 className="text-[17px] font-semibold leading-snug text-ink">{item.title}</h2>
               <p className="text-[15px] leading-relaxed text-muted">{item.body}</p>
             </li>
