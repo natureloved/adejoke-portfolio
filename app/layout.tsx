@@ -85,7 +85,7 @@ export default function RootLayout({
     alternateName: SITE.alias,
     url: siteUrl,
     email: `mailto:${SITE.email}`,
-    jobTitle: "Full-Stack & Protocol Engineer",
+    jobTitle: "Full-Stack & Blockchain Developer",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Lagos",

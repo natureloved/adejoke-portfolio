@@ -14,14 +14,14 @@ export default function Hero() {
   return (
     <section className="container hero" id="top" aria-labelledby="hero-heading">
       <div className="hero-copy">
-        <Eyebrow className="hero-eyebrow">Full-stack &amp; protocol engineer</Eyebrow>
+        <Eyebrow className="hero-eyebrow">Full-stack &amp; blockchain developer</Eyebrow>
 
         <h1 id="hero-heading">
           I build software that <em>moves money</em> and saves people work.
         </h1>
 
         <p className="hero-description">
-          I&rsquo;m {SITE.name}, a full-stack and protocol engineer based in {SITE.location}.{" "}
+          I&rsquo;m {SITE.name}, a full-stack and blockchain developer based in {SITE.location}.{" "}
           <strong>
             I design and build software for Bitcoin Layer-2s, on-chain agents, and the
             institutions that depend on it.
