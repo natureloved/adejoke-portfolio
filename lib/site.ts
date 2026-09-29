@@ -18,7 +18,7 @@ export const ONE_LINER =
 
 export const POSITIONING = {
   plain:
-    "Most of my work is a working product with a URL: an app people can open, a payment that actually settles, a database that remembers correctly. I build for Bitcoin Layer-2s, AI agents, and institutions, and I care about whether a non-technical person can use what I ship.",
+    "Most of my work is a working product with a URL: an app people can open, a payment that actually settles, a database that remembers correctly. I care about the parts that are easy to skip, and about whether someone outside this field can use what I ship without a manual.",
   technical:
     "Full-stack and protocol engineering across Bitcoin L2s (Stacks/Clarity, SatVM), EVM (Solidity/Foundry), Starknet (Cairo), Monad, Base, Solana and Canton. TypeScript end to end; smart contracts, backends, and the interface that sits on top of them.",
 } as const;

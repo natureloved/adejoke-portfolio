@@ -21,12 +21,12 @@ export default function Hero() {
         </h1>
 
         <p className="hero-description">
-          I&rsquo;m {SITE.name}, based in {SITE.location}.{" "}
+          I&rsquo;m {SITE.name}, a full-stack and protocol engineer based in {SITE.location}.{" "}
           <strong>
-            Bitcoin Layer-2 lending, voice payments, AI agents that act on-chain, and the
-            software institutions actually use.
+            I design and build software for Bitcoin Layer-2s, on-chain agents, and the
+            institutions that depend on it.
           </strong>{" "}
-          Most of it is live, open source, and linked below.
+          Most of it ships live, open source, and linked below.
         </p>
 
         <div data-plain className="hero-description">
