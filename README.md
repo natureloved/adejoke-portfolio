@@ -1,18 +1,18 @@
-# Akinola Adejoke — Portfolio
+# Akinola Adejoke: Portfolio
 
 > **I build software that moves money and saves people work.**
 
 A dark-mode, single-page portfolio built with Next.js 14 (App Router), TypeScript and
-Tailwind CSS. Its job is to explain, in the first screen, what I build — and then prove it
+Tailwind CSS. Its job is to explain, in the first screen, what I build, and then prove it
 with links a visitor can check.
 
 ---
 
 ## Design goals
 
-The site is written for three different readers at once — a recruiter who does not work in
-software, a Web3 protocol team, and a prospective client — so it is built on two
-principles:
+The site is written for three different readers at once, a recruiter who does not
+work in software, a Web3 protocol team, and a prospective client, so it is built on
+two principles:
 
 1. **Plain first, technical on demand.** Every project states its idea in ordinary English
    before any jargon appears. A 13-term glossary decodes the vocabulary. A `Plain` /
@@ -82,7 +82,7 @@ components/
   Contact.tsx            Channels, résumé, Formspree form
   ReadingToggle.tsx      Plain ⇄ technical mode, persisted
   ui.tsx                 Section, SectionHead, Gloss, shared primitives
-data/work.ts             All project content — the only file to edit for copy
+data/work.ts             All project content: the only file to edit for copy
 lib/site.ts             Name, links, positioning, process, glossary
 public/shots/            Real screenshots of the live demos
 ```

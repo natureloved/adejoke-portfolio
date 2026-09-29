@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 /**
  * A term the reader may not know. Rendered with a dotted underline and, when
  * the definition is shown, as the anchor a reader can jump to in the
- * glossary. Deliberately not a hover tooltip — those do not exist on a
+ * glossary. Deliberately not a hover tooltip: those do not exist on a
  * touchscreen, and most people reading a portfolio are on a phone.
  */
 export function Gloss({ children, id }: { children: ReactNode; id?: string }) {

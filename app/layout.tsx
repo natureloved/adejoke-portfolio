@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adejoke-portfolio.vercel.app";
 
-const title = `${SITE.name} — Full-stack products and smart contracts`;
+const title = `${SITE.name}, Full-stack products and smart contracts`;
 
 const description =
   "I build full-stack products and smart contracts: Bitcoin L2 lending, voice payments, AI agents that move money, and the university software people actually use. Live demos and open source, no claims without a link.";

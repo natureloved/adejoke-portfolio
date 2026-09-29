@@ -49,7 +49,7 @@ export const FLAGSHIPS: Flagship[] = [
     context: "Self-initiated. The most technically demanding build in this list.",
     headline: "Borrow against your Bitcoin without ever handing it over.",
     problem:
-      "Lending against crypto normally means handing your Bitcoin to a contract and trusting it. If the contract is wrong, or the price feed behind it goes stale, collateral can be taken while the loan is still healthy. DrawBound re-checks the proof of health on every action — and there is always a way out.",
+      "Lending against crypto normally means handing your Bitcoin to a contract and trusting it. If the contract is wrong, or the price feed behind it goes stale, collateral can be taken while the loan is still healthy. DrawBound re-checks the proof of health on every action, and there is always a way out.",
     does: [
       "You lock Bitcoin into a vault that stays under your control. No company holds it.",
       "Every borrow, repay and withdrawal needs a fresh loan-health proof. Stale or unhealthy evidence means no new borrowing.",
@@ -69,7 +69,7 @@ export const FLAGSHIPS: Flagship[] = [
         },
         {
           title: "A signed, canonical message per action",
-          body: "Every draw, repay and unlock signs a fixed-format string — position, vault, action, amount and nonce — so the server can verify intent without ever holding a key that could move funds.",
+          body: "Every draw, repay and unlock signs a fixed-format string: position, vault, action, amount and nonce, so the server can verify intent without ever holding a key that could move funds.",
         },
         {
           title: "The covenant is re-evaluated every time",
@@ -79,13 +79,13 @@ export const FLAGSHIPS: Flagship[] = [
       hard: [
         "Reconciling asynchronous block confirmation between SatVM execution and Bitcoin signet settlement.",
         "Making signed requests safely replayable: an idempotency fingerprint of position, action, amount and nonce, so old signatures are permanently stale after use.",
-        "Keeping the session honest about what it proves — it authenticates the browser session, while actual vault ownership is enforced at the chain level in live mode.",
+        "Keeping the session honest about what it proves: it authenticates the browser session, while actual vault ownership is enforced at the chain level in live mode.",
       ],
     },
     shot: {
       src: "/shots/drawbound.webp",
       alt: "DrawBound's vault terminal: a fixture rehearsal screen with connect, draw, repay and unlock controls.",
-      caption: "The live vault terminal on Tachi signet — the actual self-custodial session flow.",
+      caption: "The live vault terminal on Tachi signet, the actual self-custodial session flow.",
     },
     links: {
       live: "https://drawbound-eight.vercel.app/vault",
@@ -104,11 +104,11 @@ export const FLAGSHIPS: Flagship[] = [
       "Lagos State University. Built around a problem I watched happen, not one I was handed.",
     headline: "A university exam calendar that can't quietly go out of date.",
     problem:
-      "LASU publishes its approved calendar as one static page. When the 2025/2026 session was extended by a week, the correction went out in separate news posts — so students had to reconcile a stale page against a rumour. Acadex makes the calendar the thing that changes, and shows exactly what changed.",
+      "LASU publishes its approved calendar as one static page. When the 2025/2026 session was extended by a week, the correction went out in separate news posts, so students had to reconcile a stale page against a rumour. Acadex makes the calendar the thing that changes, and shows exactly what changed.",
     does: [
       "One searchable calendar for sessions, semesters, exams, registration and breaks, with the registry that creates them.",
       "Every date change leaves a permanent revision trail: badged as rescheduled, with a before/after diff.",
-      "Separate admin, staff and student roles, re-checked against the database on every request — plus reminders a week and a day before each event.",
+      "Separate admin, staff and student roles, re-checked against the database on every request, plus reminders a week and a day before each event.",
     ],
     proof: [
       { value: "2025/26 + 2026/27", label: "real seeded sessions, not lorem ipsum" },
@@ -140,7 +140,7 @@ export const FLAGSHIPS: Flagship[] = [
     shot: {
       src: "/shots/acadex.webp",
       alt: "Acadex landing page showing the 2026/2027 academic year calendar for Harmattan and Rain semesters.",
-      caption: "The public calendar, server-rendered — upcoming sessions first, filterable and searchable.",
+      caption: "The public calendar, server-rendered: upcoming sessions first, filterable and searchable.",
     },
     links: {
       live: "https://acadex-gamma.vercel.app",
@@ -158,11 +158,11 @@ export const FLAGSHIPS: Flagship[] = [
     context: "Built for the Runtime Hackathon, September 2026.",
     headline: "An agent that keeps watch over the hours when the price feeds fall asleep.",
     problem:
-      "Tokenised stocks — NVIDIA, Tesla, Apple, as tokens — trade around the clock. But the official price feeds on Base run Monday to Friday: they hold Friday's close all weekend. That is roughly 65 hours a week with no trustworthy value, and Base's own docs warn never to settle against a frozen feed. A human asleep at 3am Saturday is not a risk control. An agent with a budget is.",
+      "Tokenised stocks, NVIDIA, Tesla and Apple as tokens, trade around the clock. But the official price feeds on Base run Monday to Friday: they hold Friday's close all weekend. That is roughly 65 hours a week with no trustworthy value, and Base's own docs warn never to settle against a frozen feed. A human asleep at 3am Saturday is not a risk control. An agent with a budget is.",
     does: [
       "Reads the live market price, the official feed and the timestamp on it, every 60 seconds.",
       "Decides whether the drift from Friday's close is a normal weekend gap or something abnormal.",
-      "Acts only within hard limits — a maximum amount, a cool-down, and an overall allowance — and writes two sentences of plain-English reasoning.",
+      "Acts only within hard limits, a maximum amount, a cool-down, and an overall allowance, and writes two sentences of plain-English reasoning.",
     ],
     proof: [
       { value: "65.5h", label: "of unmonitored market every weekend" },
@@ -182,7 +182,7 @@ export const FLAGSHIPS: Flagship[] = [
         },
         {
           title: "Delegated authority with a ceiling",
-          body: "The agent holds a real wallet with a hard maximum notional, a cool-down, and an allowance — pre-approved limits rather than open-ended permission.",
+          body: "The agent holds a real wallet with a hard maximum notional, a cool-down, and an allowance, pre-approved limits rather than open-ended permission.",
         },
       ],
       hard: [
@@ -214,7 +214,7 @@ export const FLAGSHIPS: Flagship[] = [
     problem:
       "Cross-border remittance moves about $830 billion a year, mostly through services that charge 5–7% and need someone to physically collect the money. Senders are often more fluent speaking than reading; receivers are often handed hexadecimal addresses in a language they do not read. Money apps assume reading. The corridor that needs them most lives in voice.",
     does: [
-      "You say what you want — \"send fifty dollars to my sister Ana for groceries\" — in English or Spanish.",
+      "You say what you want, \"send fifty dollars to my sister Ana for groceries\", in English or Spanish.",
       "It resolves the amount, recipient and route, then bridges to Solana without you choosing a chain.",
       "She opens a link, hears the message in her own language, and the money is in her wallet. No app, no wallet, no addresses.",
     ],
@@ -228,7 +228,7 @@ export const FLAGSHIPS: Flagship[] = [
       how: [
         {
           title: "Speech to structured intent",
-          body: "Spoken English or Spanish is transcribed, then parsed into amount, asset and recipient — so the person never has to fill in a form.",
+          body: "Spoken English or Spanish is transcribed, then parsed into amount, asset and recipient, so the person never has to fill in a form.",
         },
         {
           title: "Routing across chains, invisibly",
@@ -240,7 +240,7 @@ export const FLAGSHIPS: Flagship[] = [
         },
       ],
       hard: [
-        "Building a claim flow that requires no wallet, no seed phrase and no English from the recipient — the traditional failure point of crypto remittance.",
+        "Building a claim flow that requires no wallet, no seed phrase and no English from the recipient, the traditional failure point of crypto remittance.",
         "Disambiguating a spoken instruction that may not name a real recipient, and confirming before money moves.",
         "Making the receiving side genuinely useful to someone who cannot read the interface.",
       ],
@@ -334,7 +334,7 @@ export const LAB: LabItem[] = [
     tagline:
       "Ask your data catalogue a question in plain English and get lineage, quality scores and blast-radius analysis back.",
     stack: ["MCP", "OpenMetadata"],
-    note: "Live demo is currently down — source only",
+    note: "Live demo is currently down, source only",
     repo: "https://github.com/natureloved/MetaFlux",
     category: "Tooling",
   },
@@ -343,7 +343,7 @@ export const LAB: LabItem[] = [
     name: "CantoFlow",
     year: "2026",
     tagline:
-      "Invoice financing where privacy is enforced by the smart contract — bids stay confidential from every other party in the deal.",
+      "Invoice financing where privacy is enforced by the smart contract, bids stay confidential from every other party in the deal.",
     stack: ["Daml", "Canton"],
     repo: "https://github.com/natureloved/CantoFlow",
     category: "Protocol",

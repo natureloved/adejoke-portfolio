@@ -14,11 +14,11 @@ export const SITE = {
  * One line, no jargon. This is the first thing a visitor reads.
  */
 export const ONE_LINER =
-  "I build full-stack products and smart contracts — the software that moves money, records ownership, and saves people from doing things by hand.";
+  "I build full-stack products and smart contracts, the software that moves money, records ownership, and saves people from doing things by hand.";
 
 export const POSITIONING = {
   plain:
-    "Most of my work is a working product with a URL: an app people can open, a payment that actually settles, a database that remembers correctly. I build for Bitcoin Layer-2s, AI agents, and institutions — and I care about whether a non-technical person can use what I ship.",
+    "Most of my work is a working product with a URL: an app people can open, a payment that actually settles, a database that remembers correctly. I build for Bitcoin Layer-2s, AI agents, and institutions, and I care about whether a non-technical person can use what I ship.",
   technical:
     "Full-stack and protocol engineering across Bitcoin L2s (Stacks/Clarity, SatVM), EVM (Solidity/Foundry), Starknet (Cairo), Monad, Base, Solana and Canton. TypeScript end to end; smart contracts, backends, and the interface that sits on top of them.",
 } as const;
@@ -44,11 +44,11 @@ export const HERO_PROOF = [
 export const WHAT_I_DO = [
   {
     title: "Web apps people actually finish using",
-    body: "Interfaces, auth, roles, payments, notifications, audit trails. Shipped end to end — not a prototype that stops at the login screen.",
+    body: "Interfaces, auth, roles, payments, notifications, audit trails. Shipped end to end, not a prototype that stops at the login screen.",
   },
   {
     title: "Smart contracts and the rails around them",
-    body: "Bitcoin L2, EVM, Starknet and Canton. The contract, the indexer, the relayer, the dashboard — the boring parts that make it real.",
+    body: "Bitcoin L2, EVM, Starknet and Canton. The contract, the indexer, the relayer, the dashboard: the boring parts that make it real.",
   },
   {
     title: "AI that is accountable for what it does",
@@ -60,7 +60,7 @@ export const PROCESS = [
   {
     step: "01",
     title: "Find the real problem",
-    body: "Most briefs describe a symptom. I go looking for the actual failure — who it hurts, how often, and what it costs them today.",
+    body: "Most briefs describe a symptom. I go looking for the actual failure, who it hurts, how often, and what it costs them today.",
   },
   {
     step: "02",
@@ -81,7 +81,7 @@ export const PROCESS = [
 
 export const STORY = {
   lead:
-    "I started in nursing, where a mistake is not a UX complaint — it's a patient. Then I moved into software and the instinct carried over: understand the system properly, get the details right, and never hide the part that is uncertain.",
+    "I started in nursing, where a mistake is not a UX complaint: it's a patient. Then I moved into software and the instinct carried over: understand the system properly, get the details right, and never hide the part that is uncertain.",
   chapters: [
     {
       period: "Nursing",
@@ -96,7 +96,7 @@ export const STORY = {
     {
       period: "Web3 & AI",
       title: "Money, ownership, and agents",
-      body: "A Dev3Pack fellowship, then hackathons across Stacks, TON, Monad and Base — blank canvas to deployed prototype in 48–72 hours, repeatedly. This is where the work on this page comes from.",
+      body: "A Dev3Pack fellowship, then hackathons across Stacks, TON, Monad and Base: blank canvas to deployed prototype in 48–72 hours, repeatedly. This is where the work on this page comes from.",
     },
     {
       period: "Now",
@@ -111,14 +111,14 @@ export const STORY = {
 export const CONTACT = {
   headline: "Let's build something useful.",
   sub:
-    "Open to product and engineering work — a contract, a protocol, a product that needs shipping, or a team that needs a technical lead. I reply to everything that looks like a real problem.",
+    "Open to product and engineering work, a contract, a protocol, a product that needs shipping, or a team that needs a technical lead. I reply to everything that looks like a real problem.",
 } as const;
 
 /**
  * Plain-English definitions, shown as a permanent glossary.
  *
  * The previous build hid these behind hover tooltips, which do not exist
- * on a touchscreen — and most visitors to a portfolio are on a phone. Every
+ * on a touchscreen, and most visitors to a portfolio are on a phone. Every
  * term here is also a link target, so inline jargon can point at its entry.
  */
 export const GLOSSARY: { term: string; short: string; def: string }[] = [
@@ -135,7 +135,7 @@ export const GLOSSARY: { term: string; short: string; def: string }[] = [
   {
     term: "DeFi",
     short: "DeFi",
-    def: "Decentralised finance — lending, trading and savings apps that run without a bank or broker in the middle.",
+    def: "Decentralised finance: lending, trading and savings apps that run without a bank or broker in the middle.",
   },
   {
     term: "Self-custodial",
@@ -150,7 +150,7 @@ export const GLOSSARY: { term: string; short: string; def: string }[] = [
   {
     term: "Oracle",
     short: "oracle",
-    def: "A service that brings outside data — a price, say — on to a blockchain, which cannot reach the internet by itself.",
+    def: "A service that brings outside data, a price, say, on to a blockchain, which cannot reach the internet by itself.",
   },
   {
     term: "Cross-chain",
@@ -175,12 +175,12 @@ export const GLOSSARY: { term: string; short: string; def: string }[] = [
   {
     term: "MCP",
     short: "MCP",
-    def: "Model Context Protocol — an open standard that lets an AI assistant connect to other tools and data sources.",
+    def: "Model Context Protocol: an open standard that lets an AI assistant connect to other tools and data sources.",
   },
   {
     term: "WASM",
     short: "WASM",
-    def: "WebAssembly — running a real computer program inside a web browser, so a developer needs nothing installed.",
+    def: "WebAssembly: running a real computer program inside a web browser, so a developer needs nothing installed.",
   },
   {
     term: "Tokenised",

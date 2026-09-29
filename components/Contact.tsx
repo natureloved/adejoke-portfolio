@@ -147,7 +147,7 @@ export default function Contact() {
 
             {status === "sent" ? (
               <p role="status" className="text-[15px] text-teal">
-                Got it — I&apos;ll reply shortly.
+                Got it, I&apos;ll reply shortly.
               </p>
             ) : null}
             {status === "error" ? (

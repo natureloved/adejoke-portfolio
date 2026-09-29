@@ -76,7 +76,7 @@ function FlagshipCard({ project }: { project: Flagship }) {
             ))}
           </dl>
 
-          {/* Stack — one line, no ceremony */}
+          {/* Stack: one line, no ceremony */}
           <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Technology used">
             {project.tech.stack.map((tech) => (
               <li
@@ -208,7 +208,7 @@ export default function Work() {
         lede={
           <>
             Every one of these is live and open source. Start with the sentence under
-            each name — that is the whole idea — and only open the build details if you
+            each name, that is the whole idea, and only open the build details if you
             want the engineering.
           </>
         }

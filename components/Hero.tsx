@@ -27,7 +27,7 @@ export default function Hero() {
             {SITE.availability}
           </p>
 
-          {/* The name is context. The sentence is the headline — it comes
+          {/* The name is context. The sentence is the headline: it comes
               first in size, which is the whole point: a visitor should
               understand the work before they read anything else. */}
           <div className="flex flex-col gap-5">

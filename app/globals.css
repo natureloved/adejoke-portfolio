@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Obsidian & Amber — kept from the previous build. */
+    /* Obsidian & Amber, kept from the previous build. */
     --bg: #0b0e10;
     --bg-raise: #12171a;
     --bg-card: #101518;

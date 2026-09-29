@@ -80,7 +80,7 @@ export default function OGImage() {
               display: "flex",
             }}
           >
-            Full-stack products and smart contracts — Bitcoin Layer-2s, AI agents, and the
+            Full-stack products and smart contracts: Bitcoin Layer-2s, AI agents, and the
             software institutions actually use.
           </div>
         </div>

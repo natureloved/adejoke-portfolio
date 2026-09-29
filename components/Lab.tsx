@@ -18,7 +18,7 @@ export default function Lab() {
         id="lab"
         eyebrow="More builds"
         title="Fifteen more things, with a link on each."
-        lede="Smaller builds, experiments and hackathon entries. Each one has a live demo or readable source — and where only source exists, that is what is shown."
+        lede="Smaller builds, experiments and hackathon entries. Each one has a live demo or readable source, and where only source exists, that is what is shown."
       />
 
       <div className="mb-7 flex flex-wrap items-center gap-2" role="group" aria-label="Filter builds by type">

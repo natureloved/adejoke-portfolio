@@ -11,7 +11,7 @@ const KEY = "adejoke:reading";
  *
  * The page is written so the default (plain) needs no knowledge of crypto
  * or web development. Technical mode reveals the architecture layer sitting
- * under each project for people who want it — same content, no second site.
+ * under each project for people who want it: same content, no second site.
  */
 export default function ReadingToggle({
   variant = "compact",
