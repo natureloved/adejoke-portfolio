@@ -639,3 +639,30 @@ test.describe("the narrative matches reality", () => {
     ]);
   });
 });
+
+
+test.describe("the resume download", () => {
+  test("the file is served as a valid PDF", async ({ page }) => {
+    // A resume that opens blank is a broken document, not a broken link, so
+    // the assertion is on the payload: the magic bytes, a page object, and a
+    // size that rules out a truncated or empty file.
+    const res = await page.request.get("/resume.pdf");
+    expect(res.status(), "resume.pdf is served").toBe(200);
+    expect(res.headers()["content-type"]).toContain("application/pdf");
+
+    const body = Buffer.from(await res.body());
+    expect(body.subarray(0, 5).toString()).toBe("%PDF-");
+    expect(body.byteLength, "the resume is not empty").toBeGreaterThan(3000);
+    expect(body.toString("latin1").match(/\/Type\s*\/Page[^s]/g)?.length ?? 0).toBeGreaterThan(0);
+  });
+
+  test("the hero links to it as a download", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const link = page.locator('a[href="/resume.pdf"]');
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("download", "");
+    await expect(link).toContainText(/résumé/i);
+  });
+});
