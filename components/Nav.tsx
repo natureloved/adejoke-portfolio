@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useContact } from "./ContactContext";
+import ReadingToggle from "./ReadingToggle";
 import { Icon } from "./ui";
 
 const LINKS = [
@@ -10,7 +11,8 @@ const LINKS = [
   { href: "#process", label: "Process" },
   { href: "#lab", label: "Lab" },
   { href: "#about", label: "About" },
-  { href: "#faq", label: "FAQ" },
+  { href: "#faq", label: "Questions" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -123,6 +125,16 @@ export default function Nav() {
               {l.label}
             </a>
           ))}
+          {/*
+            On a phone the header toggle is hidden for space, so the menu is
+            where the reading mode has to be discoverable. The hint matters:
+            "Plain" and "Technical" mean nothing to someone who does not yet
+            know the page has two registers.
+          */}
+          <div className="mobile-reading">
+            <p className="mobile-reading-hint">How would you like it explained?</p>
+            <ReadingToggle compact />
+          </div>
           <a
             className="mobile-contact"
             href="#contact"
@@ -138,6 +150,18 @@ export default function Nav() {
         </nav>
 
         <div className="header-actions">
+          {/*
+            The reading mode lives in the header, not just the hero. The two
+            audiences are the whole point of the page, so the switch has to be
+            reachable from anywhere rather than once at the top, where a reader
+            who scrolls straight past it never learns it exists.
+
+            It is hidden below 780px, where the menu is the primary navigation
+            and the header has no room; the mobile menu carries its own copy.
+          */}
+          <div className="header-reading">
+            <ReadingToggle compact />
+          </div>
           <span className="availability">
             <span className="status-dot" aria-hidden="true" />
             Open to work

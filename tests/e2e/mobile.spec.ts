@@ -83,7 +83,9 @@ test.describe("phone reading mode", () => {
   test("the toggle is reachable and switches the copy", async ({ page }) => {
     await gotoHomeFresh(page);
 
-    const group = page.getByRole("group", { name: "Reading mode" });
+    // Three switches exist at a phone width: header (hidden), hero, and the
+    // open menu. Scope to the hero's copy, which is the one always visible.
+    const group = page.getByRole("group", { name: "Reading mode" }).nth(1);
     await expect(group).toBeVisible();
     await group.getByRole("button", { name: "Technical" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-reading", "technical");

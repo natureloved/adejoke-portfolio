@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Icon } from "./ui";
 
 const KEY = "adejoke:reading";
 
@@ -9,6 +10,13 @@ const KEY = "adejoke:reading";
  * swap which paragraphs are visible rather than navigating anywhere, so a
  * recruiter and a protocol engineer can read the same page in the register
  * that suits them.
+ *
+ * `compact` is the header copy. It keeps the same accessible names, and at
+ * narrow widths the words are hidden by CSS (`.header-reading` in globals.css)
+ * in favour of the glyph rendered here, so the six nav labels stay in the
+ * header instead of being pushed off it. The glyph is always in the DOM and
+ * only visually swapped by the media query, which means the button works
+ * before the stylesheet resolves.
  */
 export default function ReadingToggle({ compact = false }: { compact?: boolean }) {
   const [mode, setMode] = useState<"plain" | "technical">("plain");
@@ -26,24 +34,24 @@ export default function ReadingToggle({ compact = false }: { compact?: boolean }
     window.localStorage.setItem(KEY, next);
   };
 
+  const button = (value: "Plain" | "Technical", glyph: string) => (
+    <button
+      type="button"
+      aria-pressed={mode === value.toLowerCase()}
+      onClick={() => choose(value.toLowerCase() as "plain" | "technical")}
+      className={compact ? "text-[13px]" : undefined}
+    >
+      <span className="reading-glyph" aria-hidden="true">
+        <Icon name={glyph} />
+      </span>
+      <span className="reading-label">{value}</span>
+    </button>
+  );
+
   return (
     <div className="reading-switch" role="group" aria-label="Reading mode">
-      <button
-        type="button"
-        aria-pressed={mode === "plain"}
-        onClick={() => choose("plain")}
-        className={compact ? "text-[13px]" : undefined}
-      >
-        Plain
-      </button>
-      <button
-        type="button"
-        aria-pressed={mode === "technical"}
-        onClick={() => choose("technical")}
-        className={compact ? "text-[13px]" : undefined}
-      >
-        Technical
-      </button>
+      {button("Plain", "i-message")}
+      {button("Technical", "i-code")}
     </div>
   );
 }

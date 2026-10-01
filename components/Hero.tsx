@@ -52,8 +52,16 @@ export default function Hero() {
 
         <div className="hero-actions" style={{ marginTop: 18 }}>
           <ReadingToggle />
+          {/*
+            The switch used to sit here unlabelled. "Plain" and "Technical"
+            are meaningless to the reader who most needs the choice, so the
+            hint is the sentence that tells them what they are choosing
+            between. The reassurance line removed alongside it ("Jargon
+            explained in the FAQ") pointed at the same thing twice.
+          */}
           <span data-plain className="hero-reassurance" style={{ margin: 0 }}>
-            Jargon explained in the FAQ.
+            <Icon name="i-message" />
+            Not a developer? Start in Plain, every term is explained.
           </span>
         </div>
 

@@ -403,6 +403,179 @@ h2 em {
   gap: 23px;
 }
 
+/*
+ * The reading mode in the header. The switch is 44px tall by default, which
+ * towers over a 40px CTA and pushes the header apart, so it is tightened to
+ * match the surrounding controls. It stays at 40px rather than shrinking to
+ * fit the glyph: a smaller target fails the 40px minimum the README promises.
+ */
+.header-reading .reading-switch {
+  min-height: 40px;
+  padding: 3px;
+  border-color: #dfe4d3;
+  background: #edf0e4;
+}
+
+.header-reading .reading-switch button {
+  min-height: 40px;
+  padding: 0 11px;
+  font-size: 13px;
+}
+
+/*
+ * Above the widest layout the header has room for the words. Below it the
+ * switch drops them: brand + six nav links + toggle + CTA is wider than the
+ * 1200px container from 1440px down, and the nav labels are worth more than
+ * two repeated words in the header.
+
+ * The glyph is CSS-only rather than a JS prop, so this file stays the one
+ * place the responsive behaviour is decided. Both labels stay in the DOM for
+ * screen readers; they are taken out of flow, not removed.
+ */
+@media (max-width: 1439px) {
+  .header-reading .reading-switch button {
+    /* 40px square: the tap minimum, and wide enough that the icon is not the
+       only thing that can be hit. */
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .header-reading .reading-switch button .reading-glyph {
+    display: grid;
+    place-items: center;
+  }
+
+  /*
+   * The label is visually clipped, not removed: `display: none` and
+   * `visibility: hidden` both take it out of the accessibility tree, which
+   * would leave the icon buttons with no name at all. One pixel of size with
+   * overflow hidden keeps it readable to a screen reader and invisible on
+   * screen.
+   */
+  .header-reading .reading-switch button .reading-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .header-reading .reading-switch button .reading-glyph .icon {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/*
+ * Between the desktop breakpoint and the collapse, the header has room for
+ * the reading toggle but not for everything that was already in it, so the
+ * availability badge and then the CTA give way in that order. The reading
+ * mode is what serves both audiences, so it outranks a status label and a
+ * "let's talk" button that the nav already provides by another route.
+
+ * The breakpoints are measured, not guessed. From 1240px the CTA goes first;
+ * from 1100px the six nav links plus the brand no longer fit on one row, so
+ * the hamburger takes over rather than letting the nav overflow.
+ */
+@media (max-width: 1240px) and (min-width: 781px) {
+  .header-actions {
+    gap: 14px;
+  }
+
+  .availability {
+    display: none;
+  }
+
+  .main-nav {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 1130px) and (min-width: 781px) {
+  .header-cta {
+    display: none;
+  }
+}
+
+/*
+ * Six nav links plus the brand no longer fit one row at 1100px, so the
+ * hamburger takes over here instead of letting the nav overflow. This repeats
+ * only the layout rules from the 780px block below: everything else in that
+ * block (typography, grids, the rest of the page) is about small screens and
+ * must not apply at 900px. Duplicating five rules is cheaper than the
+ * regression risk of moving a 230-line block.
+ */
+@media (max-width: 1100px) and (min-width: 781px) {
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 71px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 12px 28px 23px;
+    border-bottom: 1px solid #d8e0ce;
+    background: var(--bg);
+    box-shadow: 0 12px 18px #263b2510;
+  }
+
+  .main-nav.open {
+    display: flex;
+  }
+
+  .site-header .main-nav > a {
+    min-height: 48px;
+    padding: 13px 0;
+    font-size: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* Specificity, not order. The base `.menu-toggle` rule below sets
+     `display: none` and lands after this block in the emitted CSS, so an
+     equal-specificity override here loses the cascade. Scoping the selector
+     to the header makes it win regardless of order. */
+  .site-header .menu-toggle {
+    display: grid;
+    place-items: center;
+  }
+
+  /* The toggle moves into the menu here, where it has room for its words. */
+  .header-reading {
+    display: none;
+  }
+
+  .main-nav .mobile-reading {
+    margin-top: 18px;
+    padding-top: 17px;
+    border-top: 1px solid var(--line);
+  }
+
+  .main-nav .mobile-reading-hint {
+    margin: 0 0 10px;
+    color: #5f6b55;
+    font-size: 13px;
+  }
+
+  .main-nav .mobile-reading .reading-switch {
+    width: 100%;
+  }
+
+  .main-nav .mobile-reading .reading-switch button {
+    flex: 1;
+    min-height: 44px;
+    font-size: 0.9375rem;
+  }
+
+  .main-nav .mobile-reading .reading-glyph {
+    display: none;
+  }
+}
+
 .availability {
   display: inline-flex;
   align-items: center;
@@ -551,6 +724,13 @@ h2 em {
     color 0.2s,
     background 0.2s,
     box-shadow 0.2s;
+}
+
+/* The glyph is only for the compact header copy at narrow widths. Everywhere
+   else the word is the label, so the glyph stays out of the layout until the
+   media query below switches it on. */
+.reading-switch button .reading-glyph {
+  display: none;
 }
 
 .reading-switch button[aria-pressed="true"] {

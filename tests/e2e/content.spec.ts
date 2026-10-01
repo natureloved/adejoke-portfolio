@@ -93,6 +93,27 @@ test.describe("lab builds", () => {
   });
 });
 
+test.describe("glossary links", () => {
+  test("jargon in a case study links to its definition", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Gloss links were defined but never used, which made the plain register
+    // stop being self-sufficient the moment a reader met a word like
+    // "collateral". This asserts the link exists and resolves to a real
+    // glossary entry.
+    await page.locator("[data-case-opener='drawbound']").click();
+    const dialog = page.locator("dialog.case-modal");
+    const link = dialog.locator("a.glossary-link[href^='#faq-']").first();
+    await expect(link).toBeVisible();
+    await expect(link).toHaveText("collateral");
+
+    const target = await link.getAttribute("href");
+    await expect(page.locator(target!)).toHaveCount(1);
+    await expect(page.locator(target!)).toContainText("Something you lock up as a promise");
+  });
+});
+
 test.describe("content is real, not placeholder", () => {
   test("no lorem ipsum anywhere on the page", async ({ page }) => {
     await page.setViewportSize(DESKTOP);

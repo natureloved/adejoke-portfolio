@@ -1,3 +1,6 @@
+import type { ReactNode } from "react";
+import { Gloss } from "@/components/ui";
+
 export interface Proof {
   value: string;
   label: string;
@@ -12,8 +15,13 @@ export interface Flagship {
   context: string;
   /** One line, no jargon. The whole reason the card exists. */
   headline: string;
-  /** The problem, told to someone who does not work in this field. */
-  problem: string;
+  /**
+   * The problem, told to someone who does not work in this field. A term in
+   * brackets marks it as glossary-linked: `<Gloss term="Collateral">the word
+   * the reader sees</Gloss>`. The glossary entry is what makes the plain
+   * register self-sufficient rather than plain-until-a-word-you-do-not-know.
+   */
+  problem: ReactNode;
   /** What it actually does, in plain terms. */
   does: string[];
   proof: Proof[];
@@ -49,8 +57,14 @@ export const FLAGSHIPS: Flagship[] = [
     role: "Protocol & full-stack engineer",
     context: "Self-initiated. The most technically demanding build in this list.",
     headline: "Borrow against your Bitcoin without ever handing it over.",
-    problem:
-      "Lending against crypto normally means handing your Bitcoin to a contract and trusting it. If the contract is wrong, or the price feed behind it goes stale, collateral can be taken while the loan is still healthy. DrawBound re-checks the proof of health on every action, and there is always a way out.",
+    problem: (
+      <>
+        Lending against crypto normally means handing your Bitcoin to a contract and trusting it.
+        If the contract is wrong, or the price feed behind it goes stale,{" "}
+        <Gloss term="Collateral">collateral</Gloss> can be taken while the loan is still healthy.
+        DrawBound re-checks the proof of health on every action, and there is always a way out.
+      </>
+    ),
     does: [
       "You lock Bitcoin into a vault that stays under your control. No company holds it.",
       "Every borrow, repay and withdrawal needs a fresh loan-health proof. Stale or unhealthy evidence means no new borrowing.",
@@ -105,8 +119,14 @@ export const FLAGSHIPS: Flagship[] = [
     context:
       "Lagos State University. Built around a problem I watched happen, not one I was handed.",
     headline: "A university exam calendar that can't quietly go out of date.",
-    problem:
-      "LASU publishes its approved calendar as one static page. When the 2025/2026 session was extended by a week, the correction went out in separate news posts, so students had to reconcile a stale page against a rumour. Acadex makes the calendar the thing that changes, and shows exactly what changed.",
+    problem: (
+      <>
+        LASU publishes its approved calendar as one static page. When the 2025/2026 session was
+        extended by a week, the correction went out in separate news posts, so students had to
+        reconcile a stale page against a rumour. Acadex makes the calendar the thing that changes, and
+        shows exactly what changed.
+      </>
+    ),
     does: [
       "One searchable calendar for sessions, semesters, exams, registration and breaks, with the registry that creates them.",
       "Every date change leaves a permanent revision trail: badged as rescheduled, with a before/after diff.",
@@ -160,8 +180,15 @@ export const FLAGSHIPS: Flagship[] = [
     role: "Systems & agent engineering",
     context: "Built for the Runtime Hackathon, September 2026.",
     headline: "An agent that keeps watch over the hours when the price feeds fall asleep.",
-    problem:
-      "Tokenised stocks, NVIDIA, Tesla and Apple as tokens, trade around the clock. But the official price feeds on Base run Monday to Friday: they hold Friday's close all weekend. That is roughly 65 hours a week with no trustworthy value, and Base's own docs warn never to settle against a frozen feed. A human asleep at 3am Saturday is not a risk control. An agent with a budget is.",
+    problem: (
+      <>
+        <Gloss term="Tokenised">Tokenised</Gloss> stocks, NVIDIA, Tesla and Apple as tokens, trade
+        around the clock. But the official price feeds on Base run Monday to Friday: they hold
+        Friday's close all weekend. That is roughly 65 hours a week with no trustworthy value, and
+        Base's own docs warn never to settle against a frozen feed. A human asleep at 3am Saturday is
+        not a risk control. An <Gloss term="Agent">agent</Gloss> with a budget is.
+      </>
+    ),
     does: [
       "Reads the live market price, the official feed and the timestamp on it, every 60 seconds.",
       "Decides whether the drift from Friday's close is a normal weekend gap or something abnormal.",
@@ -215,8 +242,14 @@ export const FLAGSHIPS: Flagship[] = [
     role: "Lead systems & AI engineer",
     context: "Cross-border remittance, redesigned around how people actually communicate.",
     headline: "Send money by saying it out loud. The person receiving it never has to read anything.",
-    problem:
-      "Cross-border remittance moves about $830 billion a year, mostly through services that charge 5–7% and need someone to physically collect the money. Senders are often more fluent speaking than reading; receivers are often handed hexadecimal addresses in a language they do not read. Money apps assume reading. The corridor that needs them most lives in voice.",
+    problem: (
+      <>
+        Cross-border remittance moves about $830 billion a year, mostly through services that charge
+        5–7% and need someone to physically collect the money. Senders are often more fluent speaking
+        than reading; receivers are often handed hexadecimal addresses in a language they do not read.
+        Money apps assume reading. The corridor that needs them most lives in voice.
+      </>
+    ),
     does: [
       "You say what you want, \"send fifty dollars to my sister Ana for groceries\", in English or Spanish.",
       "It resolves the amount, recipient and route, then bridges to Solana without you choosing a chain.",

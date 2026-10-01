@@ -36,7 +36,10 @@ export async function gotoHomeFresh(page: Page) {
 }
 
 export async function setReadingMode(page: Page, mode: "Plain" | "Technical") {
-  const group = page.getByRole("group", { name: "Reading mode" });
+  // Two switches exist by design: one in the sticky header, one in the hero.
+  // Both drive the same setting, so the test drives the one it can see and
+  // asserts the outcome rather than which instance was clicked.
+  const group = page.getByRole("group", { name: "Reading mode" }).first();
   await group.getByRole("button", { name: mode }).click();
   await expect(page.locator("html")).toHaveAttribute("data-reading", mode.toLowerCase());
 }
