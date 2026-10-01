@@ -174,6 +174,14 @@ test.describe("case study deep links", () => {
     await page.keyboard.press("Escape");
     await expect(page.locator("dialog.case-modal")).toBeHidden();
 
+    // The dialog hides when the browser closes the element, but the fragment
+    // is cleared in the component's own close callback, which runs a beat
+    // later. Assert on the hash itself rather than assuming the two land in
+    // the same tick.
+    await expect
+      .poll(() => new URL(page.url()).hash, { timeout: 6_000 })
+      .toBe("");
+
     await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("dialog.case-modal")).toBeHidden();
     expect(new URL(page.url()).hash).toBe("");

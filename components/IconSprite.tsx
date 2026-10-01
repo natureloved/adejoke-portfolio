@@ -24,6 +24,7 @@ const PATHS: Record<string, string> = {
   "i-chevron": "M6 9l6 6 6-6",
   "i-arrow-right": "M4 12h16M14 6l6 6-6 6",
   "i-arrow-up-right": "M7 17L17 7M8 7h9v9",
+  "i-arrow-up": "M12 19V5M6 11l6-6 6 6",
   "i-arrow-down": "M12 4v16M6 14l6 6 6-6",
   "i-grid": "M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z",
   "i-wallet":

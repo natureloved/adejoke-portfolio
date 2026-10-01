@@ -3453,3 +3453,71 @@ h2 em {
     transition: none !important;
   }
 }
+
+/* ---------- Back to top ---------- */
+
+/*
+ * Fixed, so it is reachable from anywhere on a long page without sitting
+ * over the content a reader is looking at. The footer's own text link only
+ * helps once they have reached the foot of the page; this one follows the
+ * scroll.
+ *
+ * 40px, the minimum target the README promises, kept at that size on a
+ * phone rather than shrunk to fit a smaller layout.
+ *
+ * `data-shown` drives the fade rather than unmounting the node, so nothing
+ * beside the button shifts when it appears.
+ */
+.back-to-top {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #d5ddc9;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--green);
+  box-shadow: 0 4px 14px #2634261f;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.2s,
+    background 0.2s,
+    color 0.2s,
+    bottom 0.2s;
+}
+
+.back-to-top[data-shown="true"] {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.back-to-top .icon {
+  width: 17px;
+  height: 17px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Stated here as well as in the global block: that one drops every
+     transition, which would otherwise leave the button stuck at the wrong
+     offset the instant it moved. */
+  .back-to-top {
+    transition: none;
+  }
+}

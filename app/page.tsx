@@ -1,3 +1,4 @@
+import BackToTop from "@/components/BackToTop";
 import Capabilities from "@/components/Capabilities";
 import { ContactProvider } from "@/components/ContactContext";
 import Contact from "@/components/Contact";
@@ -27,6 +28,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <BackToTop />
     </ContactProvider>
   );
 }
