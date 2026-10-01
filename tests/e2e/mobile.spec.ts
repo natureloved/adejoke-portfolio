@@ -83,12 +83,36 @@ test.describe("phone reading mode", () => {
   test("the toggle is reachable and switches the copy", async ({ page }) => {
     await gotoHomeFresh(page);
 
-    // Three switches exist at a phone width: header (hidden), hero, and the
-    // open menu. Scope to the hero's copy, which is the one always visible.
-    const group = page.getByRole("group", { name: "Reading mode" }).nth(1);
+    // At a phone width the header's copy is hidden, so the hero's copy is the
+    // one always on screen - the choice must never require opening a menu.
+    const group = page.getByRole("group", { name: "Reading mode" });
     await expect(group).toBeVisible();
     await group.getByRole("button", { name: "Technical" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-reading", "technical");
     await expect(page.locator(".hero-description[data-plain]")).toBeHidden();
+  });
+
+  test("no reading toggle is duplicated in the header", async ({ page }) => {
+    await gotoHomeFresh(page);
+
+    // The bug this replaced: the header's copy and the menu's copy were both
+    // rendered and nothing hid the menu's, so the header showed two
+    // "Plain / Technical" controls on top of each other. The hero's own copy
+    // is a third render of the same switch and stays visible by design.
+    const headerCopies = await page.evaluate(() =>
+      [...document.querySelectorAll(".site-header .reading-switch")].filter((s) => {
+        const r = s.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      }).length,
+    );
+    expect(headerCopies).toBe(0);
+
+    const onScreen = await page.evaluate(() =>
+      [...document.querySelectorAll(".reading-switch")].filter((s) => {
+        const r = s.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      }).length,
+    );
+    expect(onScreen).toBe(1);
   });
 });

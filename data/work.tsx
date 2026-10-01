@@ -295,20 +295,71 @@ export const FLAGSHIPS: Flagship[] = [
     accent: "#ff8a65",
     category: "Product",
   },
+  {
+    id: "tipwall",
+    number: "05",
+    name: "TipWall",
+    year: "2026",
+    role: "Product engineer",
+    context: "Nimiq Mini Apps Competition.",
+    headline: "A support wall that pays the creator in full, in the currencies people actually hold.",
+    problem: (
+      <>
+        Tip jars exist everywhere and consistently take a cut, or impose a withdrawal threshold
+        that leaves small amounts stranded. On mobile, the friction is worse: the payment is
+        supposed to be the easy part, yet it is the step where people give up. A creator should
+        be able to put a single link somewhere and have every unit of support land with them
+        directly.
+      </>
+    ),
+    does: [
+      "A visitor leaves a short note with a tip, paid in NIM or through Nimiq Pay, and the creator receives the whole amount.",
+      "No platform cut, and no minimum balance to withdraw before the money is usable.",
+      "The wall reads in ten languages, so the page does not assume English.",
+    ],
+    proof: [
+      { value: "10", label: "languages the wall renders in" },
+      { value: "0%", label: "platform cut on a tip" },
+      { value: "0", label: "withdrawal threshold before funds are usable" },
+    ],
+    tech: {
+      stack: ["Nimiq Pay", "Ed25519", "TypeScript"],
+      how: [
+        {
+          title: "Direct payment, no escrow",
+          body: "Payment goes straight to the creator's address. Nothing is held, so there is no governance question about who controls the funds or when they are released.",
+        },
+        {
+          title: "Nimiq Pay checkout",
+          body: "Nimiq Pay handles the wallet step inside the Nimiq app, which keeps the flow on mobile where the support actually happens.",
+        },
+        {
+          title: "Localisation as a first-class concern",
+          body: "Ten languages are shipped as part of the product rather than machine-translated labels, because the audience for a support wall is not an English-speaking one by default.",
+        },
+      ],
+      hard: [
+        "Signing disputes on a wall where every entry is public and the payment must match the note that accompanies it.",
+        "Keeping the mobile checkout to a single step inside a host app the developer does not control.",
+        "Presenting a payment surface that feels as light as a social post while still being a real transaction.",
+      ],
+    },
+    shot: {
+      src: "/shots/tipwall.webp",
+      alt: "TipWall support wall showing tips and the payment form.",
+      caption: "TipWall: a support wall where the whole tip reaches the creator.",
+    },
+    links: {
+      live: "https://tipwall.vercel.app",
+      liveLabel: "Open the wall",
+      repo: "https://github.com/natureloved/TipWall",
+    },
+    accent: "#f4a259",
+    category: "Product",
+  },
 ];
 
 export const LAB: LabItem[] = [
-  {
-    id: "efthesis",
-    name: "Efthesis",
-    year: "2026",
-    tagline:
-      "An agent that remembers what it already paid for, and refuses to pay twice. Payment protocols have no memory, so agents keep re-buying.",
-    stack: ["Sibyl Memory", "x402", "Base"],
-    note: "Sibyl Labs Hackathon",
-    repo: "https://github.com/natureloved/Efthesis",
-    category: "Agent",
-  },
   {
     id: "proof-of-rest",
     name: "Proof of Rest",
@@ -322,29 +373,6 @@ export const LAB: LabItem[] = [
     category: "Protocol",
   },
   {
-    id: "clearcredit",
-    name: "ClearCredit",
-    year: "2026",
-    tagline:
-      "Short-term invoice finance with the compliance checks built in, so every approval is a permanent record rather than a spreadsheet.",
-    stack: ["Solidity", "Monad", "Cleanverse"],
-    note: "Cleanverse Build hackathon",
-    repo: "https://github.com/natureloved/ClearCredit",
-    category: "Protocol",
-  },
-  {
-    id: "tipwall",
-    name: "TipWall",
-    year: "2026",
-    tagline:
-      "A support wall inside the Nimiq Pay app. Tips go straight to the person: no platform cut, no withdrawal threshold, ten languages.",
-    stack: ["Nimiq Pay", "Ed25519"],
-    note: "Nimiq Mini Apps Competition",
-    live: "https://tipwall.vercel.app",
-    repo: "https://github.com/natureloved/TipWall",
-    category: "Product",
-  },
-  {
     id: "staxiq",
     name: "Staxiq",
     year: "2026",
@@ -354,37 +382,6 @@ export const LAB: LabItem[] = [
     live: "https://staxiq.vercel.app",
     repo: "https://github.com/natureloved/Staxiq",
     category: "Product",
-  },
-  {
-    id: "spansleuth",
-    name: "SpanSleuth",
-    year: "2026",
-    tagline:
-      "Forensic post-mortems for AI agents. When one fails at 3am it collects the trace and explains the cause in plain English.",
-    stack: ["Python", "SigNoz MCP"],
-    repo: "https://github.com/natureloved/SpanSleuth",
-    category: "Tooling",
-  },
-  {
-    id: "metaflux",
-    name: "MetaFlux",
-    year: "2026",
-    tagline:
-      "Ask your data catalogue a question in plain English and get lineage, quality scores and blast-radius analysis back.",
-    stack: ["MCP", "OpenMetadata"],
-    note: "Live demo is currently down, source only",
-    repo: "https://github.com/natureloved/MetaFlux",
-    category: "Tooling",
-  },
-  {
-    id: "cantoflow",
-    name: "CantoFlow",
-    year: "2026",
-    tagline:
-      "Invoice financing where privacy is enforced by the smart contract, bids stay confidential from every other party in the deal.",
-    stack: ["Daml", "Canton"],
-    repo: "https://github.com/natureloved/CantoFlow",
-    category: "Protocol",
   },
   {
     id: "expatship",
@@ -406,16 +403,6 @@ export const LAB: LabItem[] = [
     stack: ["Stacks", "Clarity"],
     live: "https://deadman-vault-eta.vercel.app",
     repo: "https://github.com/natureloved/DeadMan-Vault",
-    category: "Protocol",
-  },
-  {
-    id: "satsloom",
-    name: "SatsLoom",
-    year: "2026",
-    tagline:
-      "A self-hosted settlement router for merchants: takes a sat invoice, picks a liquidity route deterministically, and falls back when the best one disappears.",
-    stack: ["TypeScript", "Tachi"],
-    repo: "https://github.com/natureloved/SatsLoom",
     category: "Protocol",
   },
   {
@@ -450,16 +437,6 @@ export const LAB: LabItem[] = [
     live: "https://stashflow-two.vercel.app",
     repo: "https://github.com/natureloved/StashFlow",
     category: "Product",
-  },
-  {
-    id: "tasky",
-    name: "Tasky",
-    year: "2026",
-    tagline:
-      "A Telegram bot that watches bounty boards, quests and hackathons and pushes them to you the moment they appear.",
-    stack: ["Python", "Telegram"],
-    repo: "https://github.com/natureloved/Tasky",
-    category: "Tooling",
   },
 ];
 

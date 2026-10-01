@@ -21,7 +21,7 @@ test.describe("flagship case studies", () => {
     const ids = await page.evaluate(() =>
       [...document.querySelectorAll("[data-case-opener]")].map((el) => el.getAttribute("data-case-opener")),
     );
-    expect(ids).toEqual(["drawbound", "acadex", "pegwatch", "voz"]);
+    expect(ids).toEqual(["drawbound", "acadex", "pegwatch", "voz", "tipwall"]);
 
     for (const id of ids) {
       await page.keyboard.press("Escape");
@@ -57,7 +57,7 @@ test.describe("lab builds", () => {
 
     const cards = page.locator("#lab .project-card");
     const count = await cards.count();
-    expect(count).toBeGreaterThanOrEqual(15);
+    expect(count).toBeGreaterThanOrEqual(7);
 
     for (let i = 0; i < count; i++) {
       const hrefs = await cards.nth(i).locator("a[href]").evaluateAll((els) =>
@@ -71,25 +71,65 @@ test.describe("lab builds", () => {
     await page.setViewportSize(DESKTOP);
     await gotoHomeFresh(page);
 
-    // Hero stat: 19 open-source projects = 4 flagships + 15 lab builds, each
-    // with a repo. 12 live demos = 4 flagship + 8 lab builds.
+    // 12 open-source projects = 5 flagships + 7 lab builds, each with a repo.
+    // 12 live demos = the same 12: every flagship and every lab entry has one.
+    // Deriving rather than hardcoding keeps this honest - a project added or
+    // removed without touching the hero stat fails here instead of the site
+    // quietly advertising a number that is no longer true.
     const heroStats = await page.locator(".hero-stats div").evaluateAll((els) =>
       els.map((el) => ({
         value: el.querySelector("dd")?.textContent ?? "",
         label: el.querySelector("dt")?.textContent ?? "",
       })),
     );
-    expect(heroStats.map((s) => s.value)).toEqual(["109", "12", "19"]);
+    expect(heroStats.map((s) => s.value)).toEqual(["109", "12", "12"]);
     expect(heroStats.map((s) => s.label)).toEqual([
       "automated tests",
       "live demos",
       "open-source projects",
     ]);
 
-    const repos = await page.locator("#lab a[href*='github.com'], [data-case-opener]").count();
-    const liveLinks = await page.locator("a[href^='http']").count();
-    expect(repos).toBeGreaterThanOrEqual(4);
-    expect(liveLinks).toBeGreaterThanOrEqual(12);
+    const flagships = await page.locator("[data-case-opener]").count();
+    const labCards = await page.locator("#lab .project-card").count();
+    expect(flagships + labCards).toBe(12);
+
+    // The lab cards carry both links on the card itself. The flagships carry
+    // theirs inside the case-study dialog, so the repo count is the lab
+    // total plus one per flagship opened.
+    const labRepos = await page.locator("#lab .project-card a[href*='github.com']").count();
+    expect(labRepos).toBe(labCards);
+
+    const labLive = await page
+      .locator("#lab .project-card a.project-action-primary[href^='http']")
+      .count();
+    expect(labLive).toBe(labCards);
+  });
+
+  test("every flagship's dialog links to a live site and a repository", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const ids = await page
+      .locator("[data-case-opener]")
+      .evaluateAll((els) => els.map((el) => el.getAttribute("data-case-opener")!));
+
+    for (const id of ids) {
+      await page.locator(`[data-case-opener="${id}"]`).first().click();
+      const dialog = page.locator("dialog.case-modal");
+      await expect(dialog).toBeVisible();
+
+      const hrefs = await dialog
+        .locator("a[href]")
+        .evaluateAll((els) => els.map((a) => a.getAttribute("href")!));
+      expect(hrefs.some((h) => /^https:\/\//.test(h)), `${id}: no live link`).toBe(true);
+      expect(
+        hrefs.some((h) => /^https:\/\/github\.com\//.test(h)),
+        `${id}: no repo link`,
+      ).toBe(true);
+
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+    }
   });
 });
 
@@ -267,5 +307,176 @@ test.describe("content is real, not placeholder", () => {
 
     const body = await page.locator("body").innerText();
     expect(body).not.toContain("—");
+  });
+});
+
+test.describe("lab cards link to their live demos", () => {
+  test("every lab card links to both its demo and its repo", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // The gap this closes: the section is sold on "each one loads, checked
+    // from this page", but the cards only ever linked to GitHub, so a visitor
+    // had to go to the repo, read the README and hunt for the URL.
+    const cards = await page.evaluate(() =>
+      [...document.querySelectorAll("#lab .project-card")].map((c) => {
+        const links = [...c.querySelectorAll("a.project-action")].map((a) => ({
+          text: (a.textContent || "").trim(),
+          href: a.getAttribute("href") || "",
+        }));
+        return { name: c.querySelector(".project-title")?.textContent?.trim() ?? "", links };
+      }),
+    );
+
+    expect(cards.length).toBeGreaterThan(0);
+    for (const card of cards) {
+      const live = card.links.find((l) => /Live/i.test(l.text));
+      const source = card.links.find((l) => /Source/i.test(l.text));
+      expect(live, `${card.name} has no Live link`).toBeTruthy();
+      expect(source, `${card.name} has no Source link`).toBeTruthy();
+      expect(live!.href).toMatch(/^https:\/\//);
+      expect(source!.href).toMatch(/^https:\/\/github\.com\//);
+    }
+  });
+
+  test("no card relies on an unlabelled icon to reach its source", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // The old card's only click target was a bare </> circle with no text.
+    const unlabelled = await page.evaluate(() =>
+      [...document.querySelectorAll("#lab .project-card a")]
+        .filter((a) => !(a.textContent || "").trim() && !a.getAttribute("aria-label"))
+        .map((a) => a.getAttribute("href") || ""),
+    );
+    expect(unlabelled).toEqual([]);
+  });
+
+  test("each card states whether it is live or source only", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const statuses = await page.evaluate(() =>
+      [...document.querySelectorAll("#lab .project-card")].map((c) => ({
+        live: c.getAttribute("data-live"),
+        text: c.querySelector(".project-status-text")?.textContent?.trim() ?? "",
+      })),
+    );
+    expect(statuses.length).toBeGreaterThan(0);
+    for (const s of statuses) {
+      expect(["Live", "Source only"]).toContain(s.text);
+      // The dot and the data attribute must agree, or the grid lies.
+      expect(s.live).toBe(s.text === "Live" ? "true" : "false");
+    }
+  });
+
+  test("the year chip is gone", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Every entry read "2026", so the chip carried zero information while
+    // taking a tag slot. Keep the data, drop the display.
+    const years = await page.evaluate(() =>
+      [...document.querySelectorAll("#lab .project-card .project-tags span")]
+        .map((s) => (s.textContent || "").trim())
+        .filter((t) => /^20\d\d$/.test(t)),
+    );
+    expect(years).toEqual([]);
+  });
+
+  test("the status pill never sits under the title text", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Measured against the text box, not the padded box: the title reserves
+    // room with padding-right, so a box-level comparison reports a collision
+    // that is not there.
+    const bad = await page.evaluate(() => {
+      const out: string[] = [];
+      for (const c of document.querySelectorAll<HTMLElement>("#lab .project-card")) {
+        const pill = c.querySelector(".project-status");
+        const h3 = c.querySelector<HTMLElement>(".project-title");
+        if (!pill || !h3) continue;
+        const pr = pill.getBoundingClientRect();
+        const range = document.createRange();
+        range.selectNodeContents(h3);
+        const tr = range.getBoundingClientRect();
+        const name = h3.textContent?.trim() ?? "";
+        if (pr.left < tr.right) out.push(`${name}: pill overlaps title by ${Math.round(tr.right - pr.left)}px`);
+      }
+      return out;
+    });
+    expect(bad).toEqual([]);
+  });
+});
+
+test.describe("the header shows one reading toggle", () => {
+  test("exactly one visible toggle at desktop width", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Two "Plain / Technical" controls on screen at once reads as a bug: a
+    // visitor cannot tell which one is live.
+    const visible = await page.evaluate(() => {
+      const rect = (el: Element) => el.getBoundingClientRect();
+      return [...document.querySelectorAll(".site-header .reading-switch")].filter((s) => {
+        const r = rect(s);
+        return r.width > 0 && r.height > 0;
+      }).length;
+    });
+    expect(visible).toBe(1);
+  });
+
+  test("the toggle moves into the menu rather than disappearing", async ({ page }) => {
+    // Below 1100px the nav collapses to a hamburger, so the header copy has to
+    // hand over to the menu copy instead of being hidden outright.
+    await page.setViewportSize({ width: 900, height: 900 });
+    await gotoHomeFresh(page);
+
+    const headerCopy = await page.evaluate(() => {
+      const el = document.querySelector(".site-header .header-reading");
+      if (!el) return "missing";
+      return el.getBoundingClientRect().height > 0 ? "visible" : "hidden";
+    });
+    expect(headerCopy).toBe("hidden");
+
+    // And the menu copy is in the DOM ready to be shown.
+    const menuCopy = await page.locator(".main-nav .mobile-reading .reading-switch").count();
+    expect(menuCopy).toBe(1);
+
+    // Opening the menu reveals it, so the reading mode stays reachable.
+    await page.getByRole("button", { name: /open menu/i }).click();
+    await expect(page.locator(".main-nav .mobile-reading .reading-switch")).toBeVisible();
+  });
+
+  test("the reading toggle still works from the menu", async ({ page }) => {
+    await page.setViewportSize({ width: 900, height: 900 });
+    await gotoHomeFresh(page);
+    await page.getByRole("button", { name: /open menu/i }).click();
+
+    // Scope to the menu copy: the hero has its own switch with the same
+    // button names, and an unscoped locator hits a strict-mode violation.
+    const menuToggle = page.locator(".main-nav .mobile-reading");
+    await menuToggle.getByRole("button", { name: "Technical" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-reading", "technical");
+    await menuToggle.getByRole("button", { name: "Plain" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-reading", "plain");
+  });
+});
+
+test.describe("selected work lists every flagship", () => {
+  test("TipWall is among the selected work with a live demo", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const tipwall = page.locator('#work [data-case-opener="tipwall"]');
+    await expect(tipwall).toBeVisible();
+
+    // It must open as a case study like the others, not a half entry.
+    await tipwall.click();
+    const dialog = page.locator("dialog.case-modal");
+    await expect(dialog).toBeVisible();
+    await expect(page.locator("#case-title")).toHaveText("TipWall");
+    await expect(dialog.getByRole("link", { name: /open the wall/i })).toBeVisible();
   });
 });

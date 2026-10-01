@@ -416,6 +416,28 @@ h2 em {
   background: #edf0e4;
 }
 
+/*
+ * The menu-only copy of the reading toggle.
+ *
+ * It is hidden at every width where the header shows its own copy, because
+ * two "Plain / Technical" controls on screen at once reads as a bug: a
+ * visitor cannot tell which one is live, and the pair costs header space it
+ * does not have.
+ *
+ * This base rule must stay OUTSIDE any media query and BEFORE the ones that
+ * switch it back on. A base rule placed after a media query with the same
+ * selector wins the cascade and pins the menu copy hidden at every width -
+ * the responsive blocks silently stop matching, and the failure looks like
+ * the media query is broken rather than like an ordering mistake.
+ *
+ * The <=1100px and <=780px blocks reveal it with `display: block`. Moving
+ * between the two is a visibility switch, not a second control: both copies
+ * read the same state, so the reader's choice holds whichever one is shown.
+ */
+.main-nav .mobile-reading {
+  display: none;
+}
+
 .header-reading .reading-switch button {
   min-height: 40px;
   padding: 0 11px;
@@ -549,10 +571,12 @@ h2 em {
     display: none;
   }
 
+  /* Which copy is visible flips here: the header's is out, the menu's is in. */
   .main-nav .mobile-reading {
     margin-top: 18px;
     padding-top: 17px;
     border-top: 1px solid var(--line);
+    display: block;
   }
 
   .main-nav .mobile-reading-hint {
@@ -1246,6 +1270,7 @@ h2 em {
 .project-card {
   min-width: 0;
   animation: appear 0.3s ease-out;
+  position: relative;
 }
 
 @keyframes appear {
@@ -1257,6 +1282,31 @@ h2 em {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/*
+ * Status pill, top-right. It answers the question a visitor scans the grid
+ * with - "does this one open?" - which the tags below do not.
+ * It sits inside the card's padding so it never collides with the title.
+ */
+.project-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.project-status .status-dot {
+  background: #729a50;
+}
+
+.project-status-text {
+  color: #5f6b55;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.3px;
 }
 
 .project-media {
@@ -1332,6 +1382,8 @@ h2 em {
 
 .project-title {
   margin: 0;
+  /* Room for the status pill in the top-right corner. */
+  padding-right: 92px;
 }
 
 .project-title button {
@@ -1392,6 +1444,61 @@ h2 em {
   color: #636e5a;
   font-size: 13px;
   line-height: 1.5;
+}
+
+/*
+ * Action row at the foot of the card. Both targets are labelled, because a
+ * bare icon tells a visitor nothing about where it goes - the previous
+ * layout made the repo link an unlabelled </> circle and gave the live
+ * demos no link at all.
+ */
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.project-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 7px 13px;
+  border: 1px solid #dde4d5;
+  border-radius: 6px;
+  background: transparent;
+  color: #55604c;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.project-action:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.project-action .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.project-action-primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+
+.project-action-primary:hover {
+  background: #31462a;
+  border-color: #31462a;
+  color: #fff;
 }
 
 .work-bottom {
@@ -2673,6 +2780,13 @@ h2 em {
   .menu-toggle {
     display: grid;
     place-items: center;
+  }
+  /* Below 1100px the menu is the only nav, so its reading toggle is live. */
+  .header-reading {
+    display: none;
+  }
+  .main-nav .mobile-reading {
+    display: block;
   }
   .main-nav {
     display: none;

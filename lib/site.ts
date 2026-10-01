@@ -54,7 +54,7 @@ export const HERO_PROOF = [
     note: "each one loads, checked from this page",
   },
   {
-    value: "19",
+    value: "12",
     label: "open-source projects",
     note: "every one linked to its repository",
   },

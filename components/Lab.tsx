@@ -49,29 +49,59 @@ export default function Lab() {
 
       <div className="projects-grid">
         {shown.map((l) => (
-          <article className="project-card" key={l.id}>
-            <div className="project-tags" style={{ marginBottom: 14 }}>
-              <span>{l.category}</span>
-              <span>{l.year}</span>
-              {l.note ? <span>{l.note}</span> : null}
-            </div>
-            <h3 className="project-title">
-              {l.repo ? (
-                <a href={l.repo} target="_blank" rel="noopener noreferrer">
-                  {l.name}
-                  <span className="project-arrow" aria-hidden="true">
-                    <Icon name="i-code" />
-                  </span>
-                </a>
-              ) : (
-                l.name
-              )}
-            </h3>
+          <article className="project-card" key={l.id} data-live={l.live ? "true" : "false"}>
+            {/*
+              Status dot, in the top-right corner rather than inline with the
+              tags. The old layout put a year chip here, but all entries read
+              "2026", so the chip carried no information while taking a slot.
+              A live/source dot says the one thing a visitor scans for: does
+              this one open?
+            */}
+            <span className="project-status" title={l.live ? "Live demo" : "Source only"}>
+              <span className="status-dot" aria-hidden="true" />
+              <span className="project-status-text">{l.live ? "Live" : "Source only"}</span>
+            </span>
+
+            <h3 className="project-title">{l.name}</h3>
             <p className="project-description">{l.tagline}</p>
             <div className="project-tags">
+              {l.note ? <span>{l.note}</span> : null}
               {l.stack.slice(0, 3).map((t) => (
                 <span key={t}>{t}</span>
               ))}
+            </div>
+
+            {/*
+              Actions in a footer row, with both links spelled out. Previously
+              the only click target was a bare </> icon between the title and
+              the description, which interrupted the reading flow and gave no
+              clue where it went. Every entry in this section now has a live
+              demo and a repo, so the demo is the primary link and the repo is
+              the secondary one.
+            */}
+            <div className="project-actions">
+              {l.live ? (
+                <a
+                  className="project-action project-action-primary"
+                  href={l.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon name="i-arrow-up-right" />
+                  Live
+                </a>
+              ) : null}
+              {l.repo ? (
+                <a
+                  className="project-action"
+                  href={l.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon name="i-github" />
+                  Source
+                </a>
+              ) : null}
             </div>
           </article>
         ))}

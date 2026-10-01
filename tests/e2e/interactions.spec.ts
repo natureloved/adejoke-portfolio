@@ -154,7 +154,7 @@ test.describe("lab filter", () => {
 
     const cards = page.locator("#lab .project-card");
     const total = await cards.count();
-    expect(total).toBe(15);
+    expect(total).toBe(7);
 
     await page.locator("#lab .filter-btn", { hasText: "Agent" }).click();
     // The filter announces its own result, which is the number a screen-reader
