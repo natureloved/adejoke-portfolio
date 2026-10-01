@@ -5,7 +5,17 @@
  * them as `<use href="#i-name">`, so every icon inherits text colour and
  * responds to font-size without a second asset request. Inlining avoids a
  * sprite fetch that would otherwise delay first paint.
+ *
+ * Every path is drawn on a 24x24 grid, which is what VIEWBOX publishes. The
+ * consuming `<svg>` carries it too, because that is what stops the browser
+ * from scaling a 24-unit path into whatever pixel box the element happens to
+ * have. Without it the same arrow is drawn at a different size and stroke
+ * weight in a 17px button, a 34px circle and the 23px toolkit strip, and at
+ * the small end the arrowhead starts clipping. `<use>` inherits the
+ * viewBox from the referencing element, so putting it on the `<svg>` in
+ * components/ui.tsx fixes every icon at once.
  */
+const VIEWBOX = "0 0 24 24";
 const PATHS: Record<string, string> = {
   "i-sparkle":
     "M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z",
@@ -52,6 +62,7 @@ export default function IconSprite() {
       focusable="false"
       width="0"
       height="0"
+      viewBox={VIEWBOX}
       style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
     >
       <defs>

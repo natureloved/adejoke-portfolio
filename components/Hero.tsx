@@ -26,7 +26,8 @@ export default function Hero() {
             I design and build software for Bitcoin Layer-2s, on-chain agents, and the
             institutions that depend on it.
           </strong>{" "}
-          Most of it ships live, open source, and linked below.
+          Most of it is deployed and open, and every claim below links to something you can
+          check yourself.
         </p>
 
         <div data-plain className="hero-description">

@@ -12,6 +12,16 @@ const FILTERS = [
   { key: "Agent", label: "Agents" },
 ] as const;
 
+/**
+ * The URL fragment that opens a case study, and the reverse. Deep links mean
+ * a case study can be sent to someone, opened on load, and bookmarked,
+ * without redesigning anything: the modal is already the way in, this only
+ * remembers which one the address named.
+ */
+const hashFor = (id: string) => `#case-${id}`;
+const idFromHash = (hash: string) =>
+  hash.startsWith("#case-") ? hash.slice("#case-".length) : null;
+
 function CaseDialog({
   project,
   onClose,
@@ -43,11 +53,23 @@ function CaseDialog({
     document.querySelector<HTMLElement>(`[data-case-opener="${id}"]`)?.focus();
   }, [project]);
 
+  // The dialog's own close (Escape, the button) has to clear the fragment too,
+  // otherwise the next reload reopens a case the reader already dismissed.
+  const close = useCallback(() => {
+    if (window.location.hash && idFromHash(window.location.hash)) {
+      // history.replaceState rather than assigning location.hash: a plain
+      // assignment would add a second history entry and fire hashchange,
+      // which reopens the dialog this is trying to close.
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    onClose();
+  }, [onClose]);
+
   return (
-    <dialog ref={ref} className="modal case-modal" onClose={onClose} aria-labelledby="case-title">
+    <dialog ref={ref} className="modal case-modal" onClose={close} aria-labelledby="case-title">
       {project ? (
         <>
-          <button className="dialog-close" type="button" onClick={onClose} aria-label="Close case study">
+          <button className="dialog-close" type="button" onClick={close} aria-label="Close case study">
             <Icon name="i-plus" />
           </button>
 
@@ -174,8 +196,32 @@ export default function Work() {
 
   const shown = FLAGSHIPS.filter((p) => filter === "all" || p.category === filter);
 
-  const open = useCallback((p: Flagship) => setOpenCase(p), []);
+  const open = useCallback((p: Flagship) => {
+    // The fragment is set with replaceState so the back button does not walk
+    // through every case study the reader opened on the way down the page.
+    window.history.replaceState(null, "", hashFor(p.id));
+    setOpenCase(p);
+  }, []);
+
   const close = useCallback(() => setOpenCase(null), []);
+
+  // Deep link on load: /#case-drawbound opens that case study. It has to wait
+  // for hydration because the dialog is a client component, and it has to
+  // check the hash again rather than only once, because the browser may not
+  // have applied the fragment when the module first ran.
+  useEffect(() => {
+    const applyHash = () => {
+      const id = idFromHash(window.location.hash);
+      if (!id) return;
+      const match = FLAGSHIPS.find((p) => p.id === id);
+      if (match) setOpenCase(match);
+    };
+    applyHash();
+    // A second click on the same shared link, or an edit to the address bar,
+    // arrives as hashchange rather than a fresh mount.
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
 
   return (
     <section className="section container" id="work" aria-labelledby="workHeading">

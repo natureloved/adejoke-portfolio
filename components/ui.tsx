@@ -15,6 +15,11 @@ export function Icon({
       role={label ? "img" : undefined}
       aria-label={label}
       focusable="false"
+      // Without a viewBox the 24-unit path is stretched into whatever box CSS
+      // gives this element, so a 17px icon and a 34px icon draw the same arrow
+      // at different scales and the small one loses its arrowhead. Every
+      // PATH in IconSprite.tsx is authored on this grid.
+      viewBox="0 0 24 24"
     >
       <use href={`#${name}`} />
     </svg>

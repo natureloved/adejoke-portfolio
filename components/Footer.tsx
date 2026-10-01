@@ -46,6 +46,18 @@ export default function Footer() {
           <Icon name="i-arrow-up-right" />
         </a>
       </div>
+
+      {/*
+        A colophon, because a portfolio that argues for showing your evidence
+        should show when it was last shown. The date is read from the build, so
+        it cannot drift from what is deployed: NEXT_PUBLIC_BUILD_TIME is set in
+        next.config.mjs at build time, and falls back to the render time in
+        dev where there is no build to speak of.
+      */}
+      <p className="footer-colophon">
+        Last updated {SITE.lastUpdated}. Every claim on this page links to something you can
+        check.
+      </p>
     </footer>
   );
 }

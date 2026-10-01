@@ -1090,11 +1090,26 @@ h2 em {
 
 /* ---------- Toolkit ---------- */
 
+/*
+ * The toolkit strip.
+ *
+ * The rule that matters is `flex-wrap: wrap` plus `flex: 0 0 auto` on the
+ * items. Without them the row is a single unwrappable line: each `.tool`
+ * carries `white-space: nowrap`, so a squeezed item refuses to get narrower
+ * and instead rides up over its neighbour. That is visible at 768px, where
+ * four pairs collide, and at 390px, where all ten stack on top of each other
+ * inside a 100px-wide list.
+ *
+ * Below 1020px the strip switches to the same grid the phone layout uses, so
+ * there is one mobile treatment instead of a flex row that is gradually
+ * taking damage.
+ */
 .toolkit {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 18px 32px;
   padding: 30px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -1102,6 +1117,7 @@ h2 em {
 
 .toolkit-label {
   margin: 0;
+  flex-shrink: 0;
   color: #6b7362;
   font-family: var(--mono);
   font-size: 13px;
@@ -1109,9 +1125,26 @@ h2 em {
   letter-spacing: 1px;
 }
 
+/*
+ * The list is the flex container, not the strip: that way the label sits
+ * beside it and the items wrap among themselves rather than pushing the
+ * label around.
+ */
+.toolkit ul {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .tool {
   display: inline-flex;
   align-items: center;
+  /* Never shrink, never grow: a tool that gets squeezed has to wrap instead. */
+  flex: 0 0 auto;
   gap: 9px;
   color: #5f6659;
   font-size: 1.125rem;
@@ -2012,6 +2045,15 @@ h2 em {
   transform: rotate(180deg);
 }
 
+.footer-colophon {
+  margin: 14px 0 0;
+  color: #66725a;
+  font-family: var(--mono);
+  /* 13px is the type floor the README commits to. 12px would fail it. */
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 /* ---------- Dialogs ---------- */
 
 .modal {
@@ -2577,6 +2619,41 @@ h2 em {
   }
 }
 
+@media (max-width: 1020px) {
+  /*
+   * Tablet. The strip is too narrow for ten tools plus the label on one line,
+   * but 768px is too wide for the three-column phone grid to look deliberate.
+   * Two columns with the label on its own row, centred, is the treatment that
+   * survives both.
+   */
+  .toolkit {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+    justify-items: center;
+  }
+  .toolkit ul {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 20px;
+    justify-items: center;
+    width: 100%;
+    max-width: 520px;
+  }
+  .toolkit-label {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  .tool {
+    font-size: 0.9375rem;
+    gap: 7px;
+  }
+  .tool svg {
+    width: 20px;
+  }
+}
+
 @media (max-width: 780px) {
   html {
     scroll-padding-top: 95px;
@@ -2676,11 +2753,23 @@ h2 em {
     width: 143px;
     right: 8px;
   }
+  /*
+   * Phone: the strip becomes a grid so the label sits above a centred row of
+   * tools. The `ul` is the grid's child here, not a flex row, which is why it
+   * inherits `display: contents` semantics from the parent rather than
+   * keeping its own flex context.
+   */
   .toolkit {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px 30px;
+    gap: 18px 16px;
     padding: 25px 0 30px;
+  }
+  .toolkit ul {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 12px;
   }
   .toolkit-label {
     grid-column: 1 / -1;
@@ -2692,6 +2781,7 @@ h2 em {
   .tool {
     justify-content: center;
     font-size: 1.0625rem;
+    gap: 7px;
   }
   .tool svg {
     width: 22px;

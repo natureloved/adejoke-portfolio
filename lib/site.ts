@@ -8,6 +8,13 @@ export const SITE = {
   x: "https://x.com/RastaDev_",
   resume: "/resume.pdf",
   availability: "Open to product & engineering work",
+  /**
+   * The build date, stamped at build time in next.config.mjs so the colophon
+   * tells a visitor when the page was actually made rather than when they
+   * happened to load it. A fixed string would drift the moment it was
+   * written; `new Date()` at render would claim the page changes daily.
+   */
+  lastUpdated: process.env.NEXT_PUBLIC_BUILD_TIME ?? "",
 } as const;
 
 /**

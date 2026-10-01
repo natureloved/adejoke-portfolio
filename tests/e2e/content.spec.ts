@@ -114,6 +114,130 @@ test.describe("glossary links", () => {
   });
 });
 
+test.describe("case study deep links", () => {
+  test("a shared link opens the case study on load", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/#case-pegwatch", { waitUntil: "domcontentloaded" });
+
+    // The dialog is a client component, so it opens after hydration rather
+    // than being in the served HTML.
+    const dialog = page.locator("dialog.case-modal");
+    await expect(dialog).toBeVisible();
+    await expect(page.locator("#case-title")).toHaveText("PegWatch");
+  });
+
+  test("closing clears the fragment so a reload does not reopen it", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/#case-voz", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("dialog.case-modal")).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(page.locator("dialog.case-modal")).toBeHidden();
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.locator("dialog.case-modal")).toBeHidden();
+    expect(new URL(page.url()).hash).toBe("");
+  });
+
+  test("an unknown fragment is ignored rather than opening an empty dialog", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/#case-does-not-exist", { waitUntil: "domcontentloaded" });
+    await expect(page.locator("dialog.case-modal")).toBeHidden();
+    // The page itself still loads: the fragment only ever affects the dialog.
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+
+  test("opening a case sets the fragment", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    await page.locator("[data-case-opener='acadex']").click();
+    await expect(page.locator("dialog.case-modal")).toBeVisible();
+    expect(new URL(page.url()).hash).toBe("#case-acadex");
+  });
+});
+
+test.describe("toolkit", () => {
+  test("no tool overlaps another at any width", async ({ page }) => {
+    for (const width of [360, 390, 480, 600, 768, 900, 1020, 1130, 1280, 1600]) {
+      await page.setViewportSize({ width, height: 800 });
+      await gotoHomeFresh(page);
+
+      // The bug: the strip was one unwrappable flex line, so a squeezed tool
+      // rode up over its neighbour. Four pairs collided at 768px and all ten
+      // stacked inside a 100px list at 390px.
+      const collisions = await page.evaluate(() => {
+        const items = [...document.querySelectorAll(".toolkit .tool")].map((el) =>
+          el.getBoundingClientRect(),
+        );
+        const bad: string[] = [];
+        for (let i = 0; i < items.length - 1; i++) {
+          const a = items[i];
+          const b = items[i + 1];
+          const sameRow = Math.abs(a.top - b.top) < 4;
+          if (sameRow && a.right > b.left + 1) {
+            bad.push(`items ${i} and ${i + 1} overlap by ${Math.round(a.right - b.left)}px`);
+          }
+        }
+        return bad;
+      });
+      expect(collisions, `at ${width}px`).toEqual([]);
+    }
+  });
+
+  test("every tool keeps its badge beside its label", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // The badge is aria-hidden, so its letter is not part of the accessible
+    // name. What matters is that it is positioned before the label with a
+    // gap, not painted on top of it.
+    const bad = await page.evaluate(() => {
+      const out: string[] = [];
+      for (const li of document.querySelectorAll<HTMLElement>(".toolkit .tool")) {
+        const text = (li.textContent ?? "").trim();
+        const badge = li.querySelector(".next-mark, svg");
+        if (!badge) continue;
+        const b = badge.getBoundingClientRect();
+        const l = li.getBoundingClientRect();
+        // The badge starts at the left edge of the item.
+        if (b.left < l.left - 1) out.push(`${text}: badge starts ${Math.round(l.left - b.left)}px left of item`);
+      }
+      return out;
+    });
+    expect(bad).toEqual([]);
+  });
+});
+
+test.describe("icons", () => {
+  test("every icon carries the viewBox that keeps its scale", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Without a viewBox a 24-unit path is stretched into whatever pixel box
+    // the element has, so the same arrow draws at different scales in a 17px
+    // button and a 34px circle, and the small one loses its arrowhead.
+    const missing = await page.evaluate(() =>
+      [...document.querySelectorAll("svg.icon")]
+        .filter((s) => !s.getAttribute("viewBox"))
+        .map((s) => s.querySelector("use")?.getAttribute("href") ?? "unknown"),
+    );
+    expect(missing).toEqual([]);
+  });
+
+  test("every icon reference resolves to a defined path", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const broken = await page.evaluate(() =>
+      [...document.querySelectorAll("use")]
+        .map((u) => u.getAttribute("href") ?? "")
+        .filter((href) => !document.getElementById(href.replace("#", ""))),
+    );
+    expect(broken).toEqual([]);
+  });
+});
+
 test.describe("content is real, not placeholder", () => {
   test("no lorem ipsum anywhere on the page", async ({ page }) => {
     await page.setViewportSize(DESKTOP);

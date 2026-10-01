@@ -15,6 +15,13 @@ const securityHeaders = [
 
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    // The footer colophon reads this. Stamping it at build time means the
+    // "last updated" line describes when this build was made, which is the
+    // only date that is true of what a visitor is looking at. Computed at
+    // render instead, it would change on every request and mean nothing.
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString().slice(0, 10),
+  },
   async headers() {
     return [
       {
