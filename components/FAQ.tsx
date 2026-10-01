@@ -36,6 +36,17 @@ const WORKING_TOGETHER = [
   },
 ] as const;
 
+/**
+ * Two lists in one section, which is what made the old layout feel crowded:
+ * the questions and the glossary were stacked end to end in a single column,
+ * separated by a subhead, so a reader met 8 open questions and then 13 more
+ * with nothing to mark the boundary.
+ *
+ * The two lists are now siblings at the same level - a question column and a
+ * glossary column - each with its own heading and its own count. The glossary
+ * keeps its terms in link-target form, because `Gloss` in a case study points
+ * at `#faq-<term>` by id and nothing about the layout may break that.
+ */
 export default function FAQ() {
   return (
     <section className="container faq-section" id="faq" aria-labelledby="faqHeading">
@@ -55,7 +66,14 @@ export default function FAQ() {
           </a>
         </div>
 
-        <div>
+        <div className="faq-column">
+          <div className="faq-column-head">
+            <h3 className="faq-column-title">
+              <Icon name="i-message" />
+              Questions
+            </h3>
+            <span className="faq-column-count">{WORKING_TOGETHER.length}</span>
+          </div>
           {WORKING_TOGETHER.map((f) => (
             <details className="faq-item" key={f.q}>
               <summary>
@@ -65,11 +83,22 @@ export default function FAQ() {
               <p>{f.a}</p>
             </details>
           ))}
+        </div>
 
-          <h3 className="faq-subhead" id="glossary">
-            The glossary, in plain English
-          </h3>
-
+        {/*
+          The glossary gets its own column rather than trailing the questions.
+          The intro already says the jargon is "defined in one sentence each",
+          so repeating "in plain English" in the heading said the same thing
+          twice and made the heading longer than the terms it introduced.
+        */}
+        <div className="faq-column">
+          <div className="faq-column-head">
+            <h3 className="faq-column-title">
+              <Icon name="i-message" />
+              Glossary
+            </h3>
+            <span className="faq-column-count">{GLOSSARY.length}</span>
+          </div>
           {GLOSSARY.map((g) => (
             <details
               className="faq-item"

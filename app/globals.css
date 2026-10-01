@@ -1865,10 +1865,21 @@ h2 em {
   padding: 0 0 94px;
 }
 
+/*
+ * Intro, questions, glossary - three columns at once. The section is two
+ * different lists, and stacking them into one column made the second list
+ * look like an afterthought hanging off the bottom of the first.
+ *
+ * The questions column is the widest because its answers run to two or
+ * three sentences; the glossary definitions are one sentence each and read
+ * fine in a narrower gutter. Both sit at the same level, with their own
+ * heading and count, so it is obvious there are two lists rather than one
+ * long one.
+ */
 .faq-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1.25fr;
-  gap: 85px;
+  grid-template-columns: 0.85fr 1.05fr 0.95fr;
+  gap: 44px;
   padding-top: 65px;
   border-top: 1px solid var(--line);
 }
@@ -1887,6 +1898,53 @@ h2 em {
 
 .faq-intro .text-link {
   font-size: 0.9375rem;
+}
+
+/*
+ * Column heading. The count is what makes the two lists scan as two lists:
+ * "8" questions and "13" glossary terms, rather than one undifferentiated
+ * run of accordions.
+ */
+.faq-column-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.faq-column-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.faq-column-title .icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.faq-column-count {
+  margin-left: auto;
+  min-width: 23px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #edf0e4;
+  color: #5f6b55;
+  font-family: var(--mono);
+  /* 13px is the type floor the README commits to. */
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .faq-item {
@@ -2593,6 +2651,23 @@ h2 em {
     font-size: 1rem;
     gap: 7px;
   }
+  /*
+   * Three side-by-side columns no longer fit this container. The intro moves
+   * to a full-width row on top, and the two lists sit underneath it side by
+   * side, which preserves the thing that matters: the questions and the
+   * glossary stay siblings rather than one long run.
+   */
+  .faq-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px;
+  }
+  .faq-intro {
+    grid-column: 1 / -1;
+    max-width: 420px;
+  }
+  .faq-intro p {
+    max-width: none;
+  }
   .services-layout {
     gap: 50px;
   }
@@ -2962,10 +3037,18 @@ h2 em {
   .faq-section {
     padding-bottom: 68px;
   }
+  /*
+   * One column from here down. Two lists still read as two lists when
+   * stacked because each keeps its heading, its icon and its count, so the
+   * boundary between them is visible rather than relying on alignment.
+   */
   .faq-grid {
     grid-template-columns: 1fr;
     gap: 30px;
     padding-top: 48px;
+  }
+  .faq-intro {
+    max-width: 520px;
   }
   .faq-intro .section-title {
     font-size: 2.3125rem;

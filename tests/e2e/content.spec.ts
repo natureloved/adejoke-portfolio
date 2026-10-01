@@ -480,3 +480,67 @@ test.describe("selected work lists every flagship", () => {
     await expect(dialog.getByRole("link", { name: /open the wall/i })).toBeVisible();
   });
 });
+
+test.describe("questions section layout", () => {
+  test("the two lists are labelled and counted", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+    await page.locator("#faq").scrollIntoViewIfNeeded();
+
+    // The section is two different lists. Labelling each with its own count
+    // is what stops the second one reading as an afterthought hanging off
+    // the bottom of the first.
+    const questions = page.locator("#faq .faq-column").filter({ hasText: "Questions" }).first();
+    const glossary = page.locator("#faq .faq-column").filter({ hasText: "Glossary" }).first();
+
+    await expect(questions.locator(".faq-column-count")).toHaveText("8");
+    await expect(glossary.locator(".faq-column-count")).toHaveText("13");
+    await expect(questions.locator("details")).toHaveCount(8);
+    await expect(glossary.locator("details")).toHaveCount(13);
+  });
+
+  test("the glossary heading no longer says 'in plain English'", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+    await page.locator("#faq").scrollIntoViewIfNeeded();
+
+    // The intro paragraph already says the jargon is "defined in one
+    // sentence each", so the heading repeated it and ran longer than the
+    // terms it introduced.
+    await expect(page.locator("#faq")).not.toContainText("in plain English");
+    await expect(page.locator("#faq .faq-column").filter({ hasText: "Glossary" }).first()).toContainText(
+      "Glossary",
+    );
+  });
+
+  test("the lists sit side by side on a wide screen", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHomeFresh(page);
+    await page.locator("#faq").scrollIntoViewIfNeeded();
+
+    // Same row, different columns. Stacked would mean the second list
+    // starts below where the first one ends.
+    const q = await page.locator("#faq .faq-column").nth(0).boundingBox();
+    const g = await page.locator("#faq .faq-column").nth(1).boundingBox();
+    expect(q && g).toBeTruthy();
+    expect(Math.abs(q!.y - g!.y)).toBeLessThan
+      (4);
+    expect(g!.x).toBeGreaterThan(q!.x + q!.width - 1);
+  });
+
+  test("the glossary stays a link target for inline jargon", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // Restructuring moved the glossary into its own column. The ids on the
+    // entries are what `Gloss` points at from a case study, so they have to
+    // survive the layout change.
+    await page.locator("[data-case-opener='drawbound']").click();
+    const link = page.locator("dialog.case-modal a.glossary-link").first();
+    const href = await link.getAttribute("href");
+    expect(href).toMatch(/^#faq-/);
+
+    await page.locator("#faq").scrollIntoViewIfNeeded();
+    await expect(page.locator(href!)).toHaveCount(1);
+  });
+});
