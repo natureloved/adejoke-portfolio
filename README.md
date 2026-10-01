@@ -72,7 +72,30 @@ npm run typecheck   # tsc --noEmit
 npm run lint        # eslint via next lint
 npm run build       # production build
 npm run start       # serve the production build
+npm run test        # Playwright suite, against the production build
+npm run test:links  # live check of every external link, slower, opt-in
+npm run verify      # typecheck + lint + build + test
 ```
+
+The claims on this page are checked, not asserted. `npm run test` runs the
+browser suite against a production build on port 3100:
+
+```bash
+npm run build
+npm start -- -p 3100 &   # or: npx next start -p 3100
+npm run test
+```
+
+It covers the responsive layout at ten widths from 360px up, the reading-mode
+persistence, the case-study and contact dialogs, the lab and work filters,
+keyboard access, `prefers-reduced-motion`, and two audits the copy relies on:
+axe with zero WCAG 2.1 AA violations, and a contrast check that walks every
+rendered text node rather than the ones listed in the design tokens.
+`npm run test:links` additionally requests every external link the page
+renders and fails on a dead one; it is kept out of the default run because
+nineteen third-party deployments make it slow and turn a transient outage
+into a red build. LinkedIn answers those probes with 999, which is its block
+code rather than a missing profile, so it is reported rather than failed.
 
 ## Environment
 
@@ -131,6 +154,21 @@ self-hosted through `next/font`; the files in `public/fonts` are only used by th
 All copy lives in `data/work.ts` and `lib/site.ts`. Screenshots in `public/shots/` are real
 captures of the deployed sites, taken with headless Chrome and resized to 1200x750 WebP.
 
+The tests live in `tests/e2e/` and assert the claims this README makes, so a claim that
+stops being true fails the suite:
+
+```
+tests/e2e/
+  responsive.spec.ts   Overflow at ten widths, stacking, type floor, section order
+  mobile.spec.ts       Real phone profile: menu, tap targets, reading mode
+  interactions.spec.ts Reading mode, case dialog, contact dialog, copy, filters, nav
+  a11y.spec.ts         axe zero-violations, contrast, keyboard, reduced motion
+  links.spec.ts        Anchors, images, metadata, security headers
+  content.spec.ts      Repo links, stated counts, no lorem ipsum, no em dashes
+  live-links.spec.ts   Every external link resolves (opt-in, slower)
+  helpers.ts           Shared navigation and measurement helpers
+```
+
 House style: no em dashes. Use commas, colons, or a second sentence.
 
 ## Contact
@@ -138,7 +176,7 @@ House style: no em dashes. Use commas, colons, or a second sentence.
 - **Email:** [akinolaa769@gmail.com](mailto:akinolaa769@gmail.com)
 - **GitHub:** [@natureloved](https://github.com/natureloved)
 - **LinkedIn:** [Akinola Adejoke](https://www.linkedin.com/in/akinola-adejoke-0b7059324)
-- **X:** [@adejoke_btc](https://x.com/adejoke_btc)
+- **X:** [@RastaDev_](https://x.com/RastaDev_)
 
 ## License
 

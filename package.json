@@ -10,21 +10,27 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "playwright test tests/e2e/responsive.spec.ts tests/e2e/mobile.spec.ts tests/e2e/interactions.spec.ts tests/e2e/a11y.spec.ts tests/e2e/links.spec.ts tests/e2e/content.spec.ts",
+    "test:links": "playwright test tests/e2e/live-links.spec.ts",
+    "verify": "npm run typecheck && npm run lint && npm run build && npm run test"
   },
   "dependencies": {
+    "next": "14.2.35",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.35"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.49.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "axe-core": "^4.10.2",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.35"
+    "typescript": "^5"
   }
 }

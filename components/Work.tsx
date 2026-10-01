@@ -95,6 +95,23 @@ function CaseDialog({
                     ))}
                   </>
                 ) : null}
+
+                {project.tech.hard.length > 0 ? (
+                  <>
+                    {/* Authored per project and otherwise dropped: these are the
+                        parts a reader cannot see in a screenshot, which is the
+                        evidence the rest of the page promises. */}
+                    <h3>What was hard about it</h3>
+                    <ul className="delivery-list case-hard">
+                      {project.tech.hard.map((h) => (
+                        <li key={h}>
+                          <Icon name="i-sparkle" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
               </div>
 
               <aside className="case-facts">

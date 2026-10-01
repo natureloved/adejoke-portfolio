@@ -1216,6 +1216,9 @@ h2 em {
   max-width: 350px;
   font-size: 2.625rem;
   line-height: 1.18;
+  /* The panel is dark green, so the heading needs the light ink rather than
+     the page default: dark ink on a dark panel is 1.23:1, invisible. */
+  color: #f4f7ec;
 }
 
 .services-panel .section-title em {
@@ -1395,7 +1398,7 @@ h2 em {
   align-items: center;
   gap: 8px;
   margin: 32px 0 0;
-  color: #6b7a5e;
+  color: #56654a;
   font-size: 0.9375rem;
 }
 
@@ -1533,7 +1536,7 @@ h2 em {
   border-left: 1px solid #dce3d2;
   font-size: 13px;
   line-height: 1.6;
-  color: #77846a;
+  color: #66725a;
 }
 
 /* ---------- FAQ ---------- */
@@ -1651,7 +1654,7 @@ h2 em {
 
 .contact-panel .eyebrow {
   margin-bottom: 20px;
-  color: #5d7042;
+  color: #475c30;
   font-size: 13px;
 }
 
@@ -1820,7 +1823,7 @@ h2 em {
   align-items: center;
   gap: 6px;
   min-height: 40px;
-  color: #6b785f;
+  color: #5f6b55;
 }
 
 .footer-bottom .icon {
@@ -2124,7 +2127,13 @@ h2 em {
   width: 15px;
   height: 15px;
   margin-top: 3px;
-  color: #779760;
+  color: #5f7a42;
+}
+
+/* The "what was hard" list sits under a second heading, so it needs its own
+   gap to avoid running the two blocks together. */
+.case-hard {
+  margin-bottom: 4px;
 }
 
 .case-facts {
@@ -2137,7 +2146,7 @@ h2 em {
 
 .case-facts dt {
   margin-top: 21px;
-  color: #7f8a72;
+  color: #65705a;
   font-family: var(--mono);
   font-size: 13px;
   text-transform: uppercase;

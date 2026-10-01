@@ -5,15 +5,18 @@ import { CONTACT, SITE } from "@/lib/site";
 import { useContact } from "./ContactContext";
 import { Eyebrow, Icon } from "./ui";
 
-type Status = "idle" | "sending" | "sent" | "failed";
+type Status = "idle" | "sending" | "sent" | "failed" | "unconfigured";
 
 /**
- * Formspree endpoints are public: the value ships to the browser with any
- * request, so the default here is not a secret. It is kept as a fallback so a
- * missing environment variable cannot silently break the contact form on a
- * deployed build. Set NEXT_PUBLIC_FORMSPREE_URL to point at a different form.
+ * The Formspree endpoint id is public (it ships to the browser in any Next.js
+ * build, `NEXT_PUBLIC_` or not), so it is not a secret and does not need to be
+ * hidden. What it must not do is fall back to a fixed literal: a build shipped
+ * without the variable would then send every visitor's message to whichever
+ * inbox happened to own that id, and nobody would notice until messages went
+ * missing. With no endpoint configured the form says so and offers the real
+ * mailto link, which fails loudly rather than quietly losing mail.
  */
-const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "https://formspree.io/f/xojrppdv";
+const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "";
 
 export default function Contact() {
   const { request } = useContact();
@@ -69,7 +72,8 @@ export default function Contact() {
     if (!form) return;
 
     if (!ENDPOINT) {
-      setStatus("failed");
+      // No endpoint configured. Say so instead of failing a network call.
+      setStatus("unconfigured");
       return;
     }
 
@@ -206,13 +210,26 @@ export default function Contact() {
                   <Icon name="i-arrow-up-right" />
                 </button>
 
-                {status === "failed" ? (
+                {status === "failed" || status === "unconfigured" ? (
                   <p className="form-error" role="alert">
-                    The form could not be sent just now. Please email me directly at{" "}
-                    <a className="glossary-link" href={`mailto:${SITE.email}`}>
-                      {SITE.email}
-                    </a>
-                    . Nothing you typed has been lost.
+                    {status === "unconfigured" ? (
+                      <>
+                        The form is not connected to an inbox on this build, so please email me
+                        directly at{" "}
+                        <a className="glossary-link" href={`mailto:${SITE.email}`}>
+                          {SITE.email}
+                        </a>
+                        . Nothing you typed has been lost.
+                      </>
+                    ) : (
+                      <>
+                        The form could not be sent just now. Please email me directly at{" "}
+                        <a className="glossary-link" href={`mailto:${SITE.email}`}>
+                          {SITE.email}
+                        </a>
+                        . Nothing you typed has been lost.
+                      </>
+                    )}
                   </p>
                 ) : (
                   <p className="form-privacy">

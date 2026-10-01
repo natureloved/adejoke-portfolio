@@ -5,7 +5,7 @@ export const SITE = {
   email: "akinolaa769@gmail.com",
   github: "https://github.com/natureloved",
   linkedin: "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
-  x: "https://x.com/adejoke_btc",
+  x: "https://x.com/RastaDev_",
   resume: "/resume.pdf",
   availability: "Open to product & engineering work",
 } as const;
