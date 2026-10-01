@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { DESKTOP, gotoHomeFresh } from "./helpers";
+import { DESKTOP, expectNoHorizontalOverflow, gotoHomeFresh } from "./helpers";
 
 /**
  * Data integrity. The site claims "no project described without a live demo or
@@ -664,5 +664,77 @@ test.describe("the resume download", () => {
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute("download", "");
     await expect(link).toContainText(/résumé/i);
+  });
+});
+
+test.describe("the person section is laid out in bands", () => {
+  test("the three bands stack in order and never overlap", async ({ page }) => {
+    // The section used to be one narrow column of copy beside a short
+    // illustration that `align-items: center` floated in the middle of it:
+    // 1601px of copy against a 372px image, with a 614px dead band above
+    // the art. The bands are what fix that, so the order is asserted rather
+    // than assumed - a future change that puts the art back in a float would
+    // break this.
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+    await page.locator("#about").scrollIntoViewIfNeeded();
+
+    const bands = await page.locator("#about .about-head, #about .about-body, #about .about-foot").evaluateAll(
+      (els) =>
+        els.map((el) => {
+          const r = el.getBoundingClientRect();
+          return { top: r.top + window.scrollY, bottom: r.bottom + window.scrollY };
+        }),
+    );
+    expect(bands).toHaveLength(3);
+    expect(bands[0].top).toBeLessThan(bands[1].top);
+    expect(bands[1].top).toBeLessThan(bands[2].top);
+    // Each band starts where the previous one ended: no gaps, no overlaps.
+    expect(bands[1].top).toBeGreaterThanOrEqual(bands[0].bottom - 1);
+    expect(bands[2].top).toBeGreaterThanOrEqual(bands[1].bottom - 1);
+  });
+
+  test("the illustration keeps a landscape frame at every width", async ({ page }) => {
+    // The artwork is 520x372 landscape with its content in the upper two
+    // thirds. In a portrait frame `preserveAspectRatio="slice"` crops real
+    // drawing from the top and bottom and leaves the foot empty, which is
+    // what made it read as a squat strip on a phone.
+    for (const width of [1440, 1020, 780, 390, 360]) {
+      await page.setViewportSize({ width, height: 900 });
+      await gotoHomeFresh(page);
+      await page.locator("#about").scrollIntoViewIfNeeded();
+
+      const ratio = await page.evaluate(() => {
+        const r = document.querySelector(".desk-visual")!.getBoundingClientRect();
+        return r.width / r.height;
+      });
+      expect(ratio, `at ${width}px`).toBeGreaterThan(1);
+    }
+  });
+
+  test("the illustration caption stays inside the frame", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 900 });
+    await gotoHomeFresh(page);
+    await page.locator("#about").scrollIntoViewIfNeeded();
+
+    const inside = await page.evaluate(() => {
+      const frame = document.querySelector(".desk-visual")!.getBoundingClientRect();
+      const note = document.querySelector(".desk-note")!.getBoundingClientRect();
+      return (
+        note.left >= frame.left - 1 &&
+        note.right <= frame.right + 1 &&
+        note.top >= frame.top - 1 &&
+        note.bottom <= frame.bottom + 1
+      );
+    });
+    expect(inside).toBe(true);
+  });
+
+  test("no horizontal overflow in the section at any width", async ({ page }) => {
+    for (const width of [1600, 1440, 1280, 1020, 780, 390, 360]) {
+      await page.setViewportSize({ width, height: 900 });
+      await gotoHomeFresh(page);
+      await expectNoHorizontalOverflow(page);
+    }
   });
 });

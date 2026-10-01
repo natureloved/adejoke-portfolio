@@ -1,10 +1,25 @@
 import { ABOUT_FACTS, SITE, STORY } from "@/lib/site";
 import { Eyebrow, SectionTitle } from "./ui";
 
-/** A flat illustration of a desk: the page is decoration, so it is hidden. */
+/**
+ * A flat illustration of a desk. Decoration, so it is hidden from assistive
+ * technology.
+ *
+ * `preserveAspectRatio` is set to `slice` rather than left at its default
+ * `meet`: on a narrow column the box is taller than the artwork is wide, and
+ * `meet` letterboxes the drawing with empty bands above and below. `slice`
+ * crops, filling the box the way `object-fit: cover` does for an image.
+ */
 function DeskArt() {
   return (
-    <svg viewBox="0 0 520 372" role="presentation" aria-hidden="true" focusable="false">
+    <svg
+      className="desk-svg"
+      viewBox="0 0 520 372"
+      preserveAspectRatio="xMidYMid slice"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
       <rect width="520" height="372" fill="#e8e9df" />
       <rect x="0" y="272" width="520" height="100" fill="#e0e1d4" />
       <rect x="34" y="36" width="196" height="128" rx="6" fill="#fbfcf5" stroke="#d8dccb" />
@@ -38,43 +53,62 @@ function DeskArt() {
   );
 }
 
+/**
+ * Section 05, "The person".
+ *
+ * The layout used to be one narrow column of copy beside a short illustration
+ * that `align-items: center` floated in the middle of it. Measured at 1440px
+ * that was 1601px of copy in a 563px column against a 372px image in a 551px
+ * column, with a 614px dead band above the art and nothing to fill the left
+ * side of the section.
+ *
+ * It is now three horizontal bands, which is also how the copy is organised:
+ *
+ *   1. a header band spanning the full width - the headline on the left, the
+ *      two opening paragraphs on the right, so neither runs long on its own
+ *   2. a two-column body - the narrative and the problem-solving block on the
+ *      left, the chapters and the closing on the right, each at a readable
+ *      measure
+ *   3. a footer band - the illustration alongside the facts and the
+ *      signature, so the art carries weight instead of floating in a gap
+ */
 export default function Story() {
   return (
     <section className="container about-section" id="about" aria-labelledby="aboutHeading">
-      <div className="about-grid">
-        <div className="desk-visual">
-          <DeskArt />
-          <span className="desk-label">WHERE I WORK</span>
-          <div className="desk-note">
-            <span>Two fields, one instinct.</span>
-          </div>
-        </div>
-
-        <div className="about-copy">
+      {/* 1. Header band. */}
+      <div className="about-head">
+        <div className="about-head-text">
           <Eyebrow>05 The person</Eyebrow>
           <SectionTitle id="aboutHeading">
             Not a straight <em>line.</em> That&rsquo;s the point.
           </SectionTitle>
+        </div>
+        <div className="about-head-copy">
           <p className="about-lead">{STORY.lead}</p>
           <p>{STORY.middle}</p>
+        </div>
+      </div>
 
-          {/*
-            The problem-solving reframe. It is pulled out of the paragraph
-            flow and given its own block because it answers "what actually
-            drives this person" with four specific examples a reader can
-            check, rather than asserting an attitude.
-          */}
-          <div className="about-drive">
-            <h3>{STORY.drive.title}</h3>
-            <p>{STORY.drive.body}</p>
-            <p>
-              <strong>{STORY.drive.close}</strong>
-            </p>
-          </div>
+      {/* 2. Body band. */}
+      <div className="about-body">
+        {/*
+          The problem-solving reframe. It is pulled out of the paragraph flow
+          and given its own block because it answers "what actually drives
+          this person" with four specific examples a reader can check, rather
+          than asserting an attitude.
+        */}
+        <div className="about-drive">
+          <h3>{STORY.drive.title}</h3>
+          <p>{STORY.drive.body}</p>
+          <p>
+            <strong>{STORY.drive.close}</strong>
+          </p>
+        </div>
 
+        <div className="about-chapters-column">
           {/*
-            The chapters, ordered first thing to now. Each names a field,
-            a role, and what it left behind; together they are the "not a
+            The chapters, ordered first thing to now. Each names a field, a
+            role, and what it left behind; together they are the "not a
             straight line" the headline claims, shown rather than asserted.
           */}
           <ol className="about-chapters">
@@ -90,7 +124,27 @@ export default function Story() {
           </ol>
 
           <p className="about-closing">{STORY.closing}</p>
+        </div>
+      </div>
 
+      {/* 3. Footer band. */}
+      <div className="about-foot">
+        <div className="desk-visual">
+          <DeskArt />
+          <span className="desk-label">WHERE I WORK</span>
+          {/*
+            The note sits in the lower band of the illustration, which is
+            otherwise a plain surface: the drawing's content stops around
+            two thirds down, so the foot reads as dead space without it. It
+            also ties the picture to the section's argument instead of being
+            decoration beside it.
+          */}
+          <div className="desk-note">
+            <span>Two fields, one instinct.</span>
+          </div>
+        </div>
+
+        <div className="about-foot-side">
           <div className="about-facts">
             {ABOUT_FACTS.map((f) => (
               <span className="about-fact" key={f}>

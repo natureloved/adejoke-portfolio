@@ -1733,23 +1733,96 @@ h2 em {
   padding: 3px 0 94px;
 }
 
-.about-grid {
+/*
+ * Three bands, in order: header, body, footer. Each band owns the full
+ * width of the section, which is what stops the old problem of a short
+ * illustration floating in the middle of a very long text column with a
+ * 614px dead band above it.
+ */
+.about-head {
   display: grid;
-  grid-template-columns: 0.98fr 1fr;
-  gap: 86px;
-  align-items: center;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: 56px;
+  align-items: end;
+  padding-bottom: 34px;
+  border-bottom: 1px solid var(--line);
 }
 
+.about-head-text .section-title {
+  font-size: 2.5625rem;
+}
+
+.about-head-copy p {
+  margin: 0 0 15px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+/* The opening line, slightly larger: it is the thesis of the section. */
+.about-head-copy .about-lead {
+  font-size: 1.0625rem;
+  color: #5b6553;
+}
+
+.about-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  padding: 34px 0 40px;
+}
+
+.about-foot {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 34px;
+  align-items: stretch;
+  padding-top: 34px;
+  border-top: 1px solid var(--line);
+}
+
+/*
+ * The side column is centred against the illustration and its contents are
+ * spaced to fill the band. Without it the three facts chips stack into a
+ * short block beside a tall image, and the band reads as lopsided.
+ */
+.about-foot-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+}
+
+/*
+ * The illustration keeps a landscape frame at every width.
+ *
+ * `preserveAspectRatio="slice"` crops rather than letterboxes, but the
+ * drawing is 520x372 landscape with its content in the upper two thirds, so
+ * in a tall frame the crop eats real artwork from top and bottom and leaves
+ * the foot empty. Capping the height against the width keeps the frame near
+ * the artwork's own shape, so almost nothing is cropped at any viewport.
+ */
+.desk-visual {
+  max-height: min(72vw, 520px);
+}
+
+/* The illustration now shares a band with real content, so it is sized by
+   its own aspect ratio instead of a fixed height that left it short. */
 .desk-visual {
   position: relative;
-  height: 372px;
   overflow: hidden;
   border: 1px solid #e0e2d6;
   border-radius: 15px;
   background: #e8e9df;
+  aspect-ratio: 520 / 372;
 }
 
-.desk-visual > svg {
+/*
+ * Fills its box. The artwork is cropped rather than letterboxed by
+ * preserveAspectRatio on the SVG itself, which is what keeps it from
+ * showing empty bands when the column is narrower than the drawing.
+ */
+.desk-svg {
   display: block;
   width: 100%;
   height: 100%;
@@ -1766,25 +1839,25 @@ h2 em {
   letter-spacing: 1.3px;
 }
 
+/*
+ * A caption card pinned into the lower band of the illustration, which is
+ * otherwise an empty surface. It gives the picture something to say and
+ * carries the section's argument into the artwork.
+ */
 .desk-note {
   position: absolute;
+  z-index: 1;
   left: 24px;
   bottom: 19px;
   display: flex;
   align-items: center;
   gap: 10px;
+  max-width: calc(100% - 48px);
   padding: 12px 15px;
   border: 1px solid #e7e9de;
   border-radius: 6px;
   background: #fdfef9;
   box-shadow: 0 5px 10px #3141250a;
-  transform: rotate(-3deg);
-}
-
-.desk-note .icon {
-  width: 19px;
-  height: 19px;
-  color: #7e9564;
 }
 
 .desk-note span {
@@ -1795,18 +1868,19 @@ h2 em {
   letter-spacing: 0.6px;
 }
 
-.about-copy .section-title {
-  font-size: 2.5625rem;
-}
-
-.about-copy p {
-  margin: 21px 0 0;
+/* Body-column paragraph defaults. The header band sets its own tighter
+   rhythm, because those two paragraphs sit beside a headline rather than
+   under it. */
+.about-body p,
+.about-drive p {
+  margin: 13px 0 0;
   color: var(--muted);
   font-size: 0.9375rem;
   line-height: 1.9;
 }
 
-.about-copy p strong {
+.about-body p strong,
+.about-drive p strong {
   color: var(--ink);
   font-weight: 500;
 }
@@ -1896,9 +1970,12 @@ h2 em {
 
 /*
  * The closing line, set in the serif so it reads as the section's last
- * word rather than another paragraph. The `!important` is only about the
- * top margin: `.about-copy p` sets 21px with the same specificity and this
- * rule is meant to sit further from the list above it.
+ * word rather than another paragraph.
+ *
+ * The `!important` is only about the top margin, and only because
+ * `.about-body p` above sets 13px at the same specificity while this
+ * paragraph needs to sit further from the chapters list. Everything else
+ * is declared normally.
  */
 .about-closing {
   margin-top: 26px !important;
@@ -2764,8 +2841,14 @@ h2 em {
   .services-layout {
     gap: 50px;
   }
-  .about-grid {
-    gap: 57px;
+  .about-head {
+    gap: 40px;
+  }
+  .about-body {
+    gap: 34px;
+  }
+  .about-foot {
+    gap: 26px;
   }
 }
 
@@ -2838,14 +2921,17 @@ h2 em {
   .process-grid {
     gap: 25px;
   }
-  .about-grid {
-    gap: 42px;
+  .about-head {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
   }
-  .about-copy .section-title {
+  .about-head-text .section-title {
     font-size: 2.25rem;
   }
-  .desk-visual {
-    height: 355px;
+  .about-body {
+    grid-template-columns: 1fr;
+    gap: 26px;
   }
   .faq-grid {
     gap: 55px;
@@ -3111,16 +3197,22 @@ h2 em {
   .about-section {
     padding: 0 0 68px;
   }
-  .about-grid {
+  .about-head,
+  .about-body,
+  .about-foot {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 26px;
   }
-  .about-copy {
-    order: -1;
-    max-width: 560px;
-  }
-  .about-copy .section-title {
+  .about-head-text .section-title {
     font-size: 2.4375rem;
+  }
+  /*
+   * The illustration still gets its own row here, but it is no longer
+   * stretched to a fixed height that would crop it on a narrow screen: it
+   * keeps its aspect ratio and the side column takes the width.
+   */
+  .desk-visual {
+    max-width: 560px;
   }
   /*
    * The field label no longer gets its own column: a 118px label beside
@@ -3418,17 +3510,14 @@ h2 em {
   .about-section {
     padding-bottom: 59px;
   }
-  .about-copy .section-title {
+  .about-head-text .section-title {
     font-size: 2.1875rem;
-  }
-  .desk-visual {
-    height: 300px;
   }
   .desk-label {
     top: 17px;
     left: 18px;
   }
-  .desk-note {
+  .about-signature {
     left: 17px;
     bottom: 17px;
     padding: 9px 12px;
