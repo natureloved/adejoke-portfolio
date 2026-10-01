@@ -115,7 +115,7 @@ export const FLAGSHIPS: Flagship[] = [
     number: "02",
     name: "Acadex",
     year: "2026",
-    role: "Final-year project, Computer Science",
+    role: "Product & full-stack engineer",
     context:
       "Lagos State University. Built around a problem I watched happen, not one I was handed.",
     headline: "A university exam calendar that can't quietly go out of date.",

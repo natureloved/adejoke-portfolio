@@ -552,3 +552,90 @@ test.describe("questions section layout", () => {
     await expect(page.locator(href!)).toHaveCount(1);
   });
 });
+
+test.describe("the narrative matches reality", () => {
+  test("no claim the owner has contradicted survives anywhere", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // These are claims the owner explicitly corrected: nursing and a
+    // computer science degree were never enrolled in, and the location and
+    // WATLP certification were removed at the owner's request. A build that
+    // still shows any of them is claiming something untrue, which is the
+    // one thing this page promises not to do.
+    const body = await page.locator("body").innerText();
+    for (const claim of ["nursing", "BSc", "Lagos", "WATLP", "night shift"]) {
+      expect(body, `${claim} still appears on the page`).not.toContain(claim);
+    }
+  });
+
+  test("no project is named that is not on the page", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    // A project dropped from the portfolio must not be cited in copy, or a
+    // reader goes looking for something that does not exist. Only the
+    // capability cards' "examples" lines are checked, because those are the
+    // ones written in the "Name / descriptor" form. The positioning copy
+    // also uses slashes for technologies ("Stacks/Clarity", "EVM
+    // (Solidity/Foundry)"), which are not projects and must not be matched.
+    const known = await page.evaluate(() => {
+      const names = new Set<string>();
+      for (const el of document.querySelectorAll("#lab .project-title, #work [data-case-opener]")) {
+        const t = (el.textContent || "").trim();
+        if (t) names.add(t.toLowerCase());
+      }
+      return [...names];
+    });
+
+    // Only leaf text nodes using the "Name / descriptor" form, taken from
+    // the capability section, so technology lists cannot be mistaken for
+    // project names.
+    const cited = await page.evaluate(() => {
+      const out: string[] = [];
+      for (const el of document.querySelectorAll("#expertise *")) {
+        if (el.children.length) continue;
+        const text = (el.textContent || "").trim();
+        if (text.includes(" / ")) out.push(text);
+      }
+      return out;
+    });
+
+    const names = new Set<string>();
+    for (const line of cited) {
+      for (const m of line.matchAll(/([A-Z][A-Za-z0-9]+)\s*\//g)) names.add(m[1]);
+    }
+    const unknown = [...names].filter((n) => !known.includes(n.toLowerCase()));
+    expect(unknown, `named projects not on the page: ${unknown.join(", ")}`).toEqual([]);
+  });
+
+  test("the story states the correct chronology", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const about = page.locator("#about");
+    // Software first, radiography now: the owner's actual order.
+    await expect(about).toContainText("I started as a full-stack and blockchain developer");
+    await expect(about).toContainText("first-year radiography student");
+
+    // The three fields, in order.
+    const chapters = await page
+      .locator("#about .about-chapter-period")
+      .evaluateAll((els) => els.map((e) => (e.textContent || "").trim()));
+    expect(chapters).toEqual(["Software", "Web3 & AI", "Radiography"]);
+  });
+
+  test("the facts chips carry the corrected credentials", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    const facts = await page
+      .locator("#about .about-fact")
+      .evaluateAll((els) => els.map((e) => (e.textContent || "").trim()));
+    expect(facts).toEqual([
+      "First-year radiography student",
+      "Full-stack & blockchain developer",
+      "Open to contracts and teams",
+    ]);
+  });
+});

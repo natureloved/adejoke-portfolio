@@ -1,14 +1,5 @@
 import { ABOUT_FACTS, SITE, STORY } from "@/lib/site";
-import { Eyebrow, Icon, SectionTitle } from "./ui";
-
-const ICONS = [
-  "i-pin",
-  "i-file",
-  "i-leaf",
-  "i-cube",
-  "i-message",
-  "i-sparkle",
-];
+import { Eyebrow, SectionTitle } from "./ui";
 
 /** A flat illustration of a desk: the page is decoration, so it is hidden. */
 function DeskArt() {
@@ -53,10 +44,9 @@ export default function Story() {
       <div className="about-grid">
         <div className="desk-visual">
           <DeskArt />
-          <span className="desk-label">WORKSPACE, NAIJA</span>
+          <span className="desk-label">WHERE I WORK</span>
           <div className="desk-note">
-            <Icon name="i-leaf" />
-            <span>From night shifts to mainnet.</span>
+            <span>Two fields, one instinct.</span>
           </div>
         </div>
 
@@ -65,15 +55,45 @@ export default function Story() {
           <SectionTitle id="aboutHeading">
             Not a straight <em>line.</em> That&rsquo;s the point.
           </SectionTitle>
-          <p>{STORY.lead}</p>
-          <p>
-            <strong>{STORY.closing}</strong>
-          </p>
+          <p className="about-lead">{STORY.lead}</p>
+          <p>{STORY.middle}</p>
+
+          {/*
+            The problem-solving reframe. It is pulled out of the paragraph
+            flow and given its own block because it answers "what actually
+            drives this person" with four specific examples a reader can
+            check, rather than asserting an attitude.
+          */}
+          <div className="about-drive">
+            <h3>{STORY.drive.title}</h3>
+            <p>{STORY.drive.body}</p>
+            <p>
+              <strong>{STORY.drive.close}</strong>
+            </p>
+          </div>
+
+          {/*
+            The chapters, ordered first thing to now. Each names a field,
+            a role, and what it left behind; together they are the "not a
+            straight line" the headline claims, shown rather than asserted.
+          */}
+          <ol className="about-chapters">
+            {STORY.chapters.map((c) => (
+              <li key={c.period}>
+                <span className="about-chapter-period">{c.period}</span>
+                <div>
+                  <strong>{c.title}</strong>
+                  <p>{c.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <p className="about-closing">{STORY.closing}</p>
 
           <div className="about-facts">
-            {ABOUT_FACTS.map((f, i) => (
+            {ABOUT_FACTS.map((f) => (
               <span className="about-fact" key={f}>
-                <Icon name={ICONS[i]} />
                 {f}
               </span>
             ))}

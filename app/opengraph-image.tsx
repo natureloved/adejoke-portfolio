@@ -267,7 +267,7 @@ export default async function OGImage() {
               display: "flex",
             }}
           >
-            {SITE.location}
+            {SITE.availability}
           </div>
         </div>
       </div>

@@ -21,7 +21,7 @@ export default function Hero() {
         </h1>
 
         <p className="hero-description">
-          I&rsquo;m {SITE.name}, a full-stack and blockchain developer based in {SITE.location}.{" "}
+          I&rsquo;m {SITE.name}, a full-stack and blockchain developer.{" "}
           <strong>
             I design and build software for Bitcoin Layer-2s, on-chain agents, and the
             institutions that depend on it.

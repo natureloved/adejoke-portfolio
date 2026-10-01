@@ -1,7 +1,6 @@
 export const SITE = {
   name: "Akinola Adejoke",
   alias: "RastaDev",
-  location: "Lagos, Nigeria",
   email: "akinolaa769@gmail.com",
   github: "https://github.com/natureloved",
   linkedin: "https://www.linkedin.com/in/akinola-adejoke-0b7059324",
@@ -74,7 +73,7 @@ export const WHAT_I_DO = [
   {
     title: "AI that is accountable for what it does",
     body: "Agents that act on-chain, explain themselves, and are built so a human can inspect the audit trail afterwards.",
-    examples: "Elara / voice-to-chain · Efthesis / memory",
+    examples: "TonPilot / plain-language wallet · HashPilot / mining terminal",
   },
 ] as const;
 
@@ -106,37 +105,59 @@ export const PROCESS_NOTE =
   "In practice steps 1 and 2 overlap, and step 3 is where the schedule slips. I would rather tell you that now than promise a date I cannot keep.";
 
 export const ABOUT_FACTS = [
-  "Lagos, Nigeria",
-  "WATLP certified",
-  "BSc Computer Science, final year",
-  "Radiography & radiation science",
-  "Open to contracts",
-  "Open to a team",
+  "First-year radiography student",
+  "Full-stack & blockchain developer",
+  "Open to contracts and teams",
 ] as const;
 
+/**
+ * "The person": who is behind everything else on the page.
+ *
+ * The framing is deliberate - two fields, one instinct, and the through-line
+ * is problem-solving rather than a list of technologies. Radiography is
+ * present because it is what is happening now, not as a detour from the
+ * development work: both are about reading something ambiguous carefully
+ * and refusing to guess.
+ *
+ * The chapters are ordered from what came first to what is happening now.
+ * A copy named in `examples` must exist as a flagship or a lab entry, or it
+ * is a claim a reader cannot check - which is the one thing this page
+ * promises not to do.
+ */
 export const STORY = {
   lead:
-    "I started in nursing, where a mistake is not a UX complaint: it's a patient. Then I moved into software and the instinct carried over: understand the system properly, get the details right, and never hide the part that is uncertain.",
+    "I started as a full-stack and blockchain developer. Now I'm a first-year radiography student. The distance between those two is smaller than it looks: both are about understanding a system properly and refusing to guess.",
+  middle:
+    "In software, the hard part was never the code. It was knowing what the person on the other end actually needed, and building for them rather than for the stack. In radiography it means reading an image that could be anything, and being honest about what you can and cannot see.",
+  /**
+   * The problem-solving reframe, stated as evidence rather than sentiment.
+   * Every claim points at a project the reader can open from this page.
+   */
+  drive: {
+    title: "Every project here exists because something was harder than it needed to be.",
+    body:
+      "An exam calendar that took a department a week to build and could quietly go out of date. A withdrawal threshold that stranded small balances. A remittance flow that assumed the person receiving the money could read a wallet address. A support wall that took a cut of the money it was meant to pass through.",
+    close:
+      "That is the whole instinct: find the friction, understand it properly, remove it, and hand someone a thing that just works. If a problem needs a spreadsheet and a process change rather than an app, that is the answer too.",
+  },
   chapters: [
     {
-      period: "Nursing",
-      title: "Precision under real consequence",
-      body: "Nursing taught me protocols where being wrong has a human cost. Diagnosis is a discipline: observe, narrow, verify, act. I still think that way about code.",
-    },
-    {
       period: "Software",
-      title: "The leverage of a system you can change",
-      body: "I moved into computer science and full-stack development, going quickly from fundamentals to shipping complete applications with real users and real money involved.",
+      title: "Where it started",
+      body:
+        "Full-stack and blockchain development, from the fundamentals through to shipping complete applications with real users and real money involved.",
     },
     {
       period: "Web3 & AI",
-      title: "Money, ownership, and agents",
-      body: "A Dev3Pack fellowship, then hackathons across Stacks, TON, Monad and Base: blank canvas to deployed prototype in 48–72 hours, repeatedly. This is where the work on this page comes from.",
+      title: "The pace",
+      body:
+        "A Dev3Pack fellowship, then hackathons across Stacks, TON, Monad and Base. Blank canvas to deployed prototype in 48–72 hours, repeatedly. This is where most of the work on this page comes from.",
     },
     {
-      period: "Now",
-      title: "Radiography and radiation science",
-      body: "Studying medical imaging: precision physics, invisible systems, and the moment someone depends on your reading of them. It sharpens the engineering rather than competing with it.",
+      period: "Radiography",
+      title: "Now, first year",
+      body:
+        "Medical imaging: precision physics, invisible systems, and the moment someone depends on your reading of them. It sharpens the engineering rather than competing with it.",
     },
   ],
   closing:

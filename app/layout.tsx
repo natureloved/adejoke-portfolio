@@ -53,7 +53,6 @@ export const metadata: Metadata = {
     "AI agents",
     "Next.js",
     "TypeScript",
-    "Lagos",
   ],
   authors: [{ name: SITE.name }],
   icons: { icon: "/icon.svg" },
@@ -92,11 +91,6 @@ export default function RootLayout({
     url: siteUrl,
     email: `mailto:${SITE.email}`,
     jobTitle: "Full-Stack & Blockchain Developer",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Lagos",
-      addressCountry: "NG",
-    },
     knowsAbout: [
       "Bitcoin Layer 2",
       "Smart Contracts",

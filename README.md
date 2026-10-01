@@ -50,7 +50,7 @@ flash.
 | Project | Year | What it is |
 | --- | --- | --- |
 | **DrawBound** | 2026 | Self-custodial BTC credit where loan health is re-proven on every action. 109 tests. |
-| **Acadex** | 2026 | Academic calendar system for Lagos State University, with an append-only revision trail. Final-year project. |
+| **Acadex** | 2026 | Academic calendar system for Lagos State University, with an append-only revision trail. |
 | **PegWatch** | 2026 | Autonomous risk agent covering the ~65-hour weekend gap in tokenised-equity price feeds. |
 | **Voz** | 2026 | Voice-to-voice cross-border remittance. The recipient never reads an address. |
 

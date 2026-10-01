@@ -1811,6 +1811,104 @@ h2 em {
   font-weight: 500;
 }
 
+/* The opening line, slightly larger: it is the thesis of the section. */
+.about-lead {
+  font-size: 1.0625rem;
+  color: #5b6553;
+}
+
+/*
+ * The problem-solving block.
+ *
+ * It is set apart from the paragraphs because it answers a different
+ * question - not "what has this person done" but "what makes them build" -
+ * and because its content is four specific examples rather than an
+ * assertion. The rule above it marks it as the pivot from the story to the
+ * evidence.
+ */
+.about-drive {
+  margin-top: 26px;
+  padding: 24px 26px 26px;
+  border: 1px solid #d6dec9;
+  border-radius: 12px;
+  background: #f7f9f1;
+}
+
+.about-drive h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+
+.about-drive p {
+  margin: 13px 0 0;
+}
+
+/*
+ * The three fields, as a list with the field name in its own column.
+ *
+ * The period label is what makes the shape of the thing legible at a
+ * glance: software, then web3, then radiography, in that order, with the
+ * second column carrying the role and what it left behind.
+ */
+.about-chapters {
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.about-chapters li {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 20px;
+  padding: 17px 0;
+  border-top: 1px solid var(--line);
+}
+
+.about-chapters li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.about-chapter-period {
+  padding-top: 2px;
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.about-chapters strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.about-chapters p {
+  margin: 6px 0 0;
+}
+
+/*
+ * The closing line, set in the serif so it reads as the section's last
+ * word rather than another paragraph. The `!important` is only about the
+ * top margin: `.about-copy p` sets 21px with the same specificity and this
+ * rule is meant to sit further from the list above it.
+ */
+.about-closing {
+  margin-top: 26px !important;
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: #4a663c;
+}
+
 .about-facts {
   display: flex;
   flex-wrap: wrap;
@@ -1828,11 +1926,6 @@ h2 em {
   border-radius: 4px;
   color: #67755c;
   font-size: 13px;
-}
-
-.about-fact .icon {
-  width: 14px;
-  height: 14px;
 }
 
 .about-signature {
@@ -3028,6 +3121,18 @@ h2 em {
   }
   .about-copy .section-title {
     font-size: 2.4375rem;
+  }
+  /*
+   * The field label no longer gets its own column: a 118px label beside
+   * narrow copy leaves a cramped gutter. It sits above the text instead,
+   * which also matches how the drive block reads on a phone.
+   */
+  .about-chapters li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .about-chapter-period {
+    padding-top: 0;
   }
   .desk-visual {
     width: 100%;

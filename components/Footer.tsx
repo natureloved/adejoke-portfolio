@@ -20,8 +20,8 @@ export default function Footer() {
             Akinola<span className="brand-dot">.</span>
           </a>
           <p>
-            Building software that moves money and saves people work. Based in {SITE.location},
-            working with teams anywhere.
+            Building software that moves money and saves people work. Currently studying
+            radiography, and building alongside it.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>&copy; {new Date().getFullYear()} {SITE.name}. Built in Lagos.</span>
+        <span>&copy; {new Date().getFullYear()} {SITE.name}.</span>
         <a href="#top">
           Back to the top
           <Icon name="i-arrow-up-right" />
