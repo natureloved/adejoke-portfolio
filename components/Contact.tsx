@@ -65,11 +65,22 @@ export default function Contact() {
    * showed a success message without sending anything, which quietly loses
    * every message; if there is no endpoint we say so and hand the visitor a
    * real mailto link instead of pretending.
+   *
+   * The honeypot comes first: a hidden field no human can fill. Headless form
+   * fillers populate every input they find, so a value here means a bot. We
+   * short-circuit to the same success message a human gets, because replying
+   * "rejected" only teaches the sender how to rephrase. Real messages still
+   * fail loudly through the try/catch when Formspree itself errors.
    */
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = formRef.current;
     if (!form) return;
+
+    if (new FormData(form).get("company_website")) {
+      setStatus("sent");
+      return;
+    }
 
     if (!ENDPOINT) {
       // No endpoint configured. Say so instead of failing a network call.
@@ -171,6 +182,24 @@ export default function Contact() {
               </p>
 
               <form ref={formRef} onSubmit={submit}>
+                {/*
+                  Honeypot: hidden from sight and from assistive tech, so only
+                  automated fillers that scrape every input ever populate it.
+                  A value here means bot — the handler above rejects it.
+                */}
+                <div className="sr-only" aria-hidden="true">
+                  <label className="form-field">
+                    <span className="form-label">Company website</span>
+                    <input
+                      name="company_website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      placeholder="Leave this empty"
+                    />
+                  </label>
+                </div>
+
                 <div className="form-row">
                   <label className="form-field">
                     <span className="form-label">Name</span>
