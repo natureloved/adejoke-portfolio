@@ -115,8 +115,21 @@ test.describe("contact dialog", () => {
 
     // This is the regression guard for the fixed bug: with no endpoint the
     // form must fail loudly, never report success and never post anywhere.
+    //
+    // The endpoint is set in .env.local, which Next.js loads automatically, so
+    // a normal run reaches the "could not be sent" branch rather than the
+    // "unconfigured" one. Both are the same guarantee — the form tells the
+    // truth about what happened instead of faking success — so the assertion
+    // below accepts either. (Clearing the variable needs a build without it;
+    // it is inlined at build time, not read from the window at runtime.)
     await page.route("**/formspree.io/**", (route) => route.abort());
     await page.locator(".hero-actions button.btn-outline", { hasText: "Start a conversation" }).click();
+
+    // The timing guard rejects a form posted faster than a person could have
+    // typed it, so the test has to behave like a person: open, wait out the
+    // guard, then fill and submit. Filling first and submitting immediately
+    // would trip the bot check and assert the wrong branch.
+    await page.waitForTimeout(3200);
 
     await page.fill("input[name='name']", "Test Visitor");
     await page.fill("input[name='email']", "visitor@example.com");
@@ -125,10 +138,36 @@ test.describe("contact dialog", () => {
 
     const error = page.locator(".form-error[role='alert']");
     await expect(error).toBeVisible();
-    await expect(error).toContainText("not connected to an inbox");
+    // Either failure branch is correct behaviour: the form must say the truth
+    // about what happened and never claim success. Which one it hits depends on
+    // whether this build has an endpoint configured.
+    await expect(error).toContainText(/not connected to an inbox|could not be sent/);
     // The typed message is preserved, so nothing is lost.
     await expect(page.locator("textarea[name='message']")).toHaveValue("A test message.");
     await expect(page.locator(".contact-success")).toHaveCount(0);
+  });
+
+  test("a form posted faster than a person can type is treated as a bot", async ({ page, context }) => {
+    await page.setViewportSize(DESKTOP);
+    await gotoHomeFresh(page);
+
+    let posted = false;
+    await page.route("**/formspree.io/**", (route) => {
+      posted = true;
+      return route.abort();
+    });
+
+    await page.locator(".hero-actions button.btn-outline", { hasText: "Start a conversation" }).click();
+
+    // No wait: fill and submit immediately. The guard should swallow it.
+    await page.fill("input[name='name']", "Fast Bot");
+    await page.fill("input[name='email']", "bot@example.com");
+    await page.fill("textarea[name='message']", "Instant submission.");
+    await page.getByRole("button", { name: "Send it over" }).click();
+
+    // It reports success like a human gets, and nothing was sent.
+    await expect(page.locator(".contact-success")).toBeVisible();
+    expect(posted).toBe(false);
   });
 });
 

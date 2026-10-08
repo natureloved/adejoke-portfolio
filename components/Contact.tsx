@@ -18,6 +18,14 @@ type Status = "idle" | "sending" | "sent" | "failed" | "unconfigured";
  */
 const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_URL ?? "";
 
+/**
+ * A person opening the dialog has to read the form, decide what to say, and
+ * type a paragraph. Anything faster than this is a filler, not a sender. Set
+ * high enough that a real person is never caught and low enough that an
+ * automated post always is — a bot renders and posts in milliseconds.
+ */
+const MIN_HUMAN_SECONDS = 3;
+
 export default function Contact() {
   const { request } = useContact();
   const [open, setOpen] = useState(false);
@@ -26,6 +34,7 @@ export default function Contact() {
   const [toast, setToast] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const openedAt = useRef<number | null>(null);
 
   useEffect(() => {
     const el = dialogRef.current;
@@ -33,6 +42,9 @@ export default function Contact() {
     if (open && !el.open) {
       el.showModal();
       setStatus("idle");
+      // Start the clock here, not at page load: the form only exists for a
+      // human once the dialog is in front of them.
+      openedAt.current = Date.now();
     }
     if (!open && el.open) el.close();
   }, [open]);
@@ -66,18 +78,37 @@ export default function Contact() {
    * every message; if there is no endpoint we say so and hand the visitor a
    * real mailto link instead of pretending.
    *
-   * The honeypot comes first: a hidden field no human can fill. Headless form
-   * fillers populate every input they find, so a value here means a bot. We
-   * short-circuit to the same success message a human gets, because replying
-   * "rejected" only teaches the sender how to rephrase. Real messages still
-   * fail loudly through the try/catch when Formspree itself errors.
+   * Two bot checks, in order, because neither one is sufficient alone.
+   *
+   * 1. The honeypot is a hidden field no human can fill. Headless form fillers
+   *    populate every input they find, so a value here means a bot.
+   * 2. The elapsed-time check. A form that was rendered, filled, and posted
+   *    inside a couple of seconds was never read by a person. This one matters
+   *    more than it looks: the honeypot is keyed to a field name that only a
+   *    build of *this* source carries, so any older or foreign copy of the site
+   *    that posts to the same endpoint sails straight past it. A timing check
+   *    needs no field to exist at all — it measures the only thing every sender
+   *    must actually do, which is take time to arrive.
+   *
+   * Both short-circuit to the same success message a human gets, because
+   * replying "rejected" only teaches the sender how to rephrase. Real messages
+   * still fail loudly through the try/catch when Formspree itself errors.
    */
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = formRef.current;
     if (!form) return;
 
+    // 1. Honeypot: a hidden field only an automated filler would populate.
     if (new FormData(form).get("company_website")) {
+      setStatus("sent");
+      return;
+    }
+
+    // 2. Timing: no human reads a form, writes a paragraph, and posts in under
+    //    three seconds. The timestamp is stamped when the form mounts, so a
+    //    stale dialog or a prefilled session still has to clear it.
+    if (openedAt.current !== null && Date.now() - openedAt.current < MIN_HUMAN_SECONDS * 1000) {
       setStatus("sent");
       return;
     }
