@@ -71,18 +71,19 @@ test.describe("lab builds", () => {
     await page.setViewportSize(DESKTOP);
     await gotoHomeFresh(page);
 
-    // 12 open-source projects = 5 flagships + 7 lab builds, each with a repo.
-    // 12 live demos = the same 12: every flagship and every lab entry has one.
-    // Deriving rather than hardcoding keeps this honest - a project added or
-    // removed without touching the hero stat fails here instead of the site
-    // quietly advertising a number that is no longer true.
+    // 13 open-source projects = 5 flagships + 8 lab builds, each with a repo.
+    // 12 live demos: every flagship and every lab entry except SatsLoom, which
+    // runs against a local signet Lightning node and has no public deployment
+    // to link. Deriving rather than hardcoding keeps this honest - a project
+    // added or removed without touching the hero stat fails here instead of
+    // the site quietly advertising a number that is no longer true.
     const heroStats = await page.locator(".hero-stats div").evaluateAll((els) =>
       els.map((el) => ({
         value: el.querySelector("dd")?.textContent ?? "",
         label: el.querySelector("dt")?.textContent ?? "",
       })),
     );
-    expect(heroStats.map((s) => s.value)).toEqual(["109", "12", "12"]);
+    expect(heroStats.map((s) => s.value)).toEqual(["109", "12", "13"]);
     expect(heroStats.map((s) => s.label)).toEqual([
       "automated tests",
       "live demos",
@@ -91,7 +92,7 @@ test.describe("lab builds", () => {
 
     const flagships = await page.locator("[data-case-opener]").count();
     const labCards = await page.locator("#lab .project-card").count();
-    expect(flagships + labCards).toBe(12);
+    expect(flagships + labCards).toBe(13);
 
     // The lab cards carry both links on the card itself. The flagships carry
     // theirs inside the case-study dialog, so the repo count is the lab
@@ -99,10 +100,13 @@ test.describe("lab builds", () => {
     const labRepos = await page.locator("#lab .project-card a[href*='github.com']").count();
     expect(labRepos).toBe(labCards);
 
-    const labLive = await page
+    // Every lab entry except SatsLoom has a live deployment to open. SatsLoom
+    // runs against a local signet Lightning node, so its primary action is the
+    // repository and there is no URL to point at.
+    const labPrimary = await page
       .locator("#lab .project-card a.project-action-primary[href^='http']")
       .count();
-    expect(labLive).toBe(labCards);
+    expect(labPrimary).toBe(labCards);
   });
 
   test("every flagship's dialog links to a live site and a repository", async ({ page }) => {
@@ -338,12 +342,21 @@ test.describe("lab cards link to their live demos", () => {
 
     expect(cards.length).toBeGreaterThan(0);
     for (const card of cards) {
-      const live = card.links.find((l) => /Live/i.test(l.text));
       const source = card.links.find((l) => /Source/i.test(l.text));
-      expect(live, `${card.name} has no Live link`).toBeTruthy();
       expect(source, `${card.name} has no Source link`).toBeTruthy();
-      expect(live!.href).toMatch(/^https:\/\//);
       expect(source!.href).toMatch(/^https:\/\/github\.com\//);
+
+      // A live demo is expected wherever one exists. SatsLoom is the
+      // exception: it settles real BOLT11 invoices against a local signet
+      // Lightning node, so there is no public URL to link, and its Source
+      // link is the primary action on the card.
+      const live = card.links.find((l) => /Live/i.test(l.text));
+      if (card.name !== "SatsLoom") {
+        expect(live, `${card.name} has no Live link`).toBeTruthy();
+        expect(live!.href).toMatch(/^https:\/\//);
+      } else {
+        expect(live, "SatsLoom has no deployment to link").toBeFalsy();
+      }
     }
   });
 

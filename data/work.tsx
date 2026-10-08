@@ -428,6 +428,17 @@ export const LAB: LabItem[] = [
     category: "Agent",
   },
   {
+    id: "satsloom",
+    name: "SatsLoom",
+    year: "2026",
+    tagline:
+      "A merchant payment product on Bitcoin signet that issues real BOLT11 invoices on its own Lightning node and credits a payment only when the node reveals a preimage that hashes to the invoice's payment hash. Settlement is real; the simulation surface is labelled as simulation in every response envelope.",
+    stack: ["TypeScript", "Fastify", "LND", "Lightning", "React"],
+    note: "Lightning rail · signet",
+    repo: "https://github.com/natureloved/SatsLoom",
+    category: "Protocol",
+  },
+  {
     id: "stashflow",
     name: "StashFlow",
     year: "2026",

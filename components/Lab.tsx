@@ -75,9 +75,13 @@ export default function Lab() {
               Actions in a footer row, with both links spelled out. Previously
               the only click target was a bare </> icon between the title and
               the description, which interrupted the reading flow and gave no
-              clue where it went. Every entry in this section now has a live
-              demo and a repo, so the demo is the primary link and the repo is
-              the secondary one.
+              clue where it went.
+
+              The live demo is normally the primary link, but not every entry
+              has a deployment to point at: SatsLoom runs against a local
+              signet Lightning node and has no public URL. Where there is no
+              demo, the repository takes the primary slot rather than leaving
+              the card with only a secondary action.
             */}
             <div className="project-actions">
               {l.live ? (
@@ -93,7 +97,7 @@ export default function Lab() {
               ) : null}
               {l.repo ? (
                 <a
-                  className="project-action"
+                  className={`project-action${l.live ? "" : " project-action-primary"}`}
                   href={l.repo}
                   target="_blank"
                   rel="noopener noreferrer"
