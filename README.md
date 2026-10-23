@@ -54,7 +54,7 @@ flash.
 | **PegWatch** | 2026 | Autonomous risk agent covering the ~65-hour weekend gap in tokenised-equity price feeds. |
 | **Voz** | 2026 | Voice-to-voice cross-border remittance. The recipient never reads an address. |
 
-Plus 15 further builds in the lab, each with a live demo or repository.
+Plus 16 further builds in the lab, each with a live demo or repository.
 
 ## Getting started
 
@@ -152,7 +152,7 @@ components/
   Toolkit.tsx            The tool strip
   Work.tsx               Four flagship case studies, filters, case-study dialog
   Capabilities.tsx       Dark services panel plus the four process steps
-  Lab.tsx                Filterable grid of 15 further builds
+  Lab.tsx                Filterable grid of 16 further builds
   Story.tsx              Background, workspace illustration, signature
   FAQ.tsx                Eight working-together questions plus the glossary
   Contact.tsx            Lime panel, copy-email, dialog form, toast

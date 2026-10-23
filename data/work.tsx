@@ -449,6 +449,17 @@ export const LAB: LabItem[] = [
     repo: "https://github.com/natureloved/StashFlow",
     category: "Product",
   },
+  {
+    id: "elarsage",
+    name: "ELARSAGE GADGETS",
+    year: "2026",
+    tagline:
+      "A gadget shop for a real storefront in Computer Village, Ikeja. Guests browse and check out without an account, the order reaches the shop on WhatsApp, and a printable receipt with the device IMEI waits behind the admin.",
+    stack: ["Next.js 16", "TypeScript", "Prisma", "Supabase"],
+    note: "Client build · live shop",
+    live: "https://elarsage-gadgets.vercel.app",
+    category: "Product",
+  },
 ];
 
 export const LAB_CATEGORIES = ["All", "Product", "Protocol", "Agent", "Tooling"] as const;

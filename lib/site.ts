@@ -48,14 +48,14 @@ export const HERO_PROOF = [
     note: "in the flagship credit protocol",
   },
   {
-    value: "12",
+    value: "13",
     label: "live demos",
     note: "each one loads, checked from this page",
   },
   {
     value: "13",
     label: "open-source projects",
-    note: "every one linked to its repository",
+    note: "each one linked to its repository",
   },
 ] as const;
 

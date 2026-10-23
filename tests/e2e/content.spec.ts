@@ -3,7 +3,7 @@ import { DESKTOP, expectNoHorizontalOverflow, gotoHomeFresh } from "./helpers";
 
 /**
  * Data integrity. The site claims "no project described without a live demo or
- * a repository" and states hard numbers (109 tests, 12 demos, 19 repos). Those
+ * a repository" and states hard numbers (109 tests, 13 demos, 13 repos). Those
  * are checkable against the content files and the rendered page, so they get
  * asserted rather than taken on trust.
  */
@@ -51,7 +51,7 @@ test.describe("flagship case studies", () => {
 });
 
 test.describe("lab builds", () => {
-  test("every lab card carries a repository link", async ({ page }) => {
+  test("every lab card carries a repository link, unless the repo is private", async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await gotoHomeFresh(page);
 
@@ -59,10 +59,21 @@ test.describe("lab builds", () => {
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(7);
 
+    // ELARSAGE is the one card without a Source link: it is a client build
+    // whose repository is private, so a public link would be a dead link for
+    // every visitor. The live deployment is its only action, which is exactly
+    // what the card shows. Adding a private repo link here would make this
+    // test fail on purpose, so it is named and excluded.
     for (let i = 0; i < count; i++) {
-      const hrefs = await cards.nth(i).locator("a[href]").evaluateAll((els) =>
+      const card = cards.nth(i);
+      const name = (await card.locator(".project-title").textContent())?.trim() ?? "";
+      const hrefs = await card.locator("a[href]").evaluateAll((els) =>
         els.map((e) => (e as HTMLAnchorElement).href),
       );
+      if (name === "ELARSAGE GADGETS") {
+        expect(hrefs.some((h) => h.includes("github.com")), "private repo must not be linked").toBe(false);
+        continue;
+      }
       expect(hrefs.some((h) => h.includes("github.com")), `lab card ${i} has a repo`).toBe(true);
     }
   });
@@ -71,8 +82,10 @@ test.describe("lab builds", () => {
     await page.setViewportSize(DESKTOP);
     await gotoHomeFresh(page);
 
-    // 13 open-source projects = 5 flagships + 8 lab builds, each with a repo.
-    // 12 live demos: every flagship and every lab entry except SatsLoom, which
+    // 14 projects on the page = 5 flagships + 9 lab builds. Of those, 13 are
+    // open-source and carry a repository link: ELARSAGE's repository is
+    // private, so it is the one entry with no Source link.
+    // 13 live demos: every flagship and every lab entry except SatsLoom, which
     // runs against a local signet Lightning node and has no public deployment
     // to link. Deriving rather than hardcoding keeps this honest - a project
     // added or removed without touching the hero stat fails here instead of
@@ -83,26 +96,31 @@ test.describe("lab builds", () => {
         label: el.querySelector("dt")?.textContent ?? "",
       })),
     );
-    expect(heroStats.map((s) => s.value)).toEqual(["109", "12", "13"]);
+    expect(heroStats.map((s) => s.value)).toEqual(["109", "13", "13"]);
     expect(heroStats.map((s) => s.label)).toEqual([
       "automated tests",
       "live demos",
       "open-source projects",
     ]);
 
+    // 14 projects on the page = 5 flagships + 9 lab builds, which is what
+    // this asserts. The hero's "open-source projects" stat is one lower: 13,
+    // because ELARSAGE's repository is private and carries no public link.
     const flagships = await page.locator("[data-case-opener]").count();
     const labCards = await page.locator("#lab .project-card").count();
-    expect(flagships + labCards).toBe(13);
+    expect(flagships + labCards).toBe(14);
 
-    // The lab cards carry both links on the card itself. The flagships carry
+    // The lab cards carry their links on the card itself. The flagships carry
     // theirs inside the case-study dialog, so the repo count is the lab
-    // total plus one per flagship opened.
+    // total minus ELARSAGE (private repo, deliberately unlinked), plus one per
+    // flagship opened.
     const labRepos = await page.locator("#lab .project-card a[href*='github.com']").count();
-    expect(labRepos).toBe(labCards);
+    expect(labRepos).toBe(labCards - 1);
 
-    // Every lab entry except SatsLoom has a live deployment to open. SatsLoom
-    // runs against a local signet Lightning node, so its primary action is the
-    // repository and there is no URL to point at.
+    // Every lab entry has a primary action pointing at something a visitor can
+    // open. For most that is the live demo; SatsLoom has no deployment so its
+    // repository takes the slot, and ELARSAGE's repository is private so its
+    // live deployment does.
     const labPrimary = await page
       .locator("#lab .project-card a.project-action-primary[href^='http']")
       .count();
@@ -343,20 +361,29 @@ test.describe("lab cards link to their live demos", () => {
     expect(cards.length).toBeGreaterThan(0);
     for (const card of cards) {
       const source = card.links.find((l) => /Source/i.test(l.text));
-      expect(source, `${card.name} has no Source link`).toBeTruthy();
-      expect(source!.href).toMatch(/^https:\/\/github\.com\//);
 
       // A live demo is expected wherever one exists. SatsLoom is the
       // exception: it settles real BOLT11 invoices against a local signet
       // Lightning node, so there is no public URL to link, and its Source
-      // link is the primary action on the card.
+      // link is the primary action on the card. ELARSAGE is the second
+      // exception, in the opposite direction: it has a deployment, but its
+      // repository is private, so the Live link is the primary action and
+      // there is no Source link a visitor could open.
       const live = card.links.find((l) => /Live/i.test(l.text));
-      if (card.name !== "SatsLoom") {
+      const repo = card.links.find((l) => /Source/i.test(l.text));
+      if (card.name === "SatsLoom") {
+        expect(live, "SatsLoom has no deployment to link").toBeFalsy();
+      } else {
         expect(live, `${card.name} has no Live link`).toBeTruthy();
         expect(live!.href).toMatch(/^https:\/\//);
-      } else {
-        expect(live, "SatsLoom has no deployment to link").toBeFalsy();
+        if (card.name === "ELARSAGE GADGETS") {
+          expect(repo, "ELARSAGE's repository is private and must not be linked").toBeFalsy();
+        }
       }
+
+      if (card.name === "ELARSAGE GADGETS") continue;
+      expect(source, `${card.name} has no Source link`).toBeTruthy();
+      expect(source!.href).toMatch(/^https:\/\/github\.com\//);
     }
   });
 

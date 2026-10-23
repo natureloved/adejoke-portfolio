@@ -14,7 +14,7 @@ So the PDF is generated from the same source of truth the page uses:
   lib/site.ts     - name, contact, positioning, hero stats
 
 Nothing is hardcoded here that a reader could check against the page. If the
-page says 12 live demos, this PDF says 12. If a project is removed from
+page says 13 live demos, this PDF says 13. If a project is removed from
 data/work.tsx, it disappears from here too.
 
 Layout follows the site's own design language: the same green accent, the
